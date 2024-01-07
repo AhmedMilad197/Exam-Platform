@@ -28,7 +28,7 @@
 <template>
   <v-layout column>
     <v-sheet width="600px" class="mx-auto">
-      <v-toolbar>
+      <v-toolbar color="primary">
         <v-toolbar-title>
           Register
         </v-toolbar-title>

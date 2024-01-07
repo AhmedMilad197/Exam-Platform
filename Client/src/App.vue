@@ -1,4 +1,5 @@
 <script setup>
+import '@mdi/font/css/materialdesignicons.css'
 import { RouterLink, RouterView } from 'vue-router'
 import pageHeader from './components/Header.vue'
 </script>

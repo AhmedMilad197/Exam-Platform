@@ -29,62 +29,53 @@ const variants = ref(['math', 'phisycs']);
 </script>
 
 <template>
-  <v-container>
-    <v-row align="center" justify="center">
-      <v-col
-        v-for="(variant, i) in variants"
-        :key="i"
-        cols="auto"
-      >
-        <v-card
-          class="mx-auto"
-          max-width="344"
-          :color="getColor()"
-        >
-          <v-card-item>
-            <div>
-              <div class="text-overline mb-1">
-                Subject
-              </div>
-              <div class="text-h6 mb-1">
-                {{ variant }}
-              </div>
-              <div class="text-caption">See the exams related to {{ variant  }}</div>
-            </div>
-          </v-card-item>
+  <v-layout column>
+    <v-sheet width="800px" class="mx-auto">
+      <v-toolbar color="primary">
+        <v-toolbar-title>
+          Subjects
+        </v-toolbar-title>
+      </v-toolbar>
+      <v-container>
+        <v-row align="center" justify="center">
+          <v-col
+            v-for="(variant, i) in variants"
+            :key="i"
+            cols="auto"
+          >
+            <v-card
+              class="mx-auto"
+              max-width="344"
+              :color="getColor()"
+            >
+              <v-card-item>
+                <div>
+                  <div class="text-overline mb-1">
+                    Subject
+                  </div>
+                  <div class="text-h6 mb-1">
+                    {{ variant }}
+                  </div>
+                  <div class="text-caption">See the exams related to {{ variant  }}</div>
+                </div>
+              </v-card-item>
 
-          <v-card-actions>
-            <v-btn @click="navigateTo(variant)">
-              Enter
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-col>
-    </v-row>
-  </v-container>  
+              <v-card-actions>
+                <v-btn @click="navigateTo(variant)">
+                  Enter
+                </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-col>
+        </v-row>
+      </v-container>  
+    </v-sheet>
+  </v-layout>
 </template>
 
 <style scoped>
-/* h1 {
-  font-weight: 500;
-  font-size: 2.6rem;
-  position: relative;
-  top: -10px;
+.v-sheet {
+  border: 1px rgb(185, 175, 175) solid;
+  border-radius: 2px;
 }
-
-h3 {
-  font-size: 1.2rem;
-}
-
-.greetings h1,
-.greetings h3 {
-  text-align: center;
-}
-
-@media (min-width: 1024px) {
-  .greetings h1,
-  .greetings h3 {
-    text-align: left;
-  }
-} */
 </style>
