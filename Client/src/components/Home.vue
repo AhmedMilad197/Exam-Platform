@@ -6,7 +6,7 @@ const router = useRouter()
 
 function navigateTo (subject) {
   router.push({
-    path: `/questions/${subject}`,
+    path: `/${subject}/exam-list`,
   });
 }
 
@@ -26,6 +26,7 @@ function getColor() {
 }
 
 const variants = ref(['math', 'phisycs']);
+
 </script>
 
 <template>
