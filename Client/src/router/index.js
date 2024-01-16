@@ -6,6 +6,10 @@ import AddQuestionView from '../views/AddQuestionView.vue'
 import QuestionListView from '../views/QuestionListView.vue'
 import ExamListView from '../views/ExamListView.vue'
 import ExamView from '../views/ExamView.vue'
+import EditQuestionView from '../views/EditQuestionView.vue'
+import TeacherListView from '../views/TeacherListView.vue'
+import StudentListView from '../views/StudentListView.vue'
+import SubjectListView from '../views/SubjectListView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -27,8 +31,8 @@ const router = createRouter({
       props: true
     },
     {
-      path: '/:subject/question-list',
-      name: 'question_list',
+      path: '/question-list/:subject',
+      name: 'questions',
       component: QuestionListView,
       props: true
     },
@@ -52,7 +56,27 @@ const router = createRouter({
       path: '/register',
       name: 'register',
       component: RegisterView
-    }
+    },
+    {
+      path: '/edit-question',
+      name: 'edit_question',
+      component: EditQuestionView
+    },
+    {
+      path: '/teachers',
+      name: 'teachers',
+      component: TeacherListView
+    },
+    {
+      path: '/students',
+      name: 'students',
+      component: StudentListView
+    },
+    {
+      path: '/subjects',
+      name: 'subjects',
+      component: TeacherListView
+    },
   ]
 })
 

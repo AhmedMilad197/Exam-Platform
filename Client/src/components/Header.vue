@@ -5,27 +5,48 @@ import {ref} from 'vue'
 const router = useRouter()
 const color = ref('primary')
 
+function navigateTo (link) {
+  console.log(link);
+  router.push({
+    name: link.name,
+    params: link.params
+  });
+  // router.push({ name: 'questions', params: { subject: 'all' } });
+}
+
 const items = ref([
   {
     title: 'Teachers',
-    value: 'teachers'
+    value: {
+      name: 'teachers'
+    }
   },
   {
     title: 'Students',
-    value: 'teachers'
+    value: {
+      name: 'students'
+    }
   },
   {
     title: 'Questions',
-    value: 'question'
+    value: {
+      name: 'questions',
+      params: {
+        subject: 'all'
+      }
+    }
+  },
+  {
+    title: 'Subjects',
+    value: {
+      name: 'subjects'
+    }
   }
 ]);
+
 const drawer = ref(false);
 const group = ref(null);
 
-function navigateTo (route) {
-  router.push({name: 'welcome'});
-}
-  
 </script>
 
 <template>
@@ -38,7 +59,11 @@ function navigateTo (route) {
       >
         <v-app-bar-nav-icon variant="text" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
 
-        <v-toolbar-title class="title-text">Exam Platform</v-toolbar-title>
+        <v-toolbar-title>
+          <span class="title-text">
+            Exam Platform
+          </span>
+        </v-toolbar-title>
 
         <v-spacer></v-spacer>
 
@@ -54,9 +79,19 @@ function navigateTo (route) {
         location="left"
         temporary
       >
-        <v-list
-          :items="items"
-        ></v-list>
+
+      <v-list density="compact">
+        <v-list-item
+          v-for="(item, i) in items"
+          :key="i"
+          :value="item.value"
+          color="primary"
+          @click="navigateTo(item.value)"
+        >
+        <v-list-item-title>{{ item.title }}</v-list-item-title>
+      </v-list-item>
+    </v-list>
+
       </v-navigation-drawer>
 
     </v-layout>
