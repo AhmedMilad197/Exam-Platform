@@ -10,20 +10,19 @@ const route = useRoute();
  * required APIs:
  * api for all the subjects.
  * api for all the questions nested in the subjects.
- */ 
+ */
 
-function navigateTo (id) {
-  // router.push({name: 'welcome'});
-  router.push(`question/${id}`);
+function navigateTo (path) {
+  router.push(path);
 }
 
 const show = ref(false);
 
+const questionId = ref();
 const question = ref();
 
-function showModal (value) {
+function showModal () {
   show.value = true;
-  question.value = value;
 }
 
 function closeModal () {
@@ -55,9 +54,9 @@ const questions = ref([
   
   const selectedItem = ref('All Questions');    
 
-  watch(selectedItem, (newX) => {
-    console.log(`x is ${newX}`)
-  })
+  // watch(selectedItem, (newX) => {
+  //   console.log(`x is ${newX}`)
+  // })
 
 </script>
 
@@ -108,7 +107,7 @@ const questions = ref([
             <td>
               <div class="d-flex">
                 <div class="mx-auto">
-                  <v-btn color="blue" class="mr-4" @click="showModal(question.question)">EDIT</v-btn>
+                  <v-btn color="blue" class="mr-4" @click="navigateTo({name: 'edit-question', params: {id: question.id}})">EDIT</v-btn>
                   <v-btn color="red">DELETE</v-btn>
                 </div>
               </div>
@@ -117,7 +116,6 @@ const questions = ref([
         </tbody>
       </v-table>
     </v-card>
-    <EditQuestion @close="closeModal()" :show="show" :question="question"/>
   </div>
 </template>
 
