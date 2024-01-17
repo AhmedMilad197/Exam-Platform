@@ -15,6 +15,7 @@ import StudentDetailsView from '../views/StudentDetailsView.vue'
 import EditStudentView from '../views/EditStudentView.vue'
 import SubjectDetailsView from '../views/SubjectDetailsView.vue'
 import EditSubjectView from '../views/EditSubjectView.vue'
+import AddSubjectView from '../views/AddSubjectView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -110,6 +111,12 @@ const router = createRouter({
       path: '/update/subject/:id',
       name: 'subject-update',
       component: EditSubjectView,
+      props: true
+    },
+    {
+      path: '/add-subject',
+      name: 'add-subject',
+      component: AddSubjectView,
       props: true
     },
   ]
