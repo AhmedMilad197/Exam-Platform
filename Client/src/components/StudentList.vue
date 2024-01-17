@@ -1,17 +1,9 @@
 <script setup>
 import {ref} from 'vue'
 import { useRouter } from 'vue-router'
-// import StudentDetails from '@/components/StudentDetails.vue'
-// import StudentService from '@/services/Student'
 
 const router = useRouter()
 const selectedItem = ref();
-const id = ref();
-const show = ref(false);
-const name = ref();
-const username = ref();
-const last_login = ref();
-const active = ref();
 const students = ref([
     {
       id: 1,
@@ -50,57 +42,9 @@ const students = ref([
     },
   ]);
 
-  function showModal () {
-    show.value = true;
-  }
-
-  function closeModal () {
-    show.value = false;
-  }
-
-  async function getStudent (studentId) {
-    try {
-      const response = await StudentService.show({
-        id: studentId
-      });
-      id.value = response.data.data.id;
-      name.value = response.data.data.name;
-      username.value = response.data.data.username;
-      active.value = response.data.data.active;
-      last_login.value = response.data.data.last_login;
-      console.log(id.value);
-    } catch (error) {
-      console.log(error.message);
-      return {
-        message: error.message
-      }
-    }
-  }
-
-  function navigateTo (routeName) {
-    router.push({
-      name: routeName
-    });
-  }
-
-  // async function getStudent (studentId) {
-  //   try {
-  //     const response = await TeacherService.show({
-  //       id: studentId
-  //     });
-  //     id.value = response.data.data.id;
-  //     name.value = response.data.data.name;
-  //     username.value = response.data.data.username;
-  //     active.value = response.data.data.active;
-  //     last_login.value = response.data.data.last_login;
-  //     console.log(id.value);
-  //   } catch (error) {
-  //     console.log(error.message);
-  //     return {
-  //       message: error.message
-  //     }
-  //   }
-  // }
+function navigateTo (route) {
+  router.push(route);
+}
 
 </script>
 
@@ -113,7 +57,7 @@ const students = ref([
       >
       <div class="d-flex">
         <v-spacer/>
-        <v-btn color="primary" class="my-4 mx-4" @click="navigateTo('add-student')">ADD STUDENT</v-btn>
+        <v-btn color="primary" class="my-4 mx-4" @click="navigateTo({name: 'add-student'})">ADD STUDENT</v-btn>
         <v-btn color="green" class="my-4 mr-4">UPDATE LIST</v-btn>
         <div style="width: 200px;" class=" my-auto mr-4">
           <v-combobox
@@ -155,7 +99,7 @@ const students = ref([
             <td>
               <div class="d-flex">
                 <div class="mx-auto">
-                  <v-btn color="yellow" class="mr-4" @click="showModal(student.id), getStudent(student.id)">VIEW</v-btn>
+                  <v-btn color="yellow" class="mr-4" @click="navigateTo({name: 'student', params: {id: student.id}})">VIEW</v-btn>
                 </div>
               </div>
             </td>
@@ -163,15 +107,8 @@ const students = ref([
         </tbody>
       </v-table>
     </v-card>
-    <!-- <StudentDetails 
-    @close="closeModal()" 
-    :id="id"
-    :show="show" 
-    :name="name" 
-    :username="username"
-    :active="active" 
-    :last_login="last_login"/> -->
   </div>
+
 </template>
 
 <style scoped>
