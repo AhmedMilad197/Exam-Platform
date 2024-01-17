@@ -7,7 +7,7 @@ import pageHeader from './components/Header.vue'
 <template>
   <main class="container">
     <pageHeader class="header"/>
-    <v-container>
+    <v-container class="container">
       <RouterView />
     </v-container>
   </main>
@@ -16,6 +16,11 @@ import pageHeader from './components/Header.vue'
 <style scoped>
   .container{
     width: 100%;
+    z-index: 99;
+  }
+
+  .header {
+    z-index: 999;
   }
   
 </style>

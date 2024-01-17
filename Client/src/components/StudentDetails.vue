@@ -2,6 +2,7 @@
 import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router'
 import StudentService from '@/services/Student'
+import router from '@/router';
 
 const route = useRoute();
 const id = ref();
@@ -33,56 +34,13 @@ onMounted(() => {
   getStudent(route.params.id);
 })
 
-const items = [
-  {
-    name: 'African Elephant',
-    species: 'Loxodonta africana',
-
-  },
-  // ... more items
-]
+function navigateTo (route) {
+  router.push(route);
+}
 
 </script>
 
 <template>
-  <!-- <v-layout column>
-    <v-sheet width="600px" class="mx-auto">
-      <v-toolbar color="primary">
-        <v-toolbar-title>
-          Student Details
-        </v-toolbar-title>
-      </v-toolbar>
-      <v-form @submit.prevent class="justify-center mt-4 slot-text-center">
-        <div class="d-flex">
-          <div class="d-flex flex-column ml-10">
-            <span class="text-h6">
-              ID:
-            </span>
-            <span class="text-h6">
-              First Name:
-            </span>
-            <span class="text-h6">
-              Last Name:
-            </span>
-            <span class="text-h6">
-              Password:
-            </span>
-            <span class="text-h6">
-              Address:
-            </span>
-            <span class="text-h6">
-              Phone:
-            </span>
-          </div>
-        </div>
-        <div class="error ml-2" />
-        <v-col class="text-center" cols="12">
-          <v-btn type="submit" color="primary" @click="register">GO BACK</v-btn>
-        </v-col>
-      </v-form>
-    </v-sheet>
-  </v-layout> -->
-
   <v-card
       class="mx-auto"
       max-width="1000"
@@ -171,7 +129,7 @@ const items = [
       </v-table>
       <div class="d-flex">
         <v-spacer></v-spacer>
-        <v-btn color="primary" class="my-4 mx-2">UPDATE</v-btn>
+        <v-btn color="primary" class="my-4 mx-2" @click="navigateTo({name: 'student-update'})">UPDATE</v-btn>
         <v-btn color="red" class="my-4 mx-2">BLOCK</v-btn>
       </div>
     </v-card>

@@ -12,6 +12,9 @@ import StudentListView from '../views/StudentListView.vue'
 import SubjectListView from '../views/SubjectListView.vue'
 import AddStudentView from '../views/AddStudentView.vue'
 import StudentDetailsView from '../views/StudentDetailsView.vue'
+import EditStudentView from '../views/EditStudentView.vue'
+import SubjectDetailsView from '../views/SubjectDetailsView.vue'
+import EditSubjectView from '../views/EditSubjectView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -78,7 +81,7 @@ const router = createRouter({
     {
       path: '/subjects',
       name: 'subjects',
-      component: TeacherListView
+      component: SubjectListView
     },
     {
       path: '/add-student',
@@ -89,6 +92,24 @@ const router = createRouter({
       path: '/student/:id',
       name: 'student',
       component: StudentDetailsView,
+      props: true
+    },
+    {
+      path: '/update/student/:id',
+      name: 'student-update',
+      component: EditStudentView,
+      props: true
+    },
+    {
+      path: '/subject/:id',
+      name: 'subject',
+      component: SubjectDetailsView,
+      props: true
+    },
+    {
+      path: '/update/subject/:id',
+      name: 'subject-update',
+      component: EditSubjectView,
       props: true
     },
   ]
