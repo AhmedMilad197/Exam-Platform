@@ -1,7 +1,9 @@
 <script setup>
 import { ref } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 
+const route = useRoute();
+const router = useRouter();
 const question = ref();
 const answers = ref([
   {
@@ -24,11 +26,28 @@ const answers = ref([
   }
 ]);
 
+function navigateTo (path) {
+  router.push(path);
+}
+
 function setAnswer (event, id) {
   if (event.target.checked) {
     answers.value[id].isAnswer = true;
   } else {
     answers.value[id].isAnswer = false;
+  }
+}
+
+async function addQuestion() {
+  try {
+    navigateTo({ 
+      name: 'teacher-questions',
+      params: {
+        subject: route.params.subject
+      }
+    })
+  } catch (error) {
+
   }
 }
 
@@ -105,6 +124,7 @@ function setAnswer (event, id) {
       <v-btn color="blue" 
         :width="`200px`"
         class="mx-auto mb-4"
+        @click="addQuestion()"
         >
         Add Question
       </v-btn>

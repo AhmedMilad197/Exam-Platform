@@ -17,6 +17,8 @@ import SubjectDetailsView from '../views/SubjectDetailsView.vue'
 import EditSubjectView from '../views/EditSubjectView.vue'
 import AddSubjectView from '../views/AddSubjectView.vue'
 import LoginView from '../views/LoginView.vue'
+import QuestionBankView from '../views/QuestionBankView.vue'
+import CreateExamView from '../views/CreateExamView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -45,7 +47,7 @@ const router = createRouter({
     },
     {
       path: '/:subject/exam-list',
-      name: 'exam_list',
+      name: 'exam-list',
       component: ExamListView,
       props: true
     },
@@ -123,6 +125,18 @@ const router = createRouter({
       path: '/add-subject',
       name: 'add-subject',
       component: AddSubjectView,
+      props: true
+    },
+    {
+      path: '/:subject/questions',
+      name: 'teacher-questions',
+      component: QuestionBankView,
+      props: true
+    },
+    {
+      path: '/:subject/exam/create',
+      name: 'exam-create',
+      component: CreateExamView,
       props: true
     },
   ]

@@ -6,12 +6,10 @@ const router = useRouter()
 const color = ref('primary')
 
 function navigateTo (link) {
-  console.log(link);
   router.push({
     name: link.name,
     params: link.params
   });
-  // router.push({ name: 'questions', params: { subject: 'all' } });
 }
 
 const items = ref([
@@ -60,18 +58,13 @@ const group = ref(null);
         <v-app-bar-nav-icon variant="text" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
 
         <v-toolbar-title>
-          <span class="title-text">
+          <span class="title-text" @click="navigateTo({ name: 'home' })">
             Exam Platform
           </span>
         </v-toolbar-title>
 
         <v-spacer></v-spacer>
 
-        <!-- <v-btn variant="text" icon="mdi-magnify"></v-btn>
-
-        <v-btn variant="text" icon="mdi-filter"></v-btn>
-
-        <v-btn variant="text" icon="mdi-dots-vertical"></v-btn> -->
       </v-app-bar>
 
       <v-navigation-drawer
