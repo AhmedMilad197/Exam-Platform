@@ -16,6 +16,7 @@ import EditStudentView from '../views/EditStudentView.vue'
 import SubjectDetailsView from '../views/SubjectDetailsView.vue'
 import EditSubjectView from '../views/EditSubjectView.vue'
 import AddSubjectView from '../views/AddSubjectView.vue'
+import LoginView from '../views/LoginView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -62,6 +63,11 @@ const router = createRouter({
       path: '/register',
       name: 'register',
       component: RegisterView
+    },
+    {
+      path: '/Login',
+      name: 'login',
+      component: LoginView
     },
     {
       path: '/edit-question/:id',
