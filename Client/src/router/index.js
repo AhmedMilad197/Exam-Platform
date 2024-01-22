@@ -31,8 +31,8 @@ const router = createRouter({
       component: HomeView,
     },
     {
-      path: '/questions/:subject',
-      name: 'subject',
+      path: '/add-question/:subject',
+      name: 'add-question',
       component: AddQuestionView,
       props: true
     },
