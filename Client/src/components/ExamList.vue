@@ -6,7 +6,6 @@ const router = useRouter()
 const route = useRoute();
 
 function navigateTo (id) {
-  // router.push({name: 'welcome'});
   router.push(`exam/${id}`);
 }
   
@@ -34,15 +33,28 @@ const exams = ref([
   max-width="800"
   >
   <v-toolbar color="purple">
-    <v-toolbar-title>exams List</v-toolbar-title>
+    <v-toolbar-title>Exams List</v-toolbar-title>
   </v-toolbar>
-    <v-list>
-      <div v-for="exam in exams">
-        <v-list-item class="list-item" @click="navigateTo(exam.id)">
-          {{ exam.exam }}
-        </v-list-item>
+    <div class="d-flex flex-column">
+      <div class="mx-4 my-4">
+        <v-btn color="primary">CREATE EXAM</v-btn>
+      </div><hr>
+      <div>
+        <v-list>
+          <div v-for="exam in exams" :key="exam.id">
+            <v-list-item>
+              <div class="d-flex">
+                {{ exam.exam }}
+                <v-spacer></v-spacer>
+                <v-btn color="yellow" @click="navigateTo(exam.id)">VIEW</v-btn>
+                <v-btn color="blue" class="ml-2">EDIT</v-btn>
+                <v-btn color="red" class="mx-2">DELETE</v-btn>
+              </div>
+            </v-list-item>
+          </div>
+        </v-list>
       </div>
-    </v-list>
+    </div>
   </v-card>
 </template>
 

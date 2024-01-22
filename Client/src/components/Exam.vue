@@ -60,14 +60,14 @@ const exam = ref([
     max-width="800"
   >
     <v-toolbar color="purple">
-      <v-toolbar-title>Add question in {{ route.params.subject }}</v-toolbar-title>
+      <v-toolbar-title>Questions</v-toolbar-title>
     </v-toolbar>
 
-    <div v-for="(question, index) in exam">
+    <div v-for="(question, index) in exam" :key="question.id">
 
       <v-list lines="three" select-strategy="classic">
         <v-sheet class="text-h5 mx-4 my-4">
-          <b>#{{ index + 1 }}:</b> {{ question.question }}
+          {{ index + 1 }}. {{ question.question }}
         </v-sheet> <hr>
   
         <div v-for="(answer, index) in question.answers" :key="index" class="d-flex">
@@ -95,7 +95,7 @@ const exam = ref([
     </div>
 
     <div class="d-flex flex-row">
-      <v-btn color="primary" class="mx-auto my-4">Add Question</v-btn>
+      <v-btn color="primary" class="mx-auto my-4">Submit</v-btn>
     </div>
   
   </v-card>
