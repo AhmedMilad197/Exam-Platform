@@ -1,35 +1,32 @@
 <script setup>
-  import AuthenticationService from "../services/AuthenticationService";
-  import { useRouter } from 'vue-router'
-  import { ref } from 'vue'
-  // import StudentDetails from '@/components/StudentDetails.vue'
-  // import StudentService from '@/services/Student'
-  
-  const router = useRouter()
-  const name = ref();
-  const username = ref();
-  const phone = ref();
-  const password = ref();
-  const address = ref();
-  const error = ref(null);
+import { useRouter } from 'vue-router'
+import { ref } from 'vue'
 
-  function navigateTo (routeName) {
-    router.push({
-      name: routeName
-    });
-  }
-  
-  async function register () {
-    try {
-      navigateTo('students');
-      console.log(response);
-    } catch (err) {
-      console.log(err.message);
-      return {
-        message: err.message
-      }
+const router = useRouter()
+const name = ref();
+const username = ref();
+const phone = ref();
+const password = ref();
+const address = ref();
+const error = ref(null);
+
+function navigateTo (routeName) {
+  router.push({
+    name: routeName
+  });
+}
+
+async function register () {
+  try {
+    navigateTo('students');
+    console.log(response);
+  } catch (err) {
+    console.log(err.message);
+    return {
+      message: err.message
     }
   }
+}
 
 </script>
 
