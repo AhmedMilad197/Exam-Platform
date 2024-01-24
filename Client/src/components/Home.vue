@@ -25,7 +25,15 @@ function getColor() {
   return colors[Math.floor(Math.random() * colors.length)];
 }
 
-const variants = ref(['math', 'phisycs']);
+const subjects = ref([{
+    id: 1,
+    name: 'math'
+  }, 
+  {
+    id: 1,
+    name: 'phisycs'
+  }
+]);
 
 </script>
 
@@ -40,7 +48,7 @@ const variants = ref(['math', 'phisycs']);
       <v-container>
         <v-row align="center" justify="center">
           <v-col
-            v-for="(variant, i) in variants"
+            v-for="(variant, i) in subjects"
             :key="i"
             cols="auto"
           >
@@ -55,14 +63,14 @@ const variants = ref(['math', 'phisycs']);
                     Subject
                   </div>
                   <div class="text-h6 mb-1">
-                    {{ variant }}
+                    {{ variant.name }}
                   </div>
-                  <div class="text-caption">See the exams related to {{ variant  }}</div>
+                  <div class="text-caption">See the exams related to {{ variant.name  }}</div>
                 </div>
               </v-card-item>
 
               <v-card-actions>
-                <v-btn @click="navigateTo(variant)">
+                <v-btn @click="navigateTo(variant.id)">
                   Enter
                 </v-btn>
               </v-card-actions>
