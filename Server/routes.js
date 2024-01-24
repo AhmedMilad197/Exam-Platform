@@ -7,6 +7,7 @@ const SubjectController = require("./controllers/SubjectController")
 module.exports = (app) => {
   app.post('/register', AuthenticationController.register);
   app.post('/question', QuestionController.show);
+  app.post('/question/list', QuestionController.index);
   app.post('/teacher', TeacherController.show);
   app.post('/student', StudentController.show);
   app.post('/student/update', StudentController.update);

@@ -28,5 +28,30 @@ module.exports = {
         ]
       }
     });
+  },
+  async index (req, res) {
+    await res.send([
+        {
+          id: 1,
+          question: 'This is the first question from the backend.',
+        },
+        {
+          id: 2,
+          question: 'This is the second question from the backend.',
+        },
+        {
+          id: 3,
+          question: 'This is the third question from the backend.',
+        },
+        {
+          id: 4,
+          question: 'This is the fourth question from the backend.',
+        },
+        {
+          id: 5,
+          question: 'This is the fifth question from the backend.',
+        }
+      ]
+    );
   }
 }

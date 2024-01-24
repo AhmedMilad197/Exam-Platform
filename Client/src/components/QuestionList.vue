@@ -1,7 +1,7 @@
 <script setup>
 import { useRouter, useRoute } from 'vue-router'
-import {ref, watch} from 'vue'
-import EditQuestion from '@/components/EditQuestion.vue'
+import {ref, watch, onMounted} from 'vue'
+import QuestionService from '@/services/Question'
 
 const router = useRouter()
 const route = useRoute();
@@ -29,30 +29,28 @@ function closeModal () {
   show.value = false;
 }
 
-const questions = ref([
-    {
-      id: 1,
-      question: 'This is the first Question.',
-    },
-    {
-      id: 2,
-      question: 'This is the second Question.',
-    },
-    {
-      id: 3,
-      question: 'This is the third Question.'
-    },
-    {
-      id: 4,
-      question: 'This is the fourth Question.'
-    },
-    {
-      id: 5,
-      question: 'This is the fifth Question.'
-    },
-  ]);
+const questions = ref();
+
+async function index () {
+    try {
+
+      const response = await QuestionService.index();
+      console.log(response.data)
+      questions.value = response.data;
+      
+    } catch (error) {
+      console.log(error.message);
+      return {
+        message: error.message
+      }
+    }
+  }
+
+onMounted(() => {
+  index();
+});
   
-  const selectedItem = ref('All Questions');    
+const selectedItem = ref('All Questions');    
 
   // watch(selectedItem, (newX) => {
   //   console.log(`x is ${newX}`)
