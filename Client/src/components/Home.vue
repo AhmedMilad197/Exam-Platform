@@ -48,7 +48,7 @@ const subjects = ref([{
       <v-container>
         <v-row align="center" justify="center">
           <v-col
-            v-for="(variant, i) in subjects"
+            v-for="(subject, i) in subjects"
             :key="i"
             cols="auto"
           >
@@ -63,14 +63,14 @@ const subjects = ref([{
                     Subject
                   </div>
                   <div class="text-h6 mb-1">
-                    {{ variant.name }}
+                    {{ subject.name }}
                   </div>
-                  <div class="text-caption">See the exams related to {{ variant.name  }}</div>
+                  <div class="text-caption">See the exams related to {{ subject.name  }}</div>
                 </div>
               </v-card-item>
 
               <v-card-actions>
-                <v-btn @click="navigateTo(variant.id)">
+                <v-btn @click="navigateTo(subject.id)">
                   Enter
                 </v-btn>
               </v-card-actions>
