@@ -19,6 +19,8 @@ import AddSubjectView from '../views/AddSubjectView.vue'
 import LoginView from '../views/LoginView.vue'
 import QuestionBankView from '../views/QuestionBankView.vue'
 import CreateExamView from '../views/CreateExamView.vue'
+import TeacherStudent from '../views/TeacherStudentView.vue'
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -139,6 +141,18 @@ const router = createRouter({
       component: CreateExamView,
       props: true
     },
+    {
+      path: '/:subject/students',
+      name: 'teacher-student',
+      component: TeacherStudent,
+      props: true
+    },
+    // {
+    //   path: '/:subject/add/student',
+    //   name: 'add-student',
+    //   component: AddStudentToSubject,
+    //   props: true
+    // },
   ]
 })
 
