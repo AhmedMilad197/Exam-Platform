@@ -7,6 +7,9 @@ export default {
   update (data) {
     return api().post('student/update', data);
   },
+  index () {
+    return api().get('student/all');
+  },
   getTeacherStudent (teacherId) {
     return api().get(`/student/${teacherId}`, {
       params: {

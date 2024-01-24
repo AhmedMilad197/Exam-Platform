@@ -9,10 +9,8 @@ const route = useRoute();
 const students = ref();
 const error = ref(null);
 
-function navigateTo (routeName) {
-  router.push({
-    name: routeName
-  });
+function navigateTo (path) {
+  router.push(path);
 }
 
 async function getStudnets(teacherId) {
@@ -43,7 +41,7 @@ onMounted(() => {
       <v-toolbar-title>My Students</v-toolbar-title>
     </v-toolbar>
     <div class="d-flex mx-4 my-4">
-      <v-btn color="primary" @click="navigateTo({ name: 'add-student', params: { subject: route.params.subject } })">ADD STUDENT</v-btn>
+      <v-btn color="primary" @click="navigateTo({ name: 'teacher-add-student', params: { subject: route.params.subject } })">ADD STUDENT</v-btn>
     </div>
     <v-table
       fixed-header

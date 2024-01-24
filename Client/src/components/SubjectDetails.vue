@@ -85,7 +85,7 @@ function navigateTo (route) {
         <v-spacer></v-spacer>
         <v-btn color="green" class="my-4 mx-2" @click="navigateTo({name: 'subject-update', params: {id: id}})">UPDATE</v-btn>
         <v-btn color="red" class="my-4 mx-2">DELETE</v-btn>
-        <v-btn color="primary" class="my-4 mx-2" @click="navigateTo({name: 'subjects'})">GO BACK</v-btn>
+        <v-btn color="primary" class="my-4 mx-2" @click="router.go(-1)">GO BACK</v-btn>
       </div>
     </v-card>
 
