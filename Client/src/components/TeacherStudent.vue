@@ -5,6 +5,7 @@ import { ref, onMounted } from 'vue'
 import StudentService from '@/services/Student'
 
 const router = useRouter()
+const route = useRoute();
 const students = ref();
 const error = ref(null);
 
@@ -15,11 +16,18 @@ function navigateTo (routeName) {
 }
 
 async function getStudnets(teacherId) {
-
+  try {
+    const response = await StudentService.getTeacherStudent(teacherId);
+    students.value = response.data;
+  } catch (error) {
+    return {
+      message: error.message
+    }
+  }
 }
 
 onMounted(() => {
-  getStudnets();
+  getStudnets(1);
 });
 
 </script>
@@ -32,15 +40,11 @@ onMounted(() => {
   max-height="100vh"
   >
     <v-toolbar color="purple">
-      <v-toolbar-title>Questions List</v-toolbar-title>
-      <div style="width: 200px;" class=" my-auto mr-4">
-        <v-combobox
-        label="Subject"
-        :items="['Math', 'Physics', 'Chemistry', 'Geometry']"
-        v-model="selectedItem"
-      ></v-combobox>
-      </div>
+      <v-toolbar-title>My Students</v-toolbar-title>
     </v-toolbar>
+    <div class="d-flex mx-4 my-4">
+      <v-btn color="primary" @click="navigateTo({ name: 'add-student', params: { subject: route.params.subject } })">ADD STUDENT</v-btn>
+    </div>
     <v-table
       fixed-header
       height="100%"
@@ -49,7 +53,7 @@ onMounted(() => {
       <thead>
         <tr>
           <th class="text-left">
-            Question
+            Student
           </th>
           <th class="text-left">
             ID
@@ -61,17 +65,16 @@ onMounted(() => {
       </thead>
       <tbody>
         <tr
-          v-for="question in questions"
-          :key="question.id"
+          v-for="student in students"
+          :key="student.id"
           style="height: 50px;"
         >
-          <td>{{ question.question }}</td>
-          <td>{{ question.id }}</td>
+          <td>{{ student.firstname }}</td>
+          <td>{{ student.id }}</td>
           <td>
             <div class="d-flex">
               <div class="mx-auto">
-                <v-btn color="blue" class="mr-4" @click="navigateTo({name: 'edit-question', params: {id: question.id}})">EDIT</v-btn>
-                <v-btn color="red">DELETE</v-btn>
+                <v-btn color="red">REMOVE</v-btn>
               </div>
             </div>
           </td>

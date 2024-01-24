@@ -11,6 +11,7 @@ module.exports = (app) => {
   app.post('/teacher', TeacherController.show);
   app.post('/student', StudentController.show);
   app.post('/student/update', StudentController.update);
+  app.get('/student/:subject', StudentController.index);
   app.post('/subject', SubjectController.show);
   app.post('/subject/update', SubjectController.update);
 }

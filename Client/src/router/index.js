@@ -20,6 +20,7 @@ import LoginView from '../views/LoginView.vue'
 import QuestionBankView from '../views/QuestionBankView.vue'
 import CreateExamView from '../views/CreateExamView.vue'
 import TeacherStudent from '../views/TeacherStudentView.vue'
+// import AddStudentToSubject from '../views/AddStudentToSubjectView.vue'
 
 
 const router = createRouter({
