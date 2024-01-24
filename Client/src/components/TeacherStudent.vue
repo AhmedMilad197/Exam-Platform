@@ -1,60 +1,26 @@
 <script setup>
+
 import { useRouter, useRoute } from 'vue-router'
-import {ref, watch, onMounted} from 'vue'
-import QuestionService from '@/services/Question'
+import { ref, onMounted } from 'vue'
+import StudentService from '@/services/Student'
 
 const router = useRouter()
-const route = useRoute();
+const students = ref();
+const error = ref(null);
 
-/*
- * required APIs:
- * api for all the subjects.
- * api for all the questions nested in the subjects.
- */
-
-function navigateTo (path) {
-  router.push(path);
+function navigateTo (routeName) {
+  router.push({
+    name: routeName
+  });
 }
 
-const show = ref(false);
+async function getStudnets(teacherId) {
 
-const questionId = ref();
-const question = ref();
-
-function showModal () {
-  show.value = true;
 }
-
-function closeModal () {
-  show.value = false;
-}
-
-const questions = ref();
-
-async function index () {
-    try {
-
-      const response = await QuestionService.index();
-      console.log(response.data)
-      questions.value = response.data;
-      
-    } catch (error) {
-      console.log(error.message);
-      return {
-        message: error.message
-      }
-    }
-  }
 
 onMounted(() => {
-  index();
+  getStudnets();
 });
-  
-const selectedItem = ref('All Questions');    
-
-  // watch(selectedItem, (newX) => {
-  //   console.log(`x is ${newX}`)
-  // })
 
 </script>
 
@@ -117,13 +83,7 @@ const selectedItem = ref('All Questions');
 </template>
 
 <style scoped>
-
-.list-item {
-  transition: 0.5s;
-}
-
-.list-item:hover{
-  background-color: bisque;
-}
-
+  .error {
+    color: red;
+  }
 </style>

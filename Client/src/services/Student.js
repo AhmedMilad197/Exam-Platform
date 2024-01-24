@@ -6,5 +6,8 @@ export default {
   },
   update (data) {
     return api().post('student/update', data);
+  },
+  getTeacherStudent (teacherId) {
+    return api.get('');
   }
 }
