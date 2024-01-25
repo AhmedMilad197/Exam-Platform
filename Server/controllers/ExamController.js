@@ -1,27 +1,25 @@
-const   StudentModel =require("../models/student");
+const   ExamModel =require("../models/exam");
 const {validationResult}=require("express-validator")
 
-class StudentController{
+class ExamController{
 
-    static async getallstudent(req,res)
+    static async getallexam(req,res)
     { 
-        var results =await StudentModel.getstudent();
+        var results =await ExamModel.getexam();
         if(results)
         res.send(results)
     }
 
 
-  static async addstudent(req,res)
-    {    
+  static async addexam(req,res)
+    {   var start_time = req.body.start_time;
+        var  end_time= req.body.end_time;
         var name= req.body.name;
-        var username = req.body.username;
-        var  password= req.body.password;
-      
-        var phone= req.body.phone;
-        var address= req.body.address;
+        var full_mark= req.body.full_mark;
+        var teacherid= req.body.teacherid;
     
 
-        var x =await StudentModel.addstudent(name  , username , password , phone ,address);
+        var x =await ExamModel.addexam(start_time  , end_time , name , full_mark ,teacherid);
         if(x==true)
         res.send("add successfully")
         else
@@ -29,7 +27,7 @@ class StudentController{
     }
 
 
-    static async deletestudent(req,res)
+    static async deleteexam(req,res)
     {   const  id = req.body.id;
         const errors = validationResult(req);
         if(!errors.isEmpty())
@@ -39,7 +37,7 @@ class StudentController{
        else{
              if(id)
                 {
-                     var result= await StudentModel.deletestudent(id)
+                     var result= await ExamModel.deleteexam(id)
                      
                      if(result)
                         res.send("delete done")
@@ -50,21 +48,20 @@ class StudentController{
     }
 
 
-    static async updatestudent(req,res)
+    static async updateexam(req,res)
     {   console.log("edit config");
        
     
         const  id = req.body.id;
+        const start_time = req.body.start_time;
+        const end_time= req.body.end_time;
         const  name= req.body.name;
-        const username = req.body.username;
-        const password= req.body.password;
-       
-        const phone= req.body.phone;
-        const address= req.body.address;
+        const full_mark= req.body.full_mark;
+        const teacherid= req.body.teacherid;
 
         
 
-        const x = await StudentModel.edit(id,name  , username , password , phone ,address)
+        const x = await ExamModel.edit(id,start_time  , end_time , name , full_mark ,teacherid )
 
        if (x)
        res.send("data edited successfully")
@@ -77,4 +74,4 @@ class StudentController{
 
 }
 
-module.exports=StudentController;
+module.exports=ExamController;
