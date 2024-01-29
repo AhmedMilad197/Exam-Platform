@@ -6,5 +6,8 @@ export default {
   },
   index () {
     return api().post('question/list');
+  },
+  create (data) {
+    return api().post('api/Questions/addQuestion', data);
   }
 }

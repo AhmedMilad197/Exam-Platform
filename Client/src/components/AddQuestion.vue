@@ -41,7 +41,19 @@ function setAnswer (event, id) {
 
 async function addQuestion() {
   try {
-    
+    await QuestionService.create({
+      courseid: route.params.subject,
+      teacherid: 1,
+      type: 1,
+      content: question.value,
+      answer1: answers.value[0].value,
+      answer2: answers.value[1].value,
+      answer3: answers.value[2].value,
+      answer4: answers.value[3].value,
+      rightanswer: 1,
+      active: true,
+      mark: 22
+    });
     navigateTo({ 
       name: 'teacher-questions',
       params: {
@@ -49,7 +61,7 @@ async function addQuestion() {
       }
     })
   } catch (error) {
-
+    return error.message;
   }
 }
 
