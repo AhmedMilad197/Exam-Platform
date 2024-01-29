@@ -1,80 +1,105 @@
-const   TeacherModel =require("../models/teacher");
-const {validationResult}=require("express-validator")
+const db = require('../models');
 
-class TeacherController{
+// Create main Model
+const Teacher = db.teachers;
 
-    static async getallteacher(req,res)
-    { 
-        var results =await TeacherModel.getteacher();
-        if(results)
-        res.send(results)
+// Main work
+
+// 1. Create Teacher
+const addTeacher = async (req, res) => {
+    try {
+        let info = {
+            name: req.body.name,
+            username: req.body.username,
+            nameadmin: req.body.nameadmin,
+            password: req.body.password,
+            image: req.body.image,
+            specialist: req.body.specialist,
+            lastlogin: req.body.lastlogin,
+            active: req.body.active ? req.body.active : false,
+        };
+
+        const teacher = await Teacher.create(info);
+        res.status(200).send(teacher);
+        console.log(teacher);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error' });
     }
+};
 
-
-  static async addteacher(req,res)
-    {   var name = req.body.name;
-        var  username= req.body.username;
-        var password= req.body.password;
-        var image= req.body.image;
-        var specialist= req.body.specialist;
-        var lastlogin= req.body.lastlogin;
-        var active= req.body.active;
-
-        var x =await TeacherModel.addteacher(name,username,password,image,specialist,lastlogin,active);
-        if(x==true)
-        res.send("add successfully")
-        else
-        res.send("add failed")
+// 2. Get all Teacher
+const getAllTeacher = async (req, res) => {
+    try {
+        let teachers = await Teacher.findAll({});
+        res.status(200).send(teachers);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error' });
     }
+};
 
-
-    static async deleteteacher(req,res)
-    {   const  id = req.body.id;
-        const errors = validationResult(req);
-        if(!errors.isEmpty())
-        {
-                res.json(errors.array());
+// 3. Get single Teacher
+const getOneTeacher = async (req, res) => {
+    try {
+        let id = req.params.id;
+        let teachers = await Teacher.findOne({ where: { id: id } });
+        if (!teachers) {
+            return res.status(404).json({ error: 'Teacher not found' });
         }
-       else{
-             if(id)
-                {
-                     var result= await TeacherModel.deleteteacher(id)
-                     
-                     if(result)
-                        res.send("delete done")
-                     else 
-                        res.send("failed to delete user ")
-                }
-            }
+        res.status(200).send(teachers);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error' });
     }
+};
 
-
-    static async updateteacher(req,res)
-    {   console.log("edit config");
-
-        const  id = req.body.id;
-        const name = req.body.name;
-        const  username= req.body.username;
-        const password= req.body.password;
-        const image= req.body.image;
-        const specialist= req.body.specialist;
-        const lastlogin= req.body.lastlogin;
-        const active= req.body.active;
-     
-     
-       
-        
-        const x = await TeacherModel.edit(id,name,username,password,image,specialist,lastlogin,active)
-
-       if (x)
-       res.send("data edited successfully")
-
-       else{
-        res.send("faild to update user")
-       }
-
+// 4. Update Teacher
+const updateTeacher = async (req, res) => {
+    try {
+        let id = req.params.id;
+        const teacher = await Teacher.update(req.body, { where: { id: id } });
+        if (teacher[0] === 0) {
+            return res.status(404).json({ error: 'Teacher not found' });
+        }
+        res.status(200).send(teacher);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error' });
     }
+};
 
-}
+// 5. Delete Teacher by id
+const deleteTeacher = async (req, res) => {
+    try {
+        let id = req.params.id;
+        const deletedTeacherCount = await Teacher.destroy({ where: { id: id } });
+        if (deletedTeacherCount === 0) {
+            return res.status(404).json({ error: 'Teacher not found' });
+        }
+        res.status(200).send('Teacher is deleted');
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};
 
-module.exports=TeacherController;
+// 6. Get published Teacher
+const getPublishedTeacher= async (req, res) => {
+    try {
+        const teacher = await Teacher.findAll({ where: { active: true } });
+        res.status(200).send(teacher);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};
+
+module.exports = {
+    addTeacher,
+    getAllTeacher,
+    getOneTeacher,
+    updateTeacher,
+    deleteTeacher,
+    getPublishedTeacher,
+};

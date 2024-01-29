@@ -1,77 +1,92 @@
-const   ExamModel =require("../models/exam");
-const {validationResult}=require("express-validator")
+const db = require('../models');
 
-class ExamController{
+// Create main Model
+const Exam = db.exams;
 
-    static async getallexam(req,res)
-    { 
-        var results =await ExamModel.getexam();
-        if(results)
-        res.send(results)
-    }
+// Main work
 
-
-  static async addexam(req,res)
-    {   var start_time = req.body.start_time;
-        var  end_time= req.body.end_time;
-        var name= req.body.name;
-        var full_mark= req.body.full_mark;
-        var teacherid= req.body.teacherid;
-    
-
-        var x =await ExamModel.addexam(start_time  , end_time , name , full_mark ,teacherid);
-        if(x==true)
-        res.send("add successfully")
-        else
-        res.send("add failed")
-    }
-
-
-    static async deleteexam(req,res)
-    {   const  id = req.body.id;
-        const errors = validationResult(req);
-        if(!errors.isEmpty())
-        {
-                res.json(errors.array());
-        }
-       else{
-             if(id)
-                {
-                     var result= await ExamModel.deleteexam(id)
-                     
-                     if(result)
-                        res.send("delete done")
-                     else 
-                        res.send("failed to delete user ")
-                }
-            }
-    }
-
-
-    static async updateexam(req,res)
-    {   console.log("edit config");
-       
-    
-        const  id = req.body.id;
-        const start_time = req.body.start_time;
-        const end_time= req.body.end_time;
-        const  name= req.body.name;
-        const full_mark= req.body.full_mark;
-        const teacherid= req.body.teacherid;
-
+// 1. Create Exam
+const addExam = async (req, res) => {
+    try {
+        let info = {
+            start_time: req.body.start_time,
+            end_time: req.body.end_time,
+            name: req.body.name,
+            full_mark: req.body.full_mark,
+            teacherid: req.body.teacherid,
         
-
-        const x = await ExamModel.edit(id,start_time  , end_time , name , full_mark ,teacherid )
-
-       if (x)
-       res.send("data edited successfully")
-
-       else{
-        res.send("faild to update user")
-       }
-
+        };
+        const exam = await Exam.create(info);
+        res.status(200).send(exam);
+        console.log(exam);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error' });
     }
+};
 
-}
+// 2. Get all Exam
+const getAllExam = async (req, res) => {
+    try {
+        let exams = await Exam.findAll({});
+        res.status(200).send(exams);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};
 
-module.exports=ExamController;
+// 3. Get single Exam
+const getOneExam = async (req, res) => {
+    try {
+        let id = req.params.id;
+        let exams = await Exam.findOne({ where: { id: id } });
+        if (!exams) {
+            return res.status(404).json({ error: 'Exam not found' });
+        }
+        res.status(200).send(exams);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};
+
+// 4. Update Exam
+const updateExam = async (req, res) => {
+    try {
+        let id = req.params.id;
+        const exam = await Exam.update(req.body, { where: { id: id } });
+        if (exam[0] === 0) {
+            return res.status(404).json({ error: 'Exam not found' });
+        }
+        res.status(200).send(exam);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};
+
+// 5. Delete Exam by id
+const deleteExam = async (req, res) => {
+    try {
+        let id = req.params.id;
+        const deletedExam = await Exam.destroy({ where: { id: id } });
+        if (deletedExam === 0) {
+            return res.status(404).json({ error: 'Exam not found' });
+        }
+        res.status(200).send('Exam is deleted');
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};
+
+
+
+module.exports = {
+    addExam,
+    getAllExam,
+    getOneExam,
+    updateExam,
+    deleteExam,
+};

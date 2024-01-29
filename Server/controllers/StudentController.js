@@ -1,80 +1,94 @@
-const   StudentModel =require("../models/student");
-const {validationResult}=require("express-validator")
+const db = require('../models');
 
-class StudentController{
-
-    static async getallstudent(req,res)
-    { 
-        var results =await StudentModel.getstudent();
-        if(results)
-        res.send(results)
-    }
+// Create main Model
+const Student = db.students;
 
 
-  static async addstudent(req,res)
-    {    
-        var name= req.body.name;
-        var username = req.body.username;
-        var  password= req.body.password;
-      
-        var phone= req.body.phone;
-        var address= req.body.address;
-    
+// Main work
 
-        var x =await StudentModel.addstudent(name  , username , password , phone ,address);
-        if(x==true)
-        res.send("add successfully")
-        else
-        res.send("add failed")
-    }
-
-
-    static async deletestudent(req,res)
-    {   const  id = req.body.id;
-        const errors = validationResult(req);
-        if(!errors.isEmpty())
-        {
-                res.json(errors.array());
-        }
-       else{
-             if(id)
-                {
-                     var result= await StudentModel.deletestudent(id)
-                     
-                     if(result)
-                        res.send("delete done")
-                     else 
-                        res.send("failed to delete user ")
-                }
-            }
-    }
-
-
-    static async updatestudent(req,res)
-    {   console.log("edit config");
-       
-    
-        const  id = req.body.id;
-        const  name= req.body.name;
-        const username = req.body.username;
-        const password= req.body.password;
-       
-        const phone= req.body.phone;
-        const address= req.body.address;
-
+// 1. Create Student
+const addStudent = async (req, res) => {
+    try {
+        let info = {
+            name: req.body.name,
+            username: req.body.username,
+            password: req.body.password,
+            phone: req.body.phone,
+            address: req.body.address,
         
-
-        const x = await StudentModel.edit(id,name  , username , password , phone ,address)
-
-       if (x)
-       res.send("data edited successfully")
-
-       else{
-        res.send("faild to update user")
-       }
-
+        };
+        const student = await Student.create(info);
+        res.status(200).send(student);
+        console.log(student);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error' });
     }
+};
 
-}
+// 2. Get all Student
+const getAllStudent = async (req, res) => {
+    try {
+        let students = await Student.findAll({});
+        res.status(200).send(students);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};
 
-module.exports=StudentController;
+// 3. Get single Student
+const getOneStudent = async (req, res) => {
+    try {
+        let id = req.params.id;
+        let students = await Student.findOne({ where: { id: id } });
+        if (!students) {
+            return res.status(404).json({ error: 'Student not found' });
+        }
+        res.status(200).send(students);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};
+
+// 4. Update Student
+const updateStudent = async (req, res) => {
+    try {
+        let id = req.params.id;
+        const student = await Student.update(req.body, { where: { id: id } });
+        if (student[0] === 0) {
+            return res.status(404).json({ error: 'Course not found' });
+        }
+        res.status(200).send(student);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};
+
+// 5. Delete Student by id
+const deleteStudent = async (req, res) => {
+    try {
+        let id = req.params.id;
+        const deletedStudentCount = await Student.destroy({ where: { id: id } });
+        if (deletedStudentCount === 0) {
+            return res.status(404).json({ error: 'Student not found' });
+        }
+        res.status(200).send('Student is deleted');
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};
+
+
+
+module.exports = {
+    addStudent,
+    getAllStudent,
+    getOneStudent,
+    updateStudent,
+    deleteStudent
+    
+};

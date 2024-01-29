@@ -1,82 +1,108 @@
-const   ConfigModel =require("../models/config");
-const {validationResult}=require("express-validator")
 
-class ConfigController{
+const db = require('../models');
 
-    static async getallconfig(req,res)
-    { 
-        var results =await ConfigModel.getconfig();
-        if(results)
-        res.send(results)
+// Create main Model
+const Config = db.configs;
+
+// Main work
+
+// 1. Create Config
+const addConfig = async (req, res) => {
+    try {
+        let info = {
+            name: req.body.name,
+            email: req.body.email,
+            nameadmin: req.body.nameadmin,
+            password: req.body.password,
+            active: req.body.active ? req.body.active : false,
+            goals: req.body.goals,
+            vision: req.body.vision,
+            faccbook: req.body.faccbook,
+            phone: req.body.phone,
+            address: req.body.address,
+        };
+
+        const config = await Config.create(info);
+        res.status(200).send(config);
+        console.log(config);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error' });
     }
+};
 
-
-    static async addconfig(req,res)
-    {   var name = req.body.name;
-        var email = req.body.email;
-        var nameadmin = req.body.nameadmin;
-        var password= req.body.password;
-        var  active= req.body.active;
-        var goals= req.body.goals;
-        var vision= req.body.vision;
-        var faccbook= req.body.faccbook;
-        var phone= req.body.phone;
-        var address= req.body.address;
-
-        var x =await ConfigModel.addconfig(name,email,nameadmin,password,active,goals,vision,faccbook,phone,address);
-        if(x==true)
-        res.send("add successfully")
-        else
-        res.send("add failed")
+// 2. Get all Config
+const getAllConfig = async (req, res) => {
+    try {
+        let configs = await Config.findAll({});
+        res.status(200).send(configs);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error' });
     }
+};
 
-
-    static async deleteconfig(req,res)
-    {   const  id = req.body.id;
-        const errors = validationResult(req);
-        if(!errors.isEmpty())
-        {
-                res.json(errors.array());
+// 3. Get single Config
+const getOneConfig = async (req, res) => {
+    try {
+        let id = req.params.id;
+        let configs = await Config.findOne({ where: { id: id } });
+        if (!configs) {
+            return res.status(404).json({ error: 'id not found' });
         }
-       else{
-             if(id)
-                {
-                     var result= await ConfigModel.deleteconfig(id)
-                     
-                     if(result)
-                        res.send("delete done")
-                     else 
-                        res.send("failed to delete user ")
-                }
-            }
+        res.status(200).send(configs);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error' });
     }
+};
 
-
-    static async updateconfig(req,res)
-    {   console.log("edit config");
-        const  id = req.body.id;
-
-        const name = req.body.name;
-        const email = req.body.email;
-        const nameadmin	 = req.body.nameadmin	;
-        const password= req.body.password;
-        const active= req.body.active;
-        const goals= req.body.goals;
-        const vision= req.body.vision;
-        const faccbook= req.body.faccbook;
-        const phone= req.body.phone;
-        const address= req.body.address;
-        const x = await ConfigModel.edit(id,name,email,nameadmin,password,active,goals,vision,faccbook,phone,address)
-
-       if (x)
-       res.send("data edited successfully")
-
-       else{
-        res.send("faild to update user")
-       }
-
+// 4. Update Config
+const updateConfig = async (req, res) => {
+    try {
+        let id = req.params.id;
+        const config = await Config.update(req.body, { where: { id: id } });
+        if (config[0] === 0) {
+            return res.status(404).json({ error: 'Config not found' });
+        }
+        res.status(200).send(config);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error' });
     }
+};
 
-}
+// 5. Delete Config by id
+const deleteConfig = async (req, res) => {
+    try {
+        let id = req.params.id;
+        const deletedConfigCount = await Config.destroy({ where: { id: id } });
+        if (deletedConfigCount === 0) {
+            return res.status(404).json({ error: 'Config not found' });
+        }
+        res.status(200).send('Config is deleted');
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};
 
-module.exports=ConfigController;
+// 6. Get published Config
+const getPublishedConfig = async (req, res) => {
+    try {
+        const configs = await Config.findAll({ where: { active: true } });
+        res.status(200).send(configs);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};
+
+module.exports = {
+    addConfig,
+    getAllConfig,
+    getOneConfig,
+    updateConfig,
+    deleteConfig,
+    getPublishedConfig,
+};
