@@ -30,7 +30,7 @@ const subjects = ref([{
     name: 'math'
   }, 
   {
-    id: 1,
+    id: 2,
     name: 'phisycs'
   }
 ]);

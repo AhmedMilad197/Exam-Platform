@@ -21,6 +21,7 @@ import QuestionBankView from '../views/QuestionBankView.vue'
 import CreateExamView from '../views/CreateExamView.vue'
 import TeacherStudent from '../views/TeacherStudentView.vue'
 import AddStudentToSubject from '../views/AddStudentToSubjectView.vue'
+import EditExamView from '../views/EditExamView.vue'
 
 
 const router = createRouter({
@@ -140,6 +141,12 @@ const router = createRouter({
       path: '/:subject/exam/create',
       name: 'exam-create',
       component: CreateExamView,
+      props: true
+    },
+    {
+      path: '/:subject/exam/edit',
+      name: 'exam-edit',
+      component: EditExamView,
       props: true
     },
     {
