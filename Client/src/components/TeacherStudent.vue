@@ -2,7 +2,7 @@
 
 import { useRouter, useRoute } from 'vue-router'
 import { ref, onMounted } from 'vue'
-import StudentService from '@/services/Student'
+import StudentService from '@/services/StudentService'
 
 const router = useRouter()
 const route = useRoute();

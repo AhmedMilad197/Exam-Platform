@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import QuestionService from "../services/QuestionService";
 
 const route = useRoute();
 const router = useRouter();
@@ -40,6 +41,7 @@ function setAnswer (event, id) {
 
 async function addQuestion() {
   try {
+    
     navigateTo({ 
       name: 'teacher-questions',
       params: {

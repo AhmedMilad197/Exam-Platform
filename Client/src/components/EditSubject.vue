@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router'
-import SubjectService from '@/services/Subject'
+import SubjectService from '@/services/SubjectService'
 import router from '@/router';
 
 const route = useRoute();

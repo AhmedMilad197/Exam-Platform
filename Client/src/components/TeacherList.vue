@@ -1,7 +1,7 @@
 <script setup>
 import {ref} from 'vue'
 import TeacherDetails from '@/components/TeacherDetails.vue'
-import TeacherService from '@/services/Teacher'
+import TeacherService from '@/services/TeacherService'
 
 const selectedItem = ref();
 const id = ref();

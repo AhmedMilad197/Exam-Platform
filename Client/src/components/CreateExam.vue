@@ -1,7 +1,6 @@
 <script setup>
 import { useRouter, useRoute } from 'vue-router'
-import {ref, watch} from 'vue'
-import EditQuestion from '@/components/EditQuestion.vue'
+import { ref } from 'vue'
 
 const router = useRouter()
 const route = useRoute();

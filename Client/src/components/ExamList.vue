@@ -48,7 +48,6 @@ const exams = ref([
               <div class="d-flex">
                 {{ exam.exam }}
                 <v-spacer></v-spacer>
-                <v-btn color="blue" class="ml-2" @click="navigateTo({ name: 'exam-edit', params: { subject: route.params.subject } })">EDIT</v-btn>
                 <v-btn color="red" class="mx-2">DELETE</v-btn>
               </div>
             </v-list-item>

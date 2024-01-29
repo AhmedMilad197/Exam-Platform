@@ -5,8 +5,8 @@
   import { useRouter } from 'vue-router'
 
   const router = useRouter();
-  const first_name = ref('');
-  const last_name = ref('');
+  const name = ref('');
+  const username = ref('');
   const email = ref('');
   const password = ref('');
   const error = ref(null);
@@ -18,8 +18,8 @@
   async function register () {
     try {
       const response = await AuthenticationService.register({
-        firstname: first_name.value,
-        lastname: last_name.value,
+        name: name.value,
+        username: username.value,
         email: email.value,
         password: password.value,
       })
@@ -42,14 +42,14 @@
       </v-toolbar>
       <v-form @submit.prevent class="mt-4">
         <v-text-field
-          label="First name"
+          label="Name"
           class="ml-2 mr-2"
-          v-model="first_name"
+          v-model="name"
         ></v-text-field>
         <v-text-field
-          label="Last name"
+          label="User Name"
           class="ml-2 mr-2"
-          v-model="last_name"
+          v-model="username"
         ></v-text-field>
         <v-text-field
           label="Email"

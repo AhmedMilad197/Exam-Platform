@@ -1,9 +1,6 @@
 <script setup>
-  import AuthenticationService from "../services/AuthenticationService";
   import { useRouter } from 'vue-router'
   import { ref } from 'vue'
-  // import StudentDetails from '@/components/StudentDetails.vue'
-  // import StudentService from '@/services/Student'
   
   const router = useRouter()
   const subjectName = ref();
