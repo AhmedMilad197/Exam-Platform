@@ -8,20 +8,17 @@ const Course = db.courses;
 // 1. Create Course
 const addCourse = async (req, res) => {
     try {
-        let info = {
+        const info = {
             name: req.body.name,
             active: req.body.active ? req.body.active : false,
             description: req.body.description,
             image: req.body.image,
             unit: req.body.unit,
-        
         };
         const course = await Course.create(info);
         res.status(200).send(course);
-        console.log(course);
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Internal server error' });
+        res.status(400).json({ error: 'Internal server error' });
     }
 };
 

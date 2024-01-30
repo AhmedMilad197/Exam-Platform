@@ -1,29 +1,37 @@
 <script setup>
-  import { useRouter } from 'vue-router'
-  import { ref } from 'vue'
-  
-  const router = useRouter()
-  const subjectName = ref();
-  const desctiption = ref();
-  const error = ref(null);
+import { useRouter } from 'vue-router'
+import { ref, watch } from 'vue'
+import SubjectService from '@/services/SubjectService'
 
-  function navigateTo (routeName) {
-    router.push({
-      name: routeName
+const router = useRouter()
+const subjectName = ref();
+const description = ref();
+const units = ref(1);
+const errorMessage = ref();
+const error = ref(null);
+
+function navigateTo (routeName) {
+  router.push({
+    name: routeName
+  });
+}
+
+async function AddSubject () {
+  try {
+    await SubjectService.create({
+      name: subjectName.value,
+      active: true,
+      description: description.value,
+      image: '/todo-later',
+      unit: units.value,
     });
-  }
-  
-  async function register () {
-    try {
-      navigateTo('students');
-      console.log(response);
-    } catch (err) {
-      console.log(err.message);
-      return {
-        message: err.message
-      }
+    navigateTo('students');
+  } catch (err) {
+    return {
+      message: err.message
     }
   }
+}
 
 </script>
 
@@ -42,13 +50,24 @@
           v-model="subjectName"
         ></v-text-field>
         <v-text-field
-          label="Desctiption"
+          label="description"
           class="ml-2 mr-2"
-          v-model="desctiption"
+          v-model="description"
         ></v-text-field>
+        <v-text-field
+          label="units"
+          class="ml-2 mr-2"
+          v-model="units"
+          type="number"
+        ></v-text-field>
+        <div v-if="error == true">
+          <small class="error">
+            {{ errorMessage }}
+          </small>
+        </div>
         <div class="error ml-2" />
         <v-col class="text-center" cols="12">
-          <v-btn type="submit" @click="register" color="primary">ADD SUBJECT</v-btn>
+          <v-btn type="submit" @click="AddSubject" color="primary">ADD SUBJECT</v-btn>
         </v-col>
       </v-form>
     </v-sheet>
@@ -56,16 +75,16 @@
 </template>
 
 <style scoped>
-  .error {
-    color: red;
-  }
+.error {
+  color: red;
+}
 
-  .v-sheet {
-    border: 1px rgb(185, 175, 175) solid;
-    border-radius: 2px;
-  }
+.v-sheet {
+  border: 1px rgb(185, 175, 175) solid;
+  border-radius: 2px;
+}
 
-  .slot-text-center {
-    text-align: center;
-  }
+.slot-text-center {
+  text-align: center;
+}
 </style>

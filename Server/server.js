@@ -15,7 +15,7 @@ const  router = require ('./routes/ConfigRoutes.js')
 app.use('/api/Configs',router)
 //Course
 const Courserouter = require('./routes/CourseRourtes.js');
-app.use('/api/Course',Courserouter)
+app.use('/api/course',Courserouter)
 //Exam
 const Examrouter = require('./routes/ExamRoutes.js');
 app.use('/api/Exam',Examrouter)

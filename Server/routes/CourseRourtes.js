@@ -4,7 +4,7 @@ const Courserouter = require('express').Router()
 
 
 
-Courserouter.post('/addCourse',CourseController.addCourse)
+Courserouter.post('/create',CourseController.addCourse)
 
 Courserouter.get('/allCourse',CourseController.getAllCourse)
 

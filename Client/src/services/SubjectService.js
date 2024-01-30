@@ -1,8 +1,11 @@
 import api from "./Api"
 
 export default {
-  show (data) {
-    return api().post('subject', data);
+  create (data) {
+    return api().post('api/course/create', data);
+  },
+  show (id) {
+    return api().get(`subject/${id}`);
   },
   update (data) {
     return api().post('subject/update', data);
