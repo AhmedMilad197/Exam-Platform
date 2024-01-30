@@ -8,15 +8,17 @@ const route = useRoute();
 const id = ref();
 const subjectName = ref();
 const subjectDescription = ref();
+const units = ref();
 
 async function getSubject (subjectId) {
   try {
     const response = await SubjectService.show({
       id: subjectId
     });
-    id.value = response.data.body.id;
-    subjectName.value = response.data.body.subjectname;
-    subjectDescription.value = response.data.body.desctiption;
+    id.value = response.data.id;
+    subjectName.value = response.data.name;
+    subjectDescription.value = response.data.description;
+    units.value = response.data.unit;
   } catch (error) {
     return {
       message: error.message
@@ -77,6 +79,16 @@ function navigateTo (route) {
             </td>
             <td>
               {{ subjectDescription }}
+            </td>
+          </tr>
+          <tr style="height: 50px;">
+            <td>
+              <b>
+                Number of units
+              </b>
+            </td>
+            <td>
+              {{ units }}
             </td>
           </tr>
         </tbody>
