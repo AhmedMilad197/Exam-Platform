@@ -1,40 +1,30 @@
 <script setup>
-import {ref} from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import SubjectService from '@/services/SubjectService'
 
 const router = useRouter()
 const selectedItem = ref();
-const subjects = ref([
-    {
-      id: 1,
-      name: 'This is the first subject.',
-      description: 'this is the description of subject'
-    },
-    {
-      id: 2,
-      name: 'This is the second subject.',
-      description: 'this is the description of subject'
-    },
-    {
-      id: 3,
-      name: 'This is the third subject.',
-      description: 'this is the description of subject'
-    },
-    {
-      id: 4,
-      name: 'This is the fourth subject.',
-      description: 'this is the description of subject'
-    },
-    {
-      id: 5,
-      name: 'This is the fifth subject.',
-      description: 'this is the description of subject'
-    },
-  ]);
+const subjects = ref();
 
 function navigateTo (route) {
   router.push(route);
 }
+
+async function getSubjects() {
+  try {
+    const response = await SubjectService.index()
+    subjects.value = response.data;
+  } catch (error) {
+    return {
+      message: error.message
+    }
+  }
+}
+
+onMounted(() => {
+  getSubjects();
+});
 
 </script>
 
