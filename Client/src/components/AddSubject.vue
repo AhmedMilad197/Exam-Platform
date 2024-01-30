@@ -25,7 +25,7 @@ async function AddSubject () {
       image: '/todo-later',
       unit: units.value,
     });
-    navigateTo('students');
+    navigateTo('subjects');
   } catch (err) {
     return {
       message: err.message
