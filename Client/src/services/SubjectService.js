@@ -2,7 +2,7 @@ import api from "./Api"
 
 export default {
   create (data) {
-    return api().post('api/course/create', data);
+    return api().post('api/course/addCourse', data);
   },
   show (id) {
     return api().get(`subject/${id}`);
