@@ -1,6 +1,7 @@
 <script setup>
 import { useRouter } from 'vue-router'
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import StudentService from '@/services/StudentService'
 
 const router = useRouter()
 const name = ref();
@@ -16,8 +17,15 @@ function navigateTo (routeName) {
   });
 }
 
-async function register () {
+async function addStudent () {
   try {
+    const response = await StudentService.create({
+      name: name.value,
+      username: username.value,
+      phone: phone.value,
+      password: password.value,
+      address: address.value
+    });
     navigateTo('students');
     console.log(response);
   } catch (err) {
@@ -45,7 +53,7 @@ async function register () {
           v-model="name"
         ></v-text-field>
         <v-text-field
-          label="Last name"
+          label="Username"
           class="ml-2 mr-2"
           v-model="username"
         ></v-text-field>
@@ -68,7 +76,7 @@ async function register () {
         ></v-text-field>
         <div class="error ml-2" />
         <v-col class="text-center" cols="12">
-          <v-btn type="submit" @click="register" color="primary">ADD STUDENT</v-btn>
+          <v-btn type="submit" @click="addStudent" color="primary">ADD STUDENT</v-btn>
         </v-col>
       </v-form>
     </v-sheet>
@@ -79,6 +87,8 @@ async function register () {
   .error {
     color: red;
   }
+
+
 
   .v-sheet {
     border: 1px rgb(185, 175, 175) solid;
