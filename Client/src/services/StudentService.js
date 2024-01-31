@@ -4,8 +4,8 @@ export default {
   create (data) {
     return api().post('api/Student/addStudent', data);
   },
-  show (creditials) {
-    return api().post('student', creditials);
+  show (data) {
+    return api().get(`api/Student/${data.id}`);
   },
   update (data) {
     return api().put('student/update', data);

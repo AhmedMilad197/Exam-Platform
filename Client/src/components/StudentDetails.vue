@@ -6,8 +6,8 @@ import router from '@/router';
 
 const route = useRoute();
 const id = ref();
-const firstname = ref();
-const lastname = ref();
+const name = ref();
+const username = ref();
 const password = ref();
 const phone = ref();
 const address = ref();
@@ -17,12 +17,12 @@ async function getStudent (studentId) {
     const response = await StudentService.show({
       id: studentId
     });
-    id.value = response.data.body.id;
-    firstname.value = response.data.body.firstname;
-    lastname.value = response.data.body.lastname;
-    password.value = response.data.body.password;
-    phone.value = response.data.body.phone;
-    address.value = response.data.body.address;
+    id.value = response.data.id;
+    name.value = response.data.name;
+    username.value = response.data.username;
+    password.value = response.data.password;
+    phone.value = response.data.phone;
+    address.value = response.data.address;
   } catch (error) {
     return {
       message: error.message
@@ -73,7 +73,7 @@ function navigateTo (route) {
             </td>
             <td>
               <b>
-                {{ firstname }}
+                {{ name }}
               </b>
             </td>
           </tr>
@@ -85,7 +85,7 @@ function navigateTo (route) {
             </td>
             <td>
               <b>
-                {{ lastname }}
+                {{ username }}
               </b>
             </td>
           </tr>
