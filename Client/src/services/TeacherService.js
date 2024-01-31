@@ -4,7 +4,7 @@ export default {
   show (data) {
     return api().post('teacher', data);
   },
-  questions () {
-    return api().get('questions');
+  index () {
+    return api().get('api/Teacher/allTeacher');
   }
 }

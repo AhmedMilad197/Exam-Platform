@@ -1,5 +1,5 @@
 <script setup>
-import {ref} from 'vue'
+import { ref, onMounted } from 'vue'
 import TeacherDetails from '@/components/TeacherDetails.vue'
 import TeacherService from '@/services/TeacherService'
 
@@ -10,70 +10,30 @@ const name = ref();
 const username = ref();
 const last_login = ref();
 const active = ref();
-const teachers = ref([
-    {
-      id: 1,
-      name: 'This is the first teacher.',
-      username: 'username',
-      lastlogin: new Date(),
-      active: true,
-    },
-    {
-      id: 2,
-      name: 'This is the second teacher.',
-      username: 'username1',
-      lastlogin: new Date(),
-      active: true,
-    },
-    {
-      id: 3,
-      name: 'This is the third teacher.',
-      username: 'username2',
-      lastlogin: new Date(),
-      active: true,
-    },
-    {
-      id: 4,
-      name: 'This is the fourth teacher.',
-      username: 'username3',
-      lastlogin: new Date(),
-      active: true,
-    },
-    {
-      id: 5,
-      name: 'This is the fifth teacher.',
-      username: 'username4',
-      lastlogin: new Date(),
-      active: true,
-    },
-  ]);
+const teachers = ref();
 
-  function showModal () {
-    show.value = true;
-  }
+function showModal () {
+  show.value = true;
+}
 
-  function closeModal () {
-    show.value = false;
-  }
+function closeModal () {
+  show.value = false;
+}
 
-  async function getTeacher (teacherId) {
-    try {
-      const response = await TeacherService.show({
-        id: teacherId
-      });
-      id.value = response.data.data.id;
-      name.value = response.data.data.name;
-      username.value = response.data.data.username;
-      active.value = response.data.data.active;
-      last_login.value = response.data.data.last_login;
-      console.log(id.value);
-    } catch (error) {
-      console.log(error.message);
-      return {
-        message: error.message
-      }
+async function index () {
+  try {
+    const response = await TeacherService.index();
+    teachers.value = response.data;
+  } catch (error) {
+    return {
+      message: error.message
     }
   }
+}
+
+onMounted(() => {
+  index();
+});
 
 </script>
 
