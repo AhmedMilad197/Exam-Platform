@@ -1,5 +1,4 @@
 const db = require('../models');
-
 // Create main Model
 const Question = db.questions;
 
@@ -34,7 +33,9 @@ const addQuestion = async (req, res) => {
 // 2. Get all Question
 const getAllQuestion = async (req, res) => {
     try {
-        let questions = await Question.findAll({});
+        let questions = await Question.findAll({
+            include: db.teachers
+        });
         res.status(200).send(questions);
     } catch (error) {
         console.error(error);

@@ -48,5 +48,15 @@ module.exports=(sequelize,DataTypes)=>{
             type:DataTypes.INTEGER
         },
     })
+
+    // Defining relationships.
+    const teacher = require('./TeacherModel')(sequelize, DataTypes);
+    teacher.hasMany(Question, {
+        foreignKey: 'teacherid',
+        as: 'exams'
+    });
+    Question.belongsTo(teacher, {
+        foreignKey: 'teacherid'
+    });
     return Question  
 }

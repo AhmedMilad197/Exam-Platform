@@ -1,12 +1,10 @@
 const{DataTypes}=require("sequelize");
-
 const {sequelize}=require(".");
 
 module.exports=(sequelize,DataTypes)=>{
-    const Exam =sequelize.define("exam", {
+    const Exam = sequelize.define("exam", {
         start_time : {
             type:DataTypes.DATE,
-        
         },
         end_time:{
             type:DataTypes.DATE
@@ -20,12 +18,17 @@ module.exports=(sequelize,DataTypes)=>{
         teacherid :{
             type:DataTypes.INTEGER,
             onDelete: 'RESTRICT',
-            references: {
-                 model: 'teachers',
-                 key: 'id',
-                        }
         }
-        
     })
-    return Exam  
+
+    // Defining relationships.
+    const teacher = require('./TeacherModel')(sequelize, DataTypes);
+    teacher.hasMany(Exam, {
+        foreignKey: 'teacherid',
+        as: 'exams'
+    });
+    Exam.belongsTo(teacher, {
+        foreignKey: 'teacherid'
+    });
+    return Exam
 }
