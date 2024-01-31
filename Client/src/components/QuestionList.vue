@@ -5,57 +5,28 @@ import QuestionService from '@/services/QuestionService'
 
 const router = useRouter()
 const route = useRoute();
-
-/*
- * required APIs:
- * api for all the subjects.
- * api for all the questions nested in the subjects.
- */
+const questions = ref();
+const selectedItem = ref('All Questions');    
 
 function navigateTo (path) {
   router.push(path);
 }
 
-const show = ref(false);
-
-const questionId = ref();
-const question = ref();
-
-function showModal () {
-  show.value = true;
-}
-
-function closeModal () {
-  show.value = false;
-}
-
-const questions = ref();
-
 async function index () {
-    try {
-
-      const response = await QuestionService.index();
-      console.log(response.data)
-      questions.value = response.data;
-      
-    } catch (error) {
-      console.log(error.message);
-      return {
-        message: error.message
-      }
+  try {
+    const response = await QuestionService.index();
+    questions.value = response.data;
+  } catch (error) {
+    return {
+      message: error.message
     }
   }
+}
 
 onMounted(() => {
   index();
 });
   
-const selectedItem = ref('All Questions');    
-
-  // watch(selectedItem, (newX) => {
-  //   console.log(`x is ${newX}`)
-  // })
-
 </script>
 
 <template>
@@ -99,7 +70,7 @@ const selectedItem = ref('All Questions');
           :key="question.id"
           style="height: 50px;"
         >
-          <td>{{ question.question }}</td>
+          <td>{{ question.content }}</td>
           <td>{{ question.id }}</td>
           <td>
             <div class="d-flex">

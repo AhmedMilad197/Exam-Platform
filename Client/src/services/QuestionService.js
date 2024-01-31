@@ -5,7 +5,7 @@ export default {
     return api().post('question', data);
   },
   index () {
-    return api().post('question/list');
+    return api().get('api/Questions/allQuestion');
   },
   create (data) {
     return api().post('api/Questions/addQuestion', data);
