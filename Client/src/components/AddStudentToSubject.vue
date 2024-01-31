@@ -20,6 +20,7 @@ async function index () {
   try {
     const response = await StudentService.index();
     students.value = response.data;
+    console.log(response.data)
   } catch (error) {
     return {
       message: error.message
@@ -54,10 +55,10 @@ onMounted(() => {
         <thead>
           <tr>
             <th class="text-left">
-              First Name
+              Student Name
             </th>
             <th class="text-left">
-              Last Name
+              Username
             </th>
             <th class="text-left">
               id
@@ -74,10 +75,10 @@ onMounted(() => {
             style="height: 50px;"
           >
             <td>
-              <v-checkbox class="custom-checkbox" :label=student.firstname />
+              <v-checkbox class="custom-checkbox" :label=student.name />
             </td>
             <td>
-              {{ student.lastname }}
+              {{ student.username }}
             </td>
             <td>
               {{ student.id }}
