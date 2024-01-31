@@ -12,5 +12,8 @@ export default {
   },
   show (data) {
     return api().get(`api/Questions/${data.id}`);
+  },
+  delete (question_id) {
+    return api().delete(`api/Questions/${question_id}`);
   }
 }

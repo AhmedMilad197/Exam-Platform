@@ -23,6 +23,17 @@ async function index () {
   }
 }
 
+async function destroy (question_id) {
+  try {
+    const response = await QuestionService.delete(question_id);
+    index();
+  } catch (error) {
+    return {
+      message: error.message
+    }
+  }
+}
+
 onMounted(() => {
   index();
 });
@@ -76,7 +87,7 @@ onMounted(() => {
             <div class="d-flex">
               <div class="mx-auto">
                 <v-btn color="blue" class="mr-4" @click="navigateTo({name: 'edit-question', params: {id: question.id}})">EDIT</v-btn>
-                <v-btn color="red">DELETE</v-btn>
+                <v-btn color="red" @click="destroy(question.id)">DELETE</v-btn>
               </div>
             </div>
           </td>
