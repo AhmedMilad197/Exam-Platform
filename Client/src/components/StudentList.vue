@@ -1,50 +1,30 @@
 <script setup>
-import {ref} from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import StudentService from '@/services/StudentService'
 
 const router = useRouter()
 const selectedItem = ref();
-const students = ref([
-    {
-      id: 1,
-      name: 'This is the first student.',
-      username: 'username',
-      lastlogin: new Date(),
-      active: true,
-    },
-    {
-      id: 2,
-      name: 'This is the second student.',
-      username: 'username1',
-      lastlogin: new Date(),
-      active: true,
-    },
-    {
-      id: 3,
-      name: 'This is the third student.',
-      username: 'username2',
-      lastlogin: new Date(),
-      active: true,
-    },
-    {
-      id: 4,
-      name: 'This is the fourth student.',
-      username: 'username3',
-      lastlogin: new Date(),
-      active: true,
-    },
-    {
-      id: 5,
-      name: 'This is the fifth student.',
-      username: 'username4',
-      lastlogin: new Date(),
-      active: true,
-    },
-  ]);
+const students = ref();
 
 function navigateTo (route) {
   router.push(route);
 }
+
+async function index() {
+  try {
+    const response = await StudentService.index();
+    students.value = response.data;
+  } catch (error) {
+    return {
+      message: error.message
+    }
+  }
+}
+
+onMounted(() => {
+  index();
+});
 
 </script>
 

@@ -11,7 +11,7 @@ export default {
     return api().put('student/update', data);
   },
   index () {
-    return api().get('student/all');
+    return api().get('api/Student/allStudent');
   },
   getTeacherStudent (teacherId) {
     return api().get(`/student/${teacherId}`, {
