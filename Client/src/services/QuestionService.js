@@ -1,13 +1,16 @@
 import api from "./Api"
 
 export default {
-  show (data) {
-    return api().post('question', data);
+  create (data) {
+    return api().post('api/Questions/addQuestion', data);
+  },
+  update (data) {
+    return api().put(`api/Questions/${data.question_id}`, data.question_content);
   },
   index () {
     return api().get('api/Questions/allQuestion');
   },
-  create (data) {
-    return api().post('api/Questions/addQuestion', data);
+  show (data) {
+    return api().get(`api/Questions/${data.id}`);
   }
 }
