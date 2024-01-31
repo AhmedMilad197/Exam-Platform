@@ -1,6 +1,6 @@
 <script setup>
 import { useRouter } from 'vue-router'
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 import StudentService from '@/services/StudentService'
 
 const router = useRouter()
@@ -84,18 +84,16 @@ async function addStudent () {
 </template>
 
 <style scoped>
-  .error {
-    color: red;
-  }
+.error {
+  color: red;
+}
 
+.v-sheet {
+  border: 1px rgb(185, 175, 175) solid;
+  border-radius: 2px;
+}
 
-
-  .v-sheet {
-    border: 1px rgb(185, 175, 175) solid;
-    border-radius: 2px;
-  }
-
-  .slot-text-center {
-    text-align: center;
-  }
+.slot-text-center {
+  text-align: center;
+}
 </style>
