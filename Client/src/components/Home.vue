@@ -1,6 +1,7 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import SubjectService from '@/services/SubjectService'
 
 const router = useRouter()
 
@@ -25,15 +26,23 @@ function getColor() {
   return colors[Math.floor(Math.random() * colors.length)];
 }
 
-const subjects = ref([{
-    id: 1,
-    name: 'math'
-  }, 
-  {
-    id: 2,
-    name: 'phisycs'
+const subjects = ref();
+
+// TODO make this function get only the subjects related to the teacher.
+async function getSubjects () {
+  try {
+    const response = await SubjectService.index()
+    subjects.value = response.data;
+  } catch (error) {
+    return {
+      message: error.message
+    }
   }
-]);
+}
+
+onMounted(() => {
+  getSubjects();
+});
 
 </script>
 
