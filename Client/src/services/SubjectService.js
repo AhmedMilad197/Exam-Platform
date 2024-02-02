@@ -11,6 +11,7 @@ export default {
     return api().post('subject/update', data);
   },
   index (user) {
+    console.log(user);
     return api().get('api/Course/allCourse',
     {
       headers: {
