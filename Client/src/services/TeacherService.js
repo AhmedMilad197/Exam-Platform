@@ -2,7 +2,7 @@ import api from "./Api"
 
 export default {
   show (data) {
-    return api().post('teacher', data);
+    return api().get(`api/Teacher/${data.id}`);
   },
   index () {
     return api().get('api/Teacher/allTeacher');

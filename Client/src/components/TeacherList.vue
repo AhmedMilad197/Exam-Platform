@@ -1,9 +1,10 @@
 <script setup>
 import { ref, onMounted } from 'vue'
-import TeacherDetails from '@/components/TeacherDetails.vue'
+import { useRouter } from 'vue-router'
 import TeacherService from '@/services/TeacherService'
 
 const selectedItem = ref();
+const router = useRouter();
 const id = ref();
 const show = ref(false);
 const name = ref();
@@ -12,12 +13,8 @@ const last_login = ref();
 const active = ref();
 const teachers = ref();
 
-function showModal () {
-  show.value = true;
-}
-
-function closeModal () {
-  show.value = false;
+function navigateTo (route) {
+  router.push(route);
 }
 
 async function index () {
@@ -83,7 +80,7 @@ onMounted(() => {
             <td>
               <div class="d-flex">
                 <div class="mx-auto">
-                  <v-btn color="yellow" class="mr-4" @click="showModal(teacher.id), getTeacher(teacher.id)">VIEW</v-btn>
+                  <v-btn color="yellow" class="mr-4" @click="navigateTo({ name: 'teacher', params: {id: teacher.id} })">VIEW</v-btn>
                 </div>
               </div>
             </td>
@@ -91,14 +88,6 @@ onMounted(() => {
         </tbody>
       </v-table>
     </v-card>
-    <TeacherDetails 
-    @close="closeModal()" 
-    :id="id"
-    :show="show" 
-    :name="name" 
-    :username="username"
-    :active="active" 
-    :last_login="last_login"/>
   </div>
 </template>
 

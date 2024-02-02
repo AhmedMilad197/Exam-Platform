@@ -8,6 +8,7 @@ import ExamListView from '../views/ExamListView.vue'
 import ExamView from '../views/ExamView.vue'
 import EditQuestionView from '../views/EditQuestionView.vue'
 import TeacherListView from '../views/TeacherListView.vue'
+import TeacherDetailsView from '../views/TeacherDetailsView.vue'
 import StudentListView from '../views/StudentListView.vue'
 import SubjectListView from '../views/SubjectListView.vue'
 import AddStudentView from '../views/AddStudentView.vue'
@@ -105,6 +106,12 @@ const router = createRouter({
       path: '/student/:id',
       name: 'student',
       component: StudentDetailsView,
+      props: true
+    },
+    {
+      path: '/teacher/:id',
+      name: 'teacher',
+      component: TeacherDetailsView,
       props: true
     },
     {
