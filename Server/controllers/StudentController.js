@@ -1,4 +1,5 @@
 const db = require('../models');
+var jwt = require('jsonwebtoken');
 
 // Create main Model
 const Student = db.students;
@@ -81,14 +82,31 @@ const deleteStudent = async (req, res) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 };
-
-
+  
+// 6. Student Login
+const login = async (req, res) => {
+    const username = req.body.username;
+    let student = await Student.findOne({ where: { username: username } });
+    if (student != null) {
+        if (student.password == req.body.password) {
+            jwt.sign({
+                user: req.body,
+                exp: Math.floor(Date.now() / 1000) + (60 * 60) // expires in one hour.
+            }, 'loginkey', (err, token) => {
+                res.send({
+                    student: student,
+                    token: token
+                });
+            });
+        }
+    }
+}
 
 module.exports = {
     addStudent,
     getAllStudent,
     getOneStudent,
     updateStudent,
-    deleteStudent
-    
+    deleteStudent,
+    login
 };

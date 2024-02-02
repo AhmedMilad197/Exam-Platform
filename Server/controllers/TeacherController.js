@@ -1,4 +1,5 @@
 const db = require('../models');
+var jwt = require('jsonwebtoken');
 
 // Create main Model
 const Teacher = db.teachers;
@@ -95,6 +96,25 @@ const getPublishedTeacher= async (req, res) => {
     }
 };
 
+// 7. Teacher login
+const login = async (req, res) => {
+    const username = req.body.username;
+    let teacher = await Teacher.findOne({ where: { username: username } });
+    if (teacher != null) {
+        if (teacher.password == req.body.password) {
+            jwt.sign({
+                user: req.body,
+                exp: Math.floor(Date.now() / 1000) + (60 * 60) // expires in one hour.
+            }, 'loginkey', (err, token) => {
+                res.send({
+                    teacher: teacher,
+                    token: token
+                });
+            });
+        }
+    }
+}
+
 module.exports = {
     addTeacher,
     getAllTeacher,
@@ -102,4 +122,5 @@ module.exports = {
     updateTeacher,
     deleteTeacher,
     getPublishedTeacher,
+    login
 };

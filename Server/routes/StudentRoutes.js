@@ -6,7 +6,9 @@ const Studentrouter = require('express').Router()
 
 Studentrouter.post('/addStudent',StudentController.addStudent)
 
-Studentrouter.get('/allStudent',StudentController.getAllStudent)
+Studentrouter.post('/login',StudentController.login)
+
+Studentrouter.get('/allStudent', StudentController.getAllStudent)
 
 Studentrouter.get('/:id',StudentController.getOneStudent)
 

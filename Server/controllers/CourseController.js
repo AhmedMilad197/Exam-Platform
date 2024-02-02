@@ -1,4 +1,5 @@
 const db = require('../models');
+var jwt = require('jsonwebtoken');
 
 // Create main Model
 const Course = db.courses;
@@ -26,7 +27,16 @@ const addCourse = async (req, res) => {
 const getAllCourse = async (req, res) => {
     try {
         let courses = await Course.findAll({});
-        res.status(200).send(courses);
+        jwt.verify(req.token, "loginkey", (err, authData) => {
+            if (err) {
+              res.sendStatus(403);
+            } else {
+              res.status(200).json({
+                courses,
+                authData
+              });
+            }
+          });
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Internal server error' });

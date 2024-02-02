@@ -2,7 +2,7 @@ const TeacherController = require('../controllers/TeacherController.js')
 
 const Teacherrouter = require('express').Router()
 
-
+Teacherrouter.post('/login',TeacherController.login)
 
 Teacherrouter.post('/addTeacher',TeacherController.addTeacher)
 
