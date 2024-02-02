@@ -1,12 +1,14 @@
 <script setup>
-  import AuthenticationService from "../services/AuthenticationService";
+  import TeacherService from "../services/TeacherService";
+  import { useUserStore } from "@/stores/user";
 
   import { ref } from 'vue'
   import { useRouter } from 'vue-router'
 
+  const user = useUserStore(); 
   const router = useRouter();
-  const email = ref('');
-  const password = ref('');
+  const username = ref();
+  const password = ref();
   const error = ref(null);
 
   function navigateTo (path) {
@@ -15,10 +17,12 @@
 
   async function login () {
     try {
-      // const response = await AuthenticationService.register({
-      //   email: email.value,
-      //   password: password.value,
-      // })
+      const response = await TeacherService.login({
+        username: username.value,
+        password: password.value,
+      })
+      user.user = response.data.student;
+      user.token = response.data.token;
       navigateTo({ name: 'home' });
     } catch (err) {
       console.log(err.message);
@@ -35,9 +39,9 @@
       </v-toolbar>
       <v-form @submit.prevent class="mt-4">
         <v-text-field
-          label="Email"
+          label="username"
           class="ml-2 mr-2"
-          v-model="email"
+          v-model="username"
         ></v-text-field>
         <v-text-field
           type="password"

@@ -19,5 +19,8 @@ export default {
         subject: teacherId
       }
     })
+  },
+  login (credintials) {
+    return api().post('api/Student/login', credintials);
   }
 }

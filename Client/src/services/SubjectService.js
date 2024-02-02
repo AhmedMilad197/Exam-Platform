@@ -10,7 +10,12 @@ export default {
   update (data) {
     return api().post('subject/update', data);
   },
-  index () {
-    return api().get('api/Course/allCourse');
+  index (user) {
+    return api().get('api/Course/allCourse',
+    {
+      headers: {
+        'Authorization': `bearer ${user.token}`
+      }
+    });
   }
 }

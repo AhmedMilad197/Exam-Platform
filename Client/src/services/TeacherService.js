@@ -6,5 +6,8 @@ export default {
   },
   index () {
     return api().get('api/Teacher/allTeacher');
+  },
+  login (credintials) {
+    return api().post('api/Teacher/login', credintials);
   }
 }

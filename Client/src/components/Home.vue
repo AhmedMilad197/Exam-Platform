@@ -2,6 +2,9 @@
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import SubjectService from '@/services/SubjectService'
+import { useUserStore } from '@/stores/user';
+
+const user = useUserStore()
 
 const router = useRouter()
 
@@ -31,8 +34,8 @@ const subjects = ref();
 // TODO make this function get only the subjects related to the teacher.
 async function getSubjects () {
   try {
-    const response = await SubjectService.index()
-    subjects.value = response.data;
+    const response = await SubjectService.index(user)
+    subjects.value = response.data.courses;
   } catch (error) {
     return {
       message: error.message
