@@ -24,21 +24,31 @@ const addCourse = async (req, res) => {
 };
 
 // 2. Get all Course
+// const getAllCourse = async (req, res) => {
+//     try {
+//         let courses = await Course.findAll({});
+//         jwt.verify(req.token, "loginkey", (err, authData) => {
+//             if (err) {
+//               res.sendStatus(403);
+//             } else {
+//               res.status(200).json({
+//                 courses,
+//                 authData
+//               });
+//             }
+//           });
+//     } catch (error) {
+//         console.error(error);
+//         res.status(500).json({ error: 'Internal server error' });
+//     }
+// };
 const getAllCourse = async (req, res) => {
     try {
         let courses = await Course.findAll({});
-        jwt.verify(req.token, "loginkey", (err, authData) => {
-            if (err) {
-              res.sendStatus(403);
-            } else {
-              res.status(200).json({
-                courses,
-                authData
-              });
-            }
-          });
+        res.status(200).json({
+            courses,
+        });
     } catch (error) {
-        console.error(error);
         res.status(500).json({ error: 'Internal server error' });
     }
 };

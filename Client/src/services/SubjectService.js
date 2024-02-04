@@ -10,13 +10,16 @@ export default {
   update (data) {
     return api().post('subject/update', data);
   },
-  index (user) {
-    console.log(user);
-    return api().get('api/Course/allCourse',
-    {
-      headers: {
-        'Authorization': `bearer ${user.token}`
-      }
-    });
+  // index (user) {
+  //   console.log(user);
+  //   return api().get('api/Course/allCourse',
+  //   {
+  //     headers: {
+  //       'Authorization': `bearer ${user.token}`
+  //     }
+  //   });
+  // }
+  index () {
+    return api().get('api/Course/allCourse');
   }
 }
