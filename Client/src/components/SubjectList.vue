@@ -14,7 +14,7 @@ function navigateTo (route) {
 async function getSubjects() {
   try {
     const response = await SubjectService.index()
-    subjects.value = response.data;
+    subjects.value = response.data.courses;
   } catch (error) {
     return {
       message: error.message

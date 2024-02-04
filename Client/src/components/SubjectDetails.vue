@@ -95,6 +95,7 @@ function navigateTo (route) {
       </v-table>
       <div class="d-flex">
         <v-spacer></v-spacer>
+        <v-btn color="red-darken-4" class="my-4 mx-2" @click="navigateTo({name: 'subject-teacher', params: {id: id}})">ADD TEACHER</v-btn>
         <v-btn color="green" class="my-4 mx-2" @click="navigateTo({name: 'subject-update', params: {id: id}})">UPDATE</v-btn>
         <v-btn color="red" class="my-4 mx-2">DELETE</v-btn>
         <v-btn color="primary" class="my-4 mx-2" @click="router.go(-1)">GO BACK</v-btn>
