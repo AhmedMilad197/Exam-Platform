@@ -38,69 +38,69 @@ function navigateTo (route) {
 
 <template>
   <v-card
-      class="mx-auto"
-      max-width="1000"
-      max-height="100vh"
-      >
-      <v-toolbar color="purple">
-        <v-toolbar-title>Subject Details</v-toolbar-title>
-      </v-toolbar>
-      <v-table
-        fixed-header
-        height="100%"
-        density="comfortable"
-      >
-        <thead>
-          <tr>
-            <th class="text-left">
-              DATA
-            </th>
-            <th class="text-left">
-              VALUE
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr style="height: 50px;">
-            <td>
-              <b>
-                Subject Name
-              </b>
-            </td>
-            <td>
-              {{ subjectName }}
-            </td>
-          </tr>
-          <tr style="height: 50px;">
-            <td>
-              <b>
-                Subject Description
-              </b>
-            </td>
-            <td>
-              {{ subjectDescription }}
-            </td>
-          </tr>
-          <tr style="height: 50px;">
-            <td>
-              <b>
-                Number of units
-              </b>
-            </td>
-            <td>
-              {{ units }}
-            </td>
-          </tr>
-        </tbody>
-      </v-table>
-      <div class="d-flex">
-        <v-spacer></v-spacer>
-        <v-btn color="red-darken-4" class="my-4 mx-2" @click="navigateTo({name: 'subject-teacher', params: {id: id}})">ADD TEACHER</v-btn>
-        <v-btn color="green" class="my-4 mx-2" @click="navigateTo({name: 'subject-update', params: {id: id}})">UPDATE</v-btn>
-        <v-btn color="red" class="my-4 mx-2">DELETE</v-btn>
-        <v-btn color="primary" class="my-4 mx-2" @click="router.go(-1)">GO BACK</v-btn>
-      </div>
-    </v-card>
+    class="mx-auto"
+    max-width="1000"
+    max-height="100vh"
+    >
+    <v-toolbar color="purple">
+      <v-toolbar-title>Subject Details</v-toolbar-title>
+    </v-toolbar>
+    <v-table
+      fixed-header
+      height="100%"
+      density="comfortable"
+    >
+      <thead>
+        <tr>
+          <th class="text-left">
+            DATA
+          </th>
+          <th class="text-left">
+            VALUE
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="height: 50px;">
+          <td>
+            <b>
+              Subject Name
+            </b>
+          </td>
+          <td>
+            {{ subjectName }}
+          </td>
+        </tr>
+        <tr style="height: 50px;">
+          <td>
+            <b>
+              Subject Description
+            </b>
+          </td>
+          <td>
+            {{ subjectDescription }}
+          </td>
+        </tr>
+        <tr style="height: 50px;">
+          <td>
+            <b>
+              Number of units
+            </b>
+          </td>
+          <td>
+            {{ units }}
+          </td>
+        </tr>
+      </tbody>
+    </v-table>
+    <div class="d-flex">
+      <v-spacer></v-spacer>
+      <v-btn color="red-darken-4" class="my-4 mx-2" @click="navigateTo({name: 'subject-teacher', params: {id: id}})">ADD TEACHER</v-btn>
+      <v-btn color="green" class="my-4 mx-2" @click="navigateTo({name: 'subject-update', params: {id: id}})">UPDATE</v-btn>
+      <v-btn color="red" class="my-4 mx-2">DELETE</v-btn>
+      <v-btn color="primary" class="my-4 mx-2" @click="router.go(-1)">GO BACK</v-btn>
+    </div>
+  </v-card>
 
 </template>
 
