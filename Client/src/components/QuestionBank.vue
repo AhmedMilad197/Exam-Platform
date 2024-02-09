@@ -22,10 +22,22 @@ function navigateTo (path) {
 const questions = ref();
 
 async function getTeacherQuestions() {
+  console.log(user);
   const response = await QuestionService.getTeacherQuestions({
     teacherId: user.user.id
   });
   questions.value = response.data;
+}
+
+async function destroy(questionId) {
+  try {
+    const response = await QuestionService.delete(questionId);
+    getTeacherQuestions();
+  } catch(error) {
+    return {
+      message: error.message
+    }
+  }
 }
 
 onMounted(() => {
@@ -75,7 +87,7 @@ onMounted(() => {
               <div class="d-flex">
                 <div class="mx-auto">
                   <v-btn color="blue" class="mr-4" @click="navigateTo({name: 'edit-question', params: {id: question.id}})">EDIT</v-btn>
-                  <v-btn color="red">DELETE</v-btn>
+                  <v-btn color="red" @click="destroy(question.id)">DELETE</v-btn>
                 </div>
               </div>
             </td>
