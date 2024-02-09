@@ -1,8 +1,11 @@
 <script setup>
 import { useRouter, useRoute } from 'vue-router'
 import { ref, onMounted } from 'vue'
-  import StudentService from '@/services/StudentService'
+import StudentService from '@/services/StudentService'
+import StudyService from '@/services/StudyService'
+import { useUserStore } from "@/stores/user";
 
+const user = useUserStore(); 
 const router = useRouter()
 const route = useRoute();
 const students = ref();
@@ -40,11 +43,18 @@ function updateSelectedItems(event, id) {
       selectedStudents.splice(index, 1);
     }
   }
-  console.log(selectedStudents);
 }
 
 async function addStudent() {
-  
+  try {
+    const response = await StudyService.create({
+      teacherId: user.user.id,
+      courseId: route.params.subject,
+      students: selectedStudents
+    });
+  } catch (error) {
+
+  }
 }
 
 onMounted(() => {

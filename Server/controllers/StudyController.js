@@ -6,18 +6,35 @@ const Study = db.studies;
 // Main work
 
 // 1. Create Study
-const addStudy = async (req, res) => {
+
+const addOneStudy = async (data) => {
     try {
         let info = {
-            teacherid: req.body.teacherid,
-            coursid: req.body.coursid,
-            studentid: req.body.studentid,
-    
-        
+            teacherid: data.teacherid,
+            coursid: data.coursid,
+            studentid: data.studentid,
         };
         const study = await Study.create(info);
-        res.status(200).send(study);
-        console.log(study);
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+const addStudy = async (req, res) => {
+    try {
+        teacherid = req.body.teacherId;
+        coursid = req.body.courseId;
+        students = req.body.students;
+        students.forEach(studentId => {
+            addOneStudy({
+                teacherid: teacherid,
+                coursid: coursid,
+                studentid: studentId,
+            })
+        });
+        res.status(200).send({
+            message: 'Students added'
+        });
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Internal server error' });
