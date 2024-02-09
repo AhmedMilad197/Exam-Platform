@@ -3,7 +3,7 @@ const{DataTypes}=require("sequelize");
 const {sequelize}=require(".");
 
 module.exports=(sequelize,DataTypes)=>{
-    const Teacher =sequelize.define("teacher", {
+    const Teacher =sequelize.define("Teacher", {
         name : {
             type:DataTypes.STRING,
             allowNull:false
@@ -30,5 +30,5 @@ module.exports=(sequelize,DataTypes)=>{
             type:DataTypes.BOOLEAN
         },
     })
-    return Teacher  
+    return Teacher   
 }

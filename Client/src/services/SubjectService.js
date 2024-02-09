@@ -21,5 +21,8 @@ export default {
   // }
   index () {
     return api().get('api/Course/allCourse');
+  },
+  addTeachers (teachers) {
+    return api().post('api/Course/addTeacher', teachers);
   }
 }

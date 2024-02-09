@@ -15,6 +15,8 @@ const verifyToken = (req, res, next) => {
 
 Courserouter.post('/addCourse',CourseController.addCourse)
 
+Courserouter.post('/addTeacher',CourseController.addTeacher)
+
 Courserouter.get('/allCourse', CourseController.getAllCourse)
 
 Courserouter.get('/published',CourseController.getPublishedCourse)

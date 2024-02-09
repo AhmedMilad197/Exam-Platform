@@ -44,6 +44,12 @@ db.questions=require('./QuestionsModel.js')(sequelize,DataTypes)
 db.students=require('./StudentModel.js')(sequelize,DataTypes)
 db.studies=require('./StudyModel.js')(sequelize,DataTypes)
 
+const Course = db.courses;
+const Teacher = db.teachers;
+
+Teacher.belongsToMany(Course, {through: 'CourseTeachers'});
+Course.belongsToMany(Teacher, {through: 'CourseTeachers'});
+
 db.sequelize.sync({force:false})
 .then(()=>{
     console.log('yes re-sync ddone!')
