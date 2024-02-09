@@ -2,7 +2,7 @@
 import { useRouter, useRoute } from 'vue-router'
 import { ref, onMounted } from 'vue'
 import { useUserStore } from "@/stores/user"
-import TeacherService from '@/services/TeacherService'
+import QuestionService from '@/services/QuestionService'
 
 const router = useRouter()
 const route = useRoute();
@@ -19,38 +19,17 @@ function navigateTo (path) {
   router.push(path);
 }
 
-const questions = ref([
-    {
-      id: 1,
-      question: 'This is the first Question.',
-    },
-    {
-      id: 2,
-      question: 'This is the second Question.',
-    },
-    {
-      id: 3,
-      question: 'This is the third Question.'
-    },
-    {
-      id: 4,
-      question: 'This is the fourth Question.'
-    },
-    {
-      id: 5,
-      question: 'This is the fifth Question.'
-    },
-  ]);
+const questions = ref();
 
-async function getTeacherData() {
-  // const response = await TeacherService.getTeacherData({
-  //   token: user.token
-  // });
-  // userData.value = response.data;
-  console.log(user)
+async function getTeacherQuestions() {
+  const response = await QuestionService.getTeacherQuestions({
+    teacherId: user.user.id
+  });
+  questions.value = response.data;
 }
+
 onMounted(() => {
-  getTeacherData();
+  getTeacherQuestions();
 });
 
 </script>
@@ -90,7 +69,7 @@ onMounted(() => {
             :key="question.id"
             style="height: 50px;"
           >
-            <td>{{ question.question }}</td>
+            <td>{{ question.content }}</td>
             <td>{{ question.id }}</td>
             <td>
               <div class="d-flex">

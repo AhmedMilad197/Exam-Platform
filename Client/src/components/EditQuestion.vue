@@ -62,10 +62,7 @@ async function update () {
       rightanswer: rightAnswer.value
     }
   });
-  navigateTo({
-    name: 'questions',
-    params: {subject: 'all'}
-  });
+  router.go(-1);
   } catch (error) {
     return {
       message: error.message

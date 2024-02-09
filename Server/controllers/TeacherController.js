@@ -153,5 +153,5 @@ module.exports = {
     deleteTeacher,
     getPublishedTeacher,
     login,
-    availableTeachers
+    availableTeachers,
 };

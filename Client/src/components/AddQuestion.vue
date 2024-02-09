@@ -2,7 +2,9 @@
 import { ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import QuestionService from "../services/QuestionService";
+import { useUserStore } from "@/stores/user"
 
+const user = useUserStore();
 const route = useRoute();
 const router = useRouter();
 const question = ref();
@@ -31,8 +33,11 @@ function navigateTo (path) {
   router.push(path);
 }
 
+let answerId = 0;
+
 function setAnswer (event, id) {
   if (event.target.checked) {
+    answerId = id + 1;
     answers.value[id].isAnswer = true;
   } else {
     answers.value[id].isAnswer = false;
@@ -43,23 +48,18 @@ async function addQuestion() {
   try {
     await QuestionService.create({
       courseid: route.params.subject,
-      teacherid: 1,
+      teacherid: user.user.id,
       type: 1,
       content: question.value,
       answer1: answers.value[0].value,
       answer2: answers.value[1].value,
       answer3: answers.value[2].value,
       answer4: answers.value[3].value,
-      rightanswer: 1,
+      rightanswer: answerId,
       active: true,
       mark: 22
     });
-    navigateTo({ 
-      name: 'teacher-questions',
-      params: {
-        subject: route.params.subject
-      }
-    })
+    router.go(-1);
   } catch (error) {
     return error.message;
   }

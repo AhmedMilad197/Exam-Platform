@@ -99,6 +99,17 @@ const getPublishedQuestion = async (req, res) => {
     }
 };
 
+const getTeacherQuestions = async (req, res) => {
+    try {
+        const questions = await Question.findAll({ where: { teacherId: req.body.teacherId } });
+        console.log(questions)
+        res.status(200).send(questions);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};
+
 module.exports = {
     addQuestion,
     getAllQuestion,
@@ -106,4 +117,5 @@ module.exports = {
     updateQuestion,
     deleteQuestion,
     getPublishedQuestion,
+    getTeacherQuestions
 };

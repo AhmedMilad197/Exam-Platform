@@ -13,7 +13,4 @@ export default {
   availableTeachers (data) {
     return api().post('api/Teacher/availableTeachers', data);
   },
-  getTeacherData (token) {
-    return api().post('api/Teacher/getTeacherData', token);
-  },
 }

@@ -15,5 +15,8 @@ export default {
   },
   delete (question_id) {
     return api().delete(`api/Questions/${question_id}`);
+  },
+  getTeacherQuestions (credintials) {
+    return api().post('api/Questions/teacher-questions', credintials);
   }
 }

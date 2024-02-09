@@ -10,6 +10,7 @@ Questionrouter.get('/allQuestion',QuestionController.getAllQuestion)
 
 Questionrouter.get('/published',QuestionController.getPublishedQuestion)
 
+Questionrouter.post('/teacher-questions',QuestionController.getTeacherQuestions)
 
 
 
