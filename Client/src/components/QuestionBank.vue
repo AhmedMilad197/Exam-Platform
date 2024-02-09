@@ -1,9 +1,13 @@
 <script setup>
 import { useRouter, useRoute } from 'vue-router'
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import { useUserStore } from "@/stores/user"
+import TeacherService from '@/services/TeacherService'
 
 const router = useRouter()
 const route = useRoute();
+const user = useUserStore();
+const userData = ref();
 
 /*
  * required APIs:
@@ -37,8 +41,17 @@ const questions = ref([
       question: 'This is the fifth Question.'
     },
   ]);
-  
-  const selectedItem = ref('All Questions');    
+
+async function getTeacherData() {
+  // const response = await TeacherService.getTeacherData({
+  //   token: user.token
+  // });
+  // userData.value = response.data;
+  console.log(user)
+}
+onMounted(() => {
+  getTeacherData();
+});
 
 </script>
 

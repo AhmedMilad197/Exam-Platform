@@ -1,34 +1,36 @@
 <script setup>
-  import AuthenticationService from "../services/AuthenticationService";
+import AuthenticationService from "../services/AuthenticationService";
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { useUserStore } from "@/stores/user";
 
-  import { ref } from 'vue'
-  import { useRouter } from 'vue-router'
+const user = useUserStore(); 
+const router = useRouter();
+const name = ref('');
+const username = ref('');
+const email = ref('');
+const password = ref('');
+const error = ref(null);
 
-  const router = useRouter();
-  const name = ref('');
-  const username = ref('');
-  const email = ref('');
-  const password = ref('');
-  const error = ref(null);
+function navigateTo (path) {
+  router.push(path)
+}
 
-  function navigateTo (path) {
-    router.push(path)
+async function register () {
+  try {
+    const response = await AuthenticationService.register({
+      name: name.value,
+      username: username.value,
+      email: email.value,
+      password: password.value,
+    })
+    user.user = response.data.teacher;
+    user.token = response.data.token;
+    navigateTo({name: 'home'})
+  } catch (err) {
+    console.log(err.message);
   }
-
-  async function register () {
-    try {
-      const response = await AuthenticationService.register({
-        name: name.value,
-        username: username.value,
-        email: email.value,
-        password: password.value,
-      })
-      console.log(response);
-      navigateTo({name: 'home'})
-    } catch (err) {
-      console.log(err.message);
-    }
-  }
+}
 
 </script>
 

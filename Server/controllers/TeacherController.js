@@ -18,10 +18,18 @@ const addTeacher = async (req, res) => {
             lastlogin: req.body.lastlogin,
             active: req.body.active ? req.body.active : false,
         };
-
         const teacher = await Teacher.create(info);
-        res.status(200).send(teacher);
-        console.log(teacher);
+        if (teacher != null) {
+            jwt.sign({
+                user: info,
+                exp: Math.floor(Date.now() / 1000) + (60 * 60) // expires in one hour.
+            }, 'loginkey', (err, token) => {
+                res.send({
+                    teacher: teacher,
+                    token: token
+                });
+            });
+        }
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Internal server error' });
