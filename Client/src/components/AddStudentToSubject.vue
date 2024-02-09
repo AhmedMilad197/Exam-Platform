@@ -52,6 +52,7 @@ async function addStudent() {
       courseId: route.params.subject,
       students: selectedStudents
     });
+    router.go(-1);
   } catch (error) {
 
   }
