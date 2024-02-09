@@ -3,7 +3,6 @@ var jwt = require('jsonwebtoken');
 
 // Create main Model
 const Teacher = db.teachers;
-
 // Main work
 
 // 1. Create Teacher
@@ -115,6 +114,29 @@ const login = async (req, res) => {
     }
 }
 
+const availableTeachers = async (req, res) => {
+    const currentCourseId = req.body.courseId;
+    // const Sequelize = require('sequelize');
+    const Op = db.Sequelize.Op;
+    const { QueryTypes } = require('sequelize');
+    const availableTeachers = await db.sequelize.query(
+        'SELECT teacherId FROM courseteachers WHERE courseId = :id',
+        {
+          replacements: { id: currentCourseId },
+          type: QueryTypes.SELECT
+        }
+      );
+    console.log(availableTeachers.map(obj => obj.teacherId));
+    const teachersNotInCurrentCourse = await Teacher.findAll({
+        where: {
+          id: {
+            [Op.notIn]: availableTeachers.map(obj => obj.teacherId)
+          }
+        }
+      });
+    res.send(teachersNotInCurrentCourse);
+}
+
 module.exports = {
     addTeacher,
     getAllTeacher,
@@ -122,5 +144,6 @@ module.exports = {
     updateTeacher,
     deleteTeacher,
     getPublishedTeacher,
-    login
+    login,
+    availableTeachers
 };

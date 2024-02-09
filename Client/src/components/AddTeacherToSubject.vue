@@ -15,7 +15,9 @@ function navigateTo (route) {
 
 async function index() {
   try {
-    const response = await TeacherService.index();
+    const response = await TeacherService.availableTeachers({
+      courseId: route.params.course
+    });
     teachers.value = response.data;
   } catch (error) {
     return {

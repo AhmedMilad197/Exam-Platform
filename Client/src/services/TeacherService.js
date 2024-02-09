@@ -9,5 +9,8 @@ export default {
   },
   login (credintials) {
     return api().post('api/Teacher/login', credintials);
+  },
+  availableTeachers (data) {
+    return api().post('api/Teacher/availableTeachers', data);
   }
 }

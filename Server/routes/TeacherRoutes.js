@@ -6,6 +6,8 @@ Teacherrouter.post('/login',TeacherController.login)
 
 Teacherrouter.post('/addTeacher',TeacherController.addTeacher)
 
+Teacherrouter.post('/availableTeachers',TeacherController.availableTeachers)
+
 Teacherrouter.get('/allTeacher',TeacherController.getAllTeacher)
 
 Teacherrouter.get('/published',TeacherController.getPublishedTeacher)
