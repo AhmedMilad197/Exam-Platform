@@ -101,7 +101,10 @@ const getPublishedQuestion = async (req, res) => {
 
 const getTeacherQuestions = async (req, res) => {
     try {
-        const questions = await Question.findAll({ where: { teacherId: req.body.teacherId } });
+        const questions = await Question.findAll({ where: { 
+            teacherId: req.body.teacherId,
+            courseId: req.body.courseId
+        } });
         console.log(questions)
         res.status(200).send(questions);
     } catch (error) {

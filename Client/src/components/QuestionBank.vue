@@ -24,7 +24,8 @@ const questions = ref();
 async function getTeacherQuestions() {
   console.log(user);
   const response = await QuestionService.getTeacherQuestions({
-    teacherId: user.user.id
+    teacherId: user.user.id,
+    courseId: route.params.subject
   });
   questions.value = response.data;
 }
