@@ -14,13 +14,16 @@ export default {
     return api().get('api/Student/allStudent');
   },
   getTeacherStudent (teacherId) {
-    return api().get(`/student/${teacherId}`, {
-      params: {
-        subject: teacherId
-      }
-    })
+    // return api().get(`/student/${teacherId}`, {
+    //   params: {
+    //     subject: teacherId
+    //   }
+    // })
   },
   login (credintials) {
     return api().post('api/Student/login', credintials);
+  },
+  availableStudents (courseId) {
+    return api().get(`api/Student/available/${courseId}`);
   }
 }

@@ -102,11 +102,33 @@ const login = async (req, res) => {
     }
 }
 
+const availableStudents = async (req, res) => {
+    const courseId = req.params.courseId;
+    const Op = db.Sequelize.Op;
+    const { QueryTypes } = require('sequelize');
+    const availableStudents = await db.sequelize.query(
+        'SELECT studentid FROM studies WHERE coursid = :id',
+        {
+          replacements: { id: courseId },
+          type: QueryTypes.SELECT
+        }
+      );
+    const studentsNotInCurrentCourse = await Student.findAll({
+        where: {
+          id: {
+            [Op.notIn]: availableStudents.map(obj => obj.studentid)
+          }
+        }
+      });
+    res.send(studentsNotInCurrentCourse);
+}
+
 module.exports = {
     addStudent,
     getAllStudent,
     getOneStudent,
     updateStudent,
     deleteStudent,
-    login
+    login,
+    availableStudents
 };

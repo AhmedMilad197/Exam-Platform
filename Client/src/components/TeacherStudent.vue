@@ -13,7 +13,7 @@ function navigateTo (path) {
   router.push(path);
 }
 
-async function getStudnets(teacherId) {
+async function getStudnets() {
   try {
     const response = await StudentService.getTeacherStudent(teacherId);
     students.value = response.data;
@@ -25,7 +25,7 @@ async function getStudnets(teacherId) {
 }
 
 onMounted(() => {
-  getStudnets(1);
+  getStudnets();
 });
 
 </script>

@@ -10,6 +10,8 @@ Studentrouter.post('/login',StudentController.login)
 
 Studentrouter.get('/allStudent', StudentController.getAllStudent)
 
+Studentrouter.get('/available/:courseId', StudentController.availableStudents)
+
 Studentrouter.get('/:id',StudentController.getOneStudent)
 
 Studentrouter.put('/:id',StudentController.updateStudent)

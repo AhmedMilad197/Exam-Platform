@@ -22,7 +22,7 @@ function navigateTo (path) {
 
 async function index () {
   try {
-    const response = await StudentService.index();
+    const response = await StudentService.availableStudents(route.params.subject);
     students.value = response.data;
     console.log(response.data)
   } catch (error) {
