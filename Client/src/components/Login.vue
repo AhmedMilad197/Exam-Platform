@@ -21,7 +21,7 @@
         username: username.value,
         password: password.value,
       })
-      user.user = response.data.student;
+      user.user = response.data.teacher;
       user.token = response.data.token;
       navigateTo({ name: 'home' });
     } catch (err) {
