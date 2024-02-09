@@ -6,6 +6,7 @@ import { ref, onMounted } from 'vue'
 const router = useRouter()
 const route = useRoute();
 const students = ref();
+
 /*
  * required APIs:
  * api for all the subjects.
@@ -28,6 +29,24 @@ async function index () {
   }
 }
 
+const selectedStudents = [];
+
+function updateSelectedItems(event, id) {
+  if (event.target.checked) {
+    selectedStudents.push(id);
+  } else {
+    var index = selectedStudents.indexOf(id);
+    if (index !== -1) {
+      selectedStudents.splice(index, 1);
+    }
+  }
+  console.log(selectedStudents);
+}
+
+async function addStudent() {
+  
+}
+
 onMounted(() => {
   index();
 });
@@ -45,7 +64,7 @@ onMounted(() => {
       </v-toolbar>
       
       <div class="d-flex">
-        <v-btn color="primary" class="mx-4 my-4" @click="createExam()">ADD STUDENT</v-btn>
+        <v-btn color="primary" class="mx-4 my-4" @click="addStudent()">ADD STUDENT</v-btn>
       </div>
       <v-table
         fixed-header
@@ -75,7 +94,7 @@ onMounted(() => {
             style="height: 50px;"
           >
             <td>
-              <v-checkbox class="custom-checkbox" :label=student.name />
+              <v-checkbox class="custom-checkbox" :label=student.name @click="updateSelectedItems($event, student.id)" />
             </td>
             <td>
               {{ student.username }}
