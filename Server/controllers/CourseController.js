@@ -111,7 +111,7 @@ const getPublishedCourse = async (req, res) => {
 
 const addTeacher = async (req, res) => {
     const course = await Course.findOne({where: {id: req.body.courseId},});
-    course.setTeachers(req.body.teachers);
+    course.addTeachers(req.body.teachers);
 }
 
 module.exports = {
