@@ -26,7 +26,8 @@ const exam = ref([
         id: 4,
         answer: 'This is the fourth answer to the first question.'
       },
-    ]
+    ],
+    type: ''
   },
   {
     id: 2,
@@ -48,57 +49,64 @@ const exam = ref([
         id: 4,
         answer: 'This is the fourth answer to the second question.'
       },
-    ]
+    ],
+    type: 'text'
   }
 ]);
 
 </script>
 
 <template>
-  <v-card
-    class="mx-auto"
-    max-width="800"
-  >
-    <v-toolbar color="purple">
-      <v-toolbar-title>Questions</v-toolbar-title>
-    </v-toolbar>
+  <v-locale-provider rtl>
+    <v-card
+      class="mx-auto"
+      max-width="800"
+    >
 
-    <div v-for="(question, index) in exam" :key="question.id">
+      <v-toolbar color="purple" rtl>
+            <v-toolbar-title class="mx-5">اسئلة</v-toolbar-title>
+      </v-toolbar>
 
-      <v-list lines="three" select-strategy="classic">
-        <v-sheet class="text-h5 mx-4 my-4">
-          {{ index + 1 }}. {{ question.question }}
-        </v-sheet> <hr>
-  
-        <div v-for="(answer, index) in question.answers" :key="index" class="d-flex">
-          <v-list-item :value="index" width="100%">
-            <template v-slot:prepend="{ isActive }">
-              <v-list-item-action start>
-                <v-checkbox-btn color="success" :model-value="isActive"></v-checkbox-btn> 
-              </v-list-item-action>
-            </template>
-            <div class="d-flex text-h6">
-              {{ answer.answer }}
+      <div v-for="(question, index) in exam" :key="question.id">
+
+        <v-list lines="three" select-strategy="classic">
+          <v-sheet class="text-h5 mx-4 my-4">
+            {{ index + 1 }}. {{ question.question }}
+          </v-sheet> <hr>
+          <div v-if="question.type != 'text'">
+            <div v-for="(answer, index) in question.answers" :key="index" class="d-flex">
+              <v-list-item :value="index" width="100%">
+                <template v-slot:prepend="{ isActive }">
+                  <v-list-item-action start>
+                    <v-checkbox-btn color="success" :model-value="isActive"></v-checkbox-btn> 
+                  </v-list-item-action>
+                </template>
+                <div class="d-flex text-h6">
+                  {{ answer.answer }}
+                </div>
+              </v-list-item>
             </div>
-          </v-list-item>
-        </div>
-      </v-list>
-
-    </div>
-
-  
-    <div v-if="question">
-      <div class="d-flex flex-row">
-        <v-textarea label="Answer" auto-grow class="my-auto ml-4" v-model="currentAnswer"></v-textarea>
-        <v-btn color="success" class="my-auto mx-2" @click="addAnswer()">Add Answer</v-btn>
+          </div>
+          <div v-else>
+            <v-textarea no-resize></v-textarea>
+          </div>
+        </v-list>
+        <v-btn color="primary" class="mx-5">تخطي</v-btn>
       </div>
-    </div>
+    
+      <div v-if="question">
+        <div class="d-flex flex-row">
+          <v-textarea label="Answer" auto-grow class="my-auto ml-4" v-model="currentAnswer"></v-textarea>
+          <v-btn color="success" class="my-auto mx-2" @click="addAnswer()">Add Answer</v-btn>
+        </div>
+      </div>
 
-    <div class="d-flex flex-row">
-      <v-btn color="primary" class="mx-auto my-4">Submit</v-btn>
-    </div>
-  
-  </v-card>
+      <div class="d-flex flex-row">
+        <v-btn color="primary" class="mx-auto my-4">Submit</v-btn>
+      </div>
+    
+    </v-card>
+  </v-locale-provider>
 </template>
 
 <style scoped>
