@@ -25,14 +25,11 @@ const questions = ref();
   
 async function createExam() {
   try {
-    navigateTo({
-      name: 'exam-list',
-      params: {
-        subject: route.params.subject
-      }
-    });
+    router.go(-1);
   } catch (error) {
-
+    return {
+      message: error.message
+    }
   }
 }
 
@@ -121,7 +118,7 @@ onMounted(() => {
             <td>
               <div class="d-flex">
                 <div>
-                  <v-btn color="indigo-darken-3">VIEW</v-btn>
+                  <v-btn color="indigo-darken-3" @click="navigateTo({name: 'view-question', params: {id: question.id}})">VIEW</v-btn>
                 </div>
               </div>
             </td>
