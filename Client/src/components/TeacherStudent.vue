@@ -19,6 +19,7 @@ async function getStudnets() {
   try {
     const response = await TeacherService.getTeacherStudent(route.params.subject, user.user.id);
     students.value = response.data;
+    console.log(response.data)
   } catch (error) {
     return {
       message: error.message
@@ -69,7 +70,7 @@ onMounted(() => {
           :key="student.id"
           style="height: 50px;"
         >
-          <td>{{ student.firstname }}</td>
+          <td>{{ student.name }}</td>
           <td>{{ student.id }}</td>
           <td>
             <div class="d-flex">

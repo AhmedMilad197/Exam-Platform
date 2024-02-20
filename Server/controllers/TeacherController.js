@@ -146,7 +146,29 @@ const availableTeachers = async (req, res) => {
 }
 
 const getStudents = async (req, res) => {
-    
+    const Student = db.students;
+    const courseId = req.body.subject;
+    const teacherId = req.body.teacherId;
+    const Op = db.Sequelize.Op;
+    const { QueryTypes } = require('sequelize');
+    const availableStudents = await db.sequelize.query(
+        'SELECT studentid FROM studies WHERE coursid = :id and teacherid = :teacherId',
+        {
+          replacements: { 
+            id: courseId,
+            teacherId: teacherId
+         },
+          type: QueryTypes.SELECT
+        }
+      );
+    const studentsInCurrentCourse = await Student.findAll({
+        where: {
+          id: {
+            [Op.in]: availableStudents.map(obj => obj.studentid)
+          }
+        }
+      });
+    res.send(studentsInCurrentCourse);
 }
 
 module.exports = {
