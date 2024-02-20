@@ -12,7 +12,8 @@ const starthour = ref();
 const startminute = ref();
 const endhour = ref();
 const endminute = ref();
-const date = ref()
+const date = ref();
+const selectedItems = [];
 
 function formatDate(hour, minute) {
   const dateObject = new Date(date.value);
@@ -49,6 +50,14 @@ const questions = ref();
   
 async function createExam() {
   try {
+    const response = await ExamService.addQuestions({
+      title: examTitle.value,
+      description: examDescription.value,
+      teacherId: user.user.id,
+      start_time: formatDate(starthour.value, startminute.value),
+      end_time: formatDate(endhour.value, endminute.value),
+      questions: selectedItems,
+    });
     router.go(-1);
   } catch (error) {
     return {
@@ -80,19 +89,11 @@ function updateSelectedItems(event, id) {
       selectedItems.splice(index, 1);
     }
   }
+  console.log(selectedItems)
 }
 
 async function addQuestions() {
-  try {
-    const response = await SubjectService.addTeachers({
-      courseId: route.params.course,
-      teachers: selectedItems
-    });
-  } catch (error) {
-    return {
-      message: error.message
-    }
-  }
+  
 }
 
 onMounted(() => {
@@ -210,7 +211,7 @@ onMounted(() => {
             style="height: 50px;"
           >
             <td>
-              <v-checkbox class="custom-checkbox" :label=question.content />
+              <v-checkbox class="custom-checkbox" :label=question.content @click="updateSelectedItems($event, question.id)"/>
             </td>
             <td>
               <div class="d-flex">

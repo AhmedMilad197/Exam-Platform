@@ -81,7 +81,10 @@ const deleteExam = async (req, res) => {
     }
 };
 
-
+const addQuestions = async (req, res) => {
+    //
+    console.log(req.body)
+}
 
 module.exports = {
     addExam,
@@ -89,4 +92,5 @@ module.exports = {
     getOneExam,
     updateExam,
     deleteExam,
+    addQuestions
 };
