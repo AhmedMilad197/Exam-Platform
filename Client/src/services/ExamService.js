@@ -5,6 +5,6 @@ export default {
     return api().get(`api/Teacher/${data.id}`);
   },
   addQuestions(data) {
-    return api().post('api/Exam/add-questions', data);
+    return api().post('api/Exam/addExam', data);
   }
 }

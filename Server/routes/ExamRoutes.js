@@ -6,8 +6,6 @@ const Examrouter = require('express').Router()
 
 Examrouter.post('/addExam',ExamController.addExam)
 
-Examrouter.post('/add-questions',ExamController.addQuestions)
-
 Examrouter.get('/allExam',ExamController.getAllExam)
 
 Examrouter.get('/:id',ExamController.getOneExam)

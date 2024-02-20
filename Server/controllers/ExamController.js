@@ -11,14 +11,15 @@ const addExam = async (req, res) => {
         let info = {
             start_time: req.body.start_time,
             end_time: req.body.end_time,
-            name: req.body.name,
-            full_mark: req.body.full_mark,
-            teacherid: req.body.teacherid,
-        
+            name: req.body.title,
+            description: req.body.description,
+            full_mark: 100,
+            teacherid: req.body.teacherId,
         };
         const exam = await Exam.create(info);
         res.status(200).send(exam);
-        console.log(exam);
+        exam.setQuestions(req.body.questions)
+        res.status(201);
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Internal server error' });
@@ -81,16 +82,10 @@ const deleteExam = async (req, res) => {
     }
 };
 
-const addQuestions = async (req, res) => {
-    //
-    console.log(req.body)
-}
-
 module.exports = {
     addExam,
     getAllExam,
     getOneExam,
     updateExam,
     deleteExam,
-    addQuestions
 };
