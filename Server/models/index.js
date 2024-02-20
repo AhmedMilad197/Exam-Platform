@@ -51,15 +51,6 @@ const Student = db.students;
 Teacher.belongsToMany(Course, {through: 'CourseTeachers'});
 Course.belongsToMany(Teacher, {through: 'CourseTeachers'});
 
-// Student.belongsToMany(Teacher, {through: 'studies'})
-// Teacher.belongsToMany(Student, {through: 'studies'})
-
-// Student.belongsToMany(Course, {through: 'studies'})
-// Course.belongsToMany(Student, {through: 'studies'})
-
-// Course.belongsToMany(Teacher, {through: 'studies'})
-// Teacher.belongsToMany(Course, {through: 'studies'})
-
 db.sequelize.sync({force:0}) 
 .then(()=>{
     console.log('yes re-sync ddone!')

@@ -171,6 +171,16 @@ const getStudents = async (req, res) => {
     res.send(studentsInCurrentCourse);
 }
 
+const getQuestions = async(req, res) => {
+    const Question = db.questions
+    const questions = await Question.findAll({
+        where: {
+          teacherid: req.body.teacherId
+        }
+      });
+    res.send(questions);
+}
+
 module.exports = {
     addTeacher,
     getAllTeacher,
@@ -180,5 +190,6 @@ module.exports = {
     getPublishedTeacher,
     login,
     availableTeachers,
-    getStudents
+    getStudents,
+    getQuestions
 };

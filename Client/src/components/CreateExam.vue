@@ -1,7 +1,10 @@
 <script setup>
 import { useRouter, useRoute } from 'vue-router'
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import TeacherService from '@/services/TeacherService'
+import { useUserStore } from "@/stores/user";
 
+const user = useUserStore(); 
 const router = useRouter()
 const route = useRoute();
 
@@ -18,49 +21,38 @@ function navigateTo (path) {
 const examTitle = ref();
 const examDescription = ref();
 
-const questions = ref([
-    {
-      id: 1,
-      question: 'This is the first Question.',
-    },
-    {
-      id: 2,
-      question: 'This is the second Question.',
-    },
-    {
-      id: 3,
-      question: 'This is the third Question.'
-    },
-    {
-      id: 4,
-      question: 'This is the fourth Question.'
-    },
-    {
-      id: 5,
-      question: 'This is the fifth Question.'
-    },
-    {
-      id: 6,
-      question: 'This is the sixth Question.'
-    },
-    {
-      id: 7,
-      question: 'This is the seventh Question.'
-    },
-  ]);
+const questions = ref();
   
-  async function createExam() {
-    try {
-      navigateTo({
-        name: 'exam-list',
-        params: {
-          subject: route.params.subject
-        }
-      });
-    } catch (error) {
+async function createExam() {
+  try {
+    navigateTo({
+      name: 'exam-list',
+      params: {
+        subject: route.params.subject
+      }
+    });
+  } catch (error) {
 
+  }
+}
+
+async function getQuestions() {
+  try {
+    const response = await TeacherService.getQuestions({
+      teacherId: user.user.id,
+      couresId: route.params.subject
+    })
+    questions.value = response.data
+  } catch (error) {
+    return {
+      message: error.message
     }
   }
+}
+
+onMounted(() => {
+  getQuestions()
+});
 
 </script>
 
@@ -124,7 +116,7 @@ const questions = ref([
             style="height: 50px;"
           >
             <td>
-              <v-checkbox class="custom-checkbox" :label=question.question />
+              <v-checkbox class="custom-checkbox" :label=question.content />
             </td>
             <td>
               <div class="d-flex">

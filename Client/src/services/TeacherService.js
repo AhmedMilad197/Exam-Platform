@@ -17,6 +17,9 @@ export default {
     return api().post(`api/Teacher/students`, {
       subject: subjectId,
       teacherId: teacherId
-    })
+    });
   },
+  getQuestions(data) {
+    return api().post('api/Teacher/questions', data);
+  }
 }
