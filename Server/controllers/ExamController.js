@@ -41,7 +41,7 @@ const getAllExam = async (req, res) => {
 const getOneExam = async (req, res) => {
     try {
         let id = req.params.id;
-        let exams = await Exam.findOne({ where: { id: id } });
+        let exams = await Exam.findOne({ where: { id: id }, include: { model: db.questions, as: 'questions' } });
         if (!exams) {
             return res.status(404).json({ error: 'Exam not found' });
         }

@@ -25,6 +25,7 @@ import AddStudentToSubject from '../views/AddStudentToSubjectView.vue'
 import EditExamView from '../views/EditExamView.vue'
 import AddTeacherToSubjectView from '../views/AddTeacherToSubjectView.vue'
 import ViewQuestionView from '../views/ViewQuestionView.vue'
+import ViewExamView from '../views/ViewExamView.vue'
 
 
 const router = createRouter({
@@ -180,6 +181,12 @@ const router = createRouter({
       path: '/view-question/:id',
       name: 'view-question',
       component: ViewQuestionView,
+      props: true
+    },
+    {
+      path: '/view-exam/:id',
+      name: 'view-exam',
+      component: ViewExamView,
       props: true
     },
   ]

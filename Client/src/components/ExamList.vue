@@ -59,7 +59,7 @@ onMounted(() => {
                     {{ exam.name }}
                   </b>
                   <v-spacer></v-spacer>
-                  <v-btn color="primary" class="mx-2">View</v-btn>
+                  <v-btn color="primary" class="mx-2" @click="navigateTo({name: 'view-exam', params: { id: exam.id }})">View</v-btn>
                   <v-btn color="red" class="mx-2">DELETE</v-btn>
                 </div>
               </v-list-item>
