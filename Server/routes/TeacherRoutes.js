@@ -12,6 +12,8 @@ Teacherrouter.post('/students',TeacherController.getStudents)
 
 Teacherrouter.post('/questions',TeacherController.getQuestions)
 
+Teacherrouter.post('/exams',TeacherController.getExams)
+
 Teacherrouter.get('/allTeacher',TeacherController.getAllTeacher)
 
 Teacherrouter.get('/published',TeacherController.getPublishedTeacher)

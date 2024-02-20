@@ -181,6 +181,11 @@ const getQuestions = async(req, res) => {
     res.send(questions);
 }
 
+const getExams = async (req, res) => {
+    let teacher = await Teacher.findOne({ where: { id: req.body.teacherId }, include: { model: db.exams, as: 'exams' } });
+    res.send(teacher.exams)
+} 
+
 module.exports = {
     addTeacher,
     getAllTeacher,
@@ -191,5 +196,6 @@ module.exports = {
     login,
     availableTeachers,
     getStudents,
-    getQuestions
+    getQuestions,
+    getExams,
 };

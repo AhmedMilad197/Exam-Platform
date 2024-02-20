@@ -55,6 +55,15 @@ Course.belongsToMany(Teacher, {through: 'CourseTeachers'});
 Question.belongsToMany(Exam, {through: 'ExamQuestions'});
 Exam.belongsToMany(Question, {through: 'ExamQuestions'});
 
+Teacher.hasMany(Exam, {
+    foreignKey: 'teacherid',
+    as: 'exams'
+});
+
+Exam.belongsTo(Teacher, {
+    foreignKey: 'teacherid'
+});
+
 db.sequelize.sync({force:0}) 
 .then(()=>{
     console.log('yes re-sync ddone!')

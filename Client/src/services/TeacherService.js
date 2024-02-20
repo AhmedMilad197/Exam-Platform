@@ -21,5 +21,8 @@ export default {
   },
   getQuestions(data) {
     return api().post('api/Teacher/questions', data);
+  },
+  getExams(data) {
+    return api().post('api/Teacher/exams', data);
   }
 }
