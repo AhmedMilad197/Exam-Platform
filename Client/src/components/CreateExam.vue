@@ -2,17 +2,41 @@
 import { useRouter, useRoute } from 'vue-router'
 import { ref, onMounted } from 'vue'
 import TeacherService from '@/services/TeacherService'
+import ExamService from '@/services/ExamService'
 import { useUserStore } from "@/stores/user";
 
 const user = useUserStore(); 
 const router = useRouter()
 const route = useRoute();
+const starthour = ref();
+const startminute = ref();
+const endhour = ref();
+const endminute = ref();
+const date = ref()
 
-/*
- * required APIs:
- * api for all the subjects.
- * api for all the questions nested in the subjects.
- */
+function formatDate(hour, minute) {
+  const dateObject = new Date(date.value);
+  dateObject.setHours(hour);
+  dateObject.setMinutes(minute);
+
+  const options = {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false,
+    timeZone: 'Africa/Tripoli'
+  };
+
+  const formatter = new Intl.DateTimeFormat('en-US', options);
+  const parts = formatter.formatToParts(dateObject);
+
+  const formattedDateTime = `${parts[4].value}-${parts[0].value}-${parts[2].value} ${parts[6].value}:${parts[8].value}:${parts[10].value}`;
+  
+  return formattedDateTime
+}
 
 function navigateTo (path) {
   router.push(path);
@@ -47,6 +71,30 @@ async function getQuestions() {
   }
 }
 
+function updateSelectedItems(event, id) {
+  if (event.target.checked) {
+    selectedItems.push(id);
+  } else {
+    var index = selectedItems.indexOf(id);
+    if (index !== -1) {
+      selectedItems.splice(index, 1);
+    }
+  }
+}
+
+async function addQuestions() {
+  try {
+    const response = await SubjectService.addTeachers({
+      courseId: route.params.course,
+      teachers: selectedItems
+    });
+  } catch (error) {
+    return {
+      message: error.message
+    }
+  }
+}
+
 onMounted(() => {
   getQuestions()
 });
@@ -63,34 +111,83 @@ onMounted(() => {
         <v-toolbar-title>Create Exam</v-toolbar-title>
       </v-toolbar>
       <div class="d-flex flex-column mx-4 my-4">
-          <span class="text-h6 my-auto mr-4">
-            Exam Title:
-          </span>
-          <div>
-            <v-text-field
-              label="Exam Title"
-              v-model="examTitle"
-              hint="Enter Exam Title."
-              persistent-hint
-            ></v-text-field>
+        <span class="text-h6 my-auto mr-4">
+          Exam Title:
+        </span>
+        <div>
+          <v-text-field
+            label="Exam Title"
+            v-model="examTitle"
+            hint="Enter Exam Title."
+            persistent-hint
+          ></v-text-field>
+        </div>
+      </div>
+      <div class="d-flex flex-column mx-4 my-4">
+        <span class="text-h6 my-auto mr-4">
+          Exam Description:
+        </span>
+        <div>
+          <v-text-field
+            label="Exam Description"
+            v-model="examDescription"
+            hint="Enter Exam Description."
+            persistent-hint
+          ></v-text-field>
+        </div>
+      </div>
+      <div class="d-flex my-4">
+        <div class="mx-4">
+          <v-date-picker
+            header="Exam Date"
+            bg-color="primary"
+            v-model="date"
+          ></v-date-picker>
+        </div>
+        <div class="d-flex flex-column" style="width: 500px;">
+          <div class="mx-4">
+            <span class="text-h5">Start Time</span>
+            <div>
+              <div class="mx-2 my-2">
+                <v-combobox
+                  label="hour"
+                  :items="['8', '9', '10', '11', '12','1', '2', '3', '4', '5']"
+                  v-model="starthour"
+                ></v-combobox>
+              </div>
+              <div class="mx-2 my-2">
+                <v-combobox
+                  label="minutes"
+                  :items="['00', '05', '10', '15', '20', '25', '30', '35', '40', '45', '50', '55']"
+                  v-model="startminute"
+                ></v-combobox>
+              </div>
+            </div>
+          </div>
+          <div class="mx-4">
+            <span class="text-h5">End Time</span>
+            <div>
+              <div class="mx-2 my-2">
+                <v-combobox
+                  label="hour"
+                  :items="['8', '9', '10', '11', '12','1', '2', '3', '4', '5']"
+                  v-model="endhour"
+                ></v-combobox>
+              </div>
+              <div class="mx-2 my-2">
+                <v-combobox
+                  label="minutes"
+                  :items="['00', '05', '10', '15', '20', '25', '30', '35', '40', '45', '50', '55']"
+                  v-model="endminute"
+                ></v-combobox>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="d-flex flex-column mx-4 my-4">
-          <span class="text-h6 my-auto mr-4">
-            Exam Description:
-          </span>
-          <div>
-            <v-text-field
-              label="Exam Description"
-              v-model="examDescription"
-              hint="Enter Exam Description."
-              persistent-hint
-            ></v-text-field>
-          </div>
-        </div>
-        <div class="d-flex">
-          <v-btn color="primary" class="mx-4" @click="createExam()">Create Exam</v-btn>
-        </div>
+      </div>
+      <div class="d-flex">
+        <v-btn color="primary" class="mx-auto" @click="createExam()">Create Exam</v-btn>
+      </div>
       <v-table
         fixed-header
         height="100%"

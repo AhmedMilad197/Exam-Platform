@@ -46,10 +46,14 @@ db.studies=require('./StudyModel.js')(sequelize,DataTypes)
 
 const Course = db.courses;
 const Teacher = db.teachers;
-const Student = db.students;
+const Exam = db.exams;
+const Question = db.questions
 
 Teacher.belongsToMany(Course, {through: 'CourseTeachers'});
 Course.belongsToMany(Teacher, {through: 'CourseTeachers'});
+
+Question.belongsToMany(Exam, {through: 'ExamQuestions'});
+Exam.belongsToMany(Question, {through: 'ExamQuestions'});
 
 db.sequelize.sync({force:0}) 
 .then(()=>{
