@@ -145,6 +145,10 @@ const availableTeachers = async (req, res) => {
     res.send(teachersNotInCurrentCourse);
 }
 
+const getStudents = async (req, res) => {
+    
+}
+
 module.exports = {
     addTeacher,
     getAllTeacher,
@@ -154,4 +158,5 @@ module.exports = {
     getPublishedTeacher,
     login,
     availableTeachers,
+    getStudents
 };

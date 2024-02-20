@@ -2,8 +2,10 @@
 
 import { useRouter, useRoute } from 'vue-router'
 import { ref, onMounted } from 'vue'
-import StudentService from '@/services/StudentService'
+import TeacherService from '@/services/TeacherService'
+import { useUserStore } from "@/stores/user";
 
+const user = useUserStore(); 
 const router = useRouter()
 const route = useRoute();
 const students = ref();
@@ -15,7 +17,7 @@ function navigateTo (path) {
 
 async function getStudnets() {
   try {
-    const response = await StudentService.getTeacherStudent(teacherId);
+    const response = await TeacherService.getTeacherStudent(route.params.subject, user.user.id);
     students.value = response.data;
   } catch (error) {
     return {

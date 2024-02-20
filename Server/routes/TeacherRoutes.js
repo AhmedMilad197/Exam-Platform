@@ -8,6 +8,8 @@ Teacherrouter.post('/addTeacher',TeacherController.addTeacher)
 
 Teacherrouter.post('/availableTeachers',TeacherController.availableTeachers)
 
+Teacherrouter.post('/students',TeacherController.getStudents)
+
 Teacherrouter.get('/allTeacher',TeacherController.getAllTeacher)
 
 Teacherrouter.get('/published',TeacherController.getPublishedTeacher)

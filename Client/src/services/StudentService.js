@@ -13,13 +13,6 @@ export default {
   index () {
     return api().get('api/Student/allStudent');
   },
-  getTeacherStudent (teacherId) {
-    // return api().get(`/student/${teacherId}`, {
-    //   params: {
-    //     subject: teacherId
-    //   }
-    // })
-  },
   login (credintials) {
     return api().post('api/Student/login', credintials);
   },
