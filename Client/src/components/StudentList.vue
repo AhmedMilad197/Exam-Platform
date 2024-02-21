@@ -38,14 +38,14 @@ onMounted(() => {
       <div class="d-flex">
         <v-spacer/>
         <v-btn color="primary" class="my-4 mx-4" @click="navigateTo({name: 'add-student'})">ADD STUDENT</v-btn>
-        <v-btn color="green" class="my-4 mr-4">UPDATE LIST</v-btn>
+        <!-- <v-btn color="green" class="my-4 mr-4">UPDATE LIST</v-btn>
         <div style="width: 200px;" class=" my-auto mr-4">
           <v-combobox
           label="Subject"
           :items="['Math', 'Physics', 'Chemistry', 'Geometry']"
           v-model="selectedItem"
           ></v-combobox>
-        </div>
+        </div> -->
       </div>
       <v-toolbar color="purple">
         <v-toolbar-title>Students List</v-toolbar-title>

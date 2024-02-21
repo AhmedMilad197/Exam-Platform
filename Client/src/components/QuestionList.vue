@@ -49,13 +49,13 @@ onMounted(() => {
   >
     <v-toolbar color="purple">
       <v-toolbar-title>Questions List</v-toolbar-title>
-      <div style="width: 200px;" class=" my-auto mr-4">
+      <!-- <div style="width: 200px;" class=" my-auto mr-4">
         <v-combobox
         label="Subject"
         :items="['Math', 'Physics', 'Chemistry', 'Geometry']"
         v-model="selectedItem"
       ></v-combobox>
-      </div>
+      </div> -->
     </v-toolbar>
     <v-table
       fixed-header
