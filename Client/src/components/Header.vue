@@ -3,7 +3,6 @@ import { useRouter } from 'vue-router'
 import {ref} from 'vue'
 
 const router = useRouter()
-const color = ref('primary')
 
 function navigateTo (link) {
   router.push({
@@ -39,32 +38,34 @@ const items = ref([
     value: {
       name: 'subjects'
     }
+  },
+  {
+    title: 'Log Out',
+    color: 'red',
+    value: {
+      name: 'logout'
+    }
   }
 ]);
 
 const drawer = ref(false);
-const group = ref(null);
 
 </script>
 
 <template>
   <v-card>
     <v-layout class="mb-15">
-
       <v-app-bar
         color="primary"
         prominent
       >
         <v-app-bar-nav-icon variant="text" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-
         <v-toolbar-title>
           <span class="title-text" @click="navigateTo({ name: 'home' })">
             Exam Platform
           </span>
         </v-toolbar-title>
-
         <v-spacer></v-spacer>
-
       </v-app-bar>
 
       <v-navigation-drawer
@@ -72,21 +73,22 @@ const group = ref(null);
         location="left"
         temporary
       >
-
-      <v-list density="compact">
-        <v-list-item
-          v-for="(item, i) in items"
-          :key="i"
-          :value="item.value"
-          color="primary"
-          @click="navigateTo(item.value)"
-        >
-        <v-list-item-title>{{ item.title }}</v-list-item-title>
-      </v-list-item>
-    </v-list>
-
+        <v-list density="compact">
+          <v-list-item
+            v-for="(item, i) in items"
+            :key="i"
+            :value="item.value"
+            @click="navigateTo(item.value)"
+          >
+            <div v-if="item.title == 'Log Out'">
+              <v-list-item-title style="color: red;">{{ item.title }}</v-list-item-title>
+            </div>
+            <div v-else>
+              <v-list-item-title>{{ item.title }}</v-list-item-title>
+            </div>
+          </v-list-item>
+        </v-list>
       </v-navigation-drawer>
-
     </v-layout>
   </v-card>
 

@@ -78,6 +78,10 @@ function toggle() {
   console.log(showChoices.value)
 }
 
+function goBack() {
+  router.go(-1);  
+}
+
 </script>
 
 <template>
@@ -89,9 +93,13 @@ function toggle() {
         <v-toolbar-title>Add Question</v-toolbar-title>
       </v-toolbar>
       <div class="d-flex flex-column">
-        <span class="text-h5 mx-2 my-2">
+        <div class="d-flex">
+          <span class="text-h5 mx-4 my-4">
             Question
-        </span>
+          </span>
+          <v-spacer></v-spacer>
+          <v-btn color="primary" class="mx-4 my-4" @click="goBack()">GO BACK</v-btn>
+        </div>
         <div class="mx-2 my-2">
           <v-text-field
               label="Question"

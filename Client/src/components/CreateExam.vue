@@ -92,8 +92,8 @@ function updateSelectedItems(event, id) {
   console.log(selectedItems)
 }
 
-async function addQuestions() {
-  
+function goBack() {
+  router.go(-1);  
 }
 
 onMounted(() => {
@@ -110,6 +110,7 @@ onMounted(() => {
       >
       <v-toolbar color="purple">
         <v-toolbar-title>Create Exam</v-toolbar-title>
+        <v-spacer></v-spacer>
       </v-toolbar>
       <div class="d-flex flex-column mx-4 my-4">
         <span class="text-h6 my-auto mr-4">
@@ -137,6 +138,7 @@ onMounted(() => {
           ></v-text-field>
         </div>
       </div>
+      <v-btn color="primary" class="mx-4" @click="goBack()">GO BACK</v-btn>
       <div class="d-flex my-4">
         <div class="mx-4">
           <v-date-picker

@@ -27,6 +27,10 @@ async function getStudnets() {
   }
 }
 
+function goBack() {
+  router.go(-1);  
+}
+
 onMounted(() => {
   getStudnets();
 });
@@ -44,7 +48,8 @@ onMounted(() => {
       <v-toolbar-title>My Students</v-toolbar-title>
     </v-toolbar>
     <div class="d-flex mx-4 my-4">
-      <v-btn color="primary" @click="navigateTo({ name: 'teacher-add-student', params: { subject: route.params.subject } })">ADD STUDENT</v-btn>
+      <v-btn color="pink-darken-2" @click="navigateTo({ name: 'teacher-add-student', params: { subject: route.params.subject } })">ADD STUDENT</v-btn>
+      <v-btn color="primary" class="mx-4" @click="goBack()">GO BACK</v-btn>
     </div>
     <v-table
       fixed-header
