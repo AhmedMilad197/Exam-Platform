@@ -54,12 +54,17 @@ async function AddSubject () {
           class="ml-2 mr-2"
           v-model="description"
         ></v-text-field>
-        <v-text-field
+        <!-- <v-text-field
           label="units"
           class="ml-2 mr-2"
           v-model="units"
           type="number"
-        ></v-text-field>
+        ></v-text-field> -->
+        <v-combobox
+          label="hour"
+          :items="['1', '2', '3', '4', '5']"
+          v-model="units"
+        />
         <div v-if="error == true">
           <small class="error">
             {{ errorMessage }}
