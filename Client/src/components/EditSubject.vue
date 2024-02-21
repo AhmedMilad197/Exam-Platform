@@ -8,6 +8,7 @@ const route = useRoute();
 const id = ref();
 const subjectname = ref();
 const desctiption = ref();
+const units = ref();
 
 function navigateTo (route) {
   router.push(route);
@@ -18,9 +19,10 @@ async function getSubject (subjectId) {
     const response = await SubjectService.show({
       id: subjectId
     });
-    id.value = response.data.body.id;
-    subjectname.value = response.data.body.subjectname;
-    desctiption.value = response.data.body.desctiption;
+    id.value = response.data.id;
+    subjectname.value = response.data.name;
+    desctiption.value = response.data.description;
+    units.value = response.data.unit
   } catch (error) {
     console.log(error.message)
     return {
@@ -37,9 +39,10 @@ async function update () {
   try {
     const response = await SubjectService.update({
       id: id.value,
-      subjectname: subjectname.value,
-      desctiption: desctiption.value,
-    });
+      name: subjectname.value,
+      description: desctiption.value,
+      unit: units.value,
+    }, route.params.id);
     navigateTo({name: 'subjects'});
   } catch (error) {
     return {
@@ -67,6 +70,11 @@ async function update () {
           class="ml-2 mr-2"
           v-model="desctiption"
         ></v-text-field>
+        <v-combobox
+          label="hour"
+          :items="['1', '2', '3', '4', '5']"
+          v-model="units"
+        />
         <div class="error ml-2" />
         <v-col class="text-center" cols="12">
           <v-btn type="submit" color="primary" @click="update()">UPDATE</v-btn>

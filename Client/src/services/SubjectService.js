@@ -7,8 +7,8 @@ export default {
   show (data) {
     return api().get(`api/Course/${data.id}`);
   },
-  update (data) {
-    return api().post('subject/update', data);
+  update (data, subjectId) {
+    return api().put(`api/Course/${subjectId}`, data);
   },
   // index (user) {
   //   console.log(user);
