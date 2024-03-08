@@ -18,6 +18,7 @@ import SubjectDetailsView from '../views/SubjectDetailsView.vue'
 import EditSubjectView from '../views/EditSubjectView.vue'
 import AddSubjectView from '../views/AddSubjectView.vue'
 import LoginView from '../views/LoginView.vue'
+import StudentLoginView from '../views/StudentLoginView.vue'
 import QuestionBankView from '../views/QuestionBankView.vue'
 import CreateExamView from '../views/CreateExamView.vue'
 import TeacherStudent from '../views/TeacherStudentView.vue'
@@ -187,6 +188,12 @@ const router = createRouter({
       path: '/view-exam/:id',
       name: 'view-exam',
       component: ViewExamView,
+      props: true
+    },
+    {
+      path: '/student/login',
+      name: 'student-login',
+      component: StudentLoginView,
       props: true
     },
   ]
