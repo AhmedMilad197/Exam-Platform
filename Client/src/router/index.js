@@ -27,6 +27,7 @@ import EditExamView from '../views/EditExamView.vue'
 import AddTeacherToSubjectView from '../views/AddTeacherToSubjectView.vue'
 import ViewQuestionView from '../views/ViewQuestionView.vue'
 import ViewExamView from '../views/ViewExamView.vue'
+import StudentExamListView from '../views/StudentExamListView.vue'
 
 
 const router = createRouter({
@@ -194,6 +195,12 @@ const router = createRouter({
       path: '/student/login',
       name: 'student-login',
       component: StudentLoginView,
+      props: true
+    },
+    {
+      path: '/student/exam-list',
+      name: 'student-exam-list',
+      component: StudentExamListView,
       props: true
     },
   ]

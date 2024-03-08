@@ -18,5 +18,8 @@ export default {
   },
   availableStudents (courseId) {
     return api().get(`api/Student/available/${courseId}`);
+  },
+  getExams(data) {
+    return api().post(`api/Student/exams`, data);
   }
 }

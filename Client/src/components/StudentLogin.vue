@@ -21,11 +21,11 @@
         username: username.value,
         password: password.value,
       })
-      user.user = response.data.teacher;
+      user.user = response.data.student;
       user.token = response.data.token;
       navigateTo({ name: 'student-exam-list' });
     } catch (err) {
-      console.log(err.message);
+      return err.message;
     }
   }
 
