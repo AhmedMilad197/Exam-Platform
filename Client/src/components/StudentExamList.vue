@@ -49,7 +49,7 @@ onMounted(() => {
             class="mx-auto"
             max-width="100%"
             link
-            onclick=""
+            @click="navigateTo({name: 'exam', params: { exam: exam.id }})"
           >
             <v-list>
               <v-list-item

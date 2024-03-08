@@ -62,7 +62,8 @@ const router = createRouter({
       props: true
     },
     {
-      path: '/:subject/exam/:exam',
+      // path: '/:subject/exam/:exam',
+      path: '/student/exam/:exam',
       name: 'exam',
       component: ExamView,
     },
