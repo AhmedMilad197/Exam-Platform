@@ -182,8 +182,21 @@ const getQuestions = async(req, res) => {
 }
 
 const getExams = async (req, res) => {
-    let teacher = await Teacher.findOne({ where: { id: req.body.teacherId }, include: { model: db.exams, as: 'exams' } });
-    res.send(teacher.exams)
+    let teacher = await Teacher.findOne({
+        where: { 
+            id: req.body.teacherId 
+        }, include: { 
+            model: db.exams, 
+            as: 'exams',
+            where: { 
+                courseid: req.body.courseId 
+            }
+        } });
+    if (teacher != null) {
+        res.send(teacher.exams)
+    } else {
+        res.send({})
+    }
 } 
 
 module.exports = {

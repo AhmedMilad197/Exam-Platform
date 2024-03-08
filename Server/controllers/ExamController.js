@@ -15,6 +15,7 @@ const addExam = async (req, res) => {
             description: req.body.description,
             full_mark: 100,
             teacherid: req.body.teacherId,
+            courseid: req.body.courseId
         };
         const exam = await Exam.create(info);
         res.status(200).send(exam);

@@ -16,7 +16,8 @@ function navigateTo (path) {
 async function getQuestions() {
   try {
     const response = await TeacherService.getExams({
-      teacherId: user.user.id
+      teacherId: user.user.id,
+      courseId: route.params.subject
     });
     exams.value = response.data;
   } catch (error) {

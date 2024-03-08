@@ -57,6 +57,7 @@ async function createExam() {
       start_time: formatDate(starthour.value, startminute.value),
       end_time: formatDate(endhour.value, endminute.value),
       questions: selectedItems,
+      courseId: route.params.subject
     });
     router.go(-1);
   } catch (error) {

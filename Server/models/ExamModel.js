@@ -21,17 +21,29 @@ module.exports=(sequelize,DataTypes)=>{
         teacherid :{
             type:DataTypes.INTEGER,
             onDelete: 'RESTRICT',
-        }
+        },
+        courseid :{
+            type:DataTypes.INTEGER,
+            onDelete: 'RESTRICT',
+        },
     })
 
     // Defining relationships.
     const teacher = require('./TeacherModel')(sequelize, DataTypes);
+    const course = require('./CourseModel')(sequelize, DataTypes);
     teacher.hasMany(Exam, {
         foreignKey: 'teacherid',
         as: 'exams'
     });
     Exam.belongsTo(teacher, {
         foreignKey: 'teacherid'
+    });
+    course.hasMany(Exam, {
+        foreignKey: 'courseid',
+        as: 'exams'
+    });
+    Exam.belongsTo(course, {
+        foreignKey: 'courseid'
     });
     return Exam
 }
