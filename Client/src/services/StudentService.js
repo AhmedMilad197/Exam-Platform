@@ -8,7 +8,7 @@ export default {
     return api().get(`api/Student/${data.id}`);
   },
   update (data) {
-    return api().put('student/update', data);
+    return api().put(`api/Student/${data.id}`, data);
   },
   index () {
     return api().get('api/Student/allStudent');

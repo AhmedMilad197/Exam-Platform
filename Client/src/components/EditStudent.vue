@@ -17,12 +17,12 @@ async function getStudent (studentId) {
     const response = await StudentService.show({
       id: studentId
     });
-    id.value = response.data.body.id;
-    firstname.value = response.data.body.firstname;
-    lastname.value = response.data.body.lastname;
-    password.value = response.data.body.password;
-    phone.value = response.data.body.phone;
-    address.value = response.data.body.address;
+    id.value = response.data.id;
+    firstname.value = response.data.name;
+    lastname.value = response.data.username;
+    password.value = response.data.password;
+    phone.value = response.data.phone;
+    address.value = response.data.address;
   } catch (error) {
     return {
       message: error.message
@@ -42,8 +42,8 @@ async function update () {
   try {
     const response = await StudentService.update({
       id: id.value,
-      firstname: firstname.value,
-      lastname: lastname.value,
+      name: firstname.value,
+      username: lastname.value,
       phone: phone.value,
       password: password.value,
       address: address.value,

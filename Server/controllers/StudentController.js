@@ -56,6 +56,7 @@ const getOneStudent = async (req, res) => {
 // 4. Update Student
 const updateStudent = async (req, res) => {
     try {
+        console.log(req.body)
         let id = req.params.id;
         const student = await Student.update(req.body, { where: { id: id } });
         if (student[0] === 0) {
