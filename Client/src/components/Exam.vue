@@ -6,64 +6,33 @@ import ExamService from "@/services/ExamService"
 const route = useRoute();
 const router = useRouter();
 
-const exam = ref([
-  // {
-  //   id: 1,
-  //   question: 'This is the first question.',
-  //   answers: [
-  //     {
-  //       id: 1,
-  //       answer: 'This is the first answer to the first question.'
-  //     },
-  //     {
-  //       id: 2,
-  //       answer: 'This is the second answer to the first question.'
-  //     },
-  //     {
-  //       id: 3,
-  //       answer: 'This is the third answer to the first question.'
-  //     },
-  //     {
-  //       id: 4,
-  //       answer: 'This is the fourth answer to the first question.'
-  //     },
-  //   ],
-  //   type: ''
-  // },
-  // {
-  //   id: 2,
-  //   question: 'This is the second question.',
-  //   answers: [
-  //     {
-  //       id: 1,
-  //       answer: 'This is the first answer to the second question.'
-  //     },
-  //     {
-  //       id: 2,
-  //       answer: 'This is the second answer to the second question.'
-  //     },
-  //     {
-  //       id: 3,
-  //       answer: 'This is the third answer to the second question.'
-  //     },
-  //     {
-  //       id: 4,
-  //       answer: 'This is the fourth answer to the second question.'
-  //     },
-  //   ],
-  //   type: 'text'
-  // }
+const exam = ref([]);
 
-  
-]);
+function shuffle(array) {
+  let currentIndex = array.length,  randomIndex;
+
+  // While there remain elements to shuffle.
+  while (currentIndex > 0) {
+
+    // Pick a remaining element.
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+
+    // And swap it with the current element.
+    [array[currentIndex], array[randomIndex]] = [
+      array[randomIndex], array[currentIndex]];
+  }
+
+  return array;
+}
 
 async function getExam() {
   try {
     const response = await ExamService.getExam({
       examId: route.params.exam
     })
+    response.data.questions = shuffle(response.data.questions) 
     exam.value = response.data
-    console.log(response.data)
   } catch (error) {
     return {
       message: error.message
