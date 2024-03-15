@@ -5,6 +5,8 @@ import ExamService from "@/services/ExamService"
 
 const route = useRoute();
 const router = useRouter();
+const score = ref([]);
+const answers = ref()
 
 const exam = ref([]);
 
@@ -33,10 +35,31 @@ async function getExam() {
     })
     response.data.questions = shuffle(response.data.questions) 
     exam.value = response.data
+    let length = response.data.questions.length;
+    let temp_array = []
+    while(length--) {
+      score.value.push(0);
+      temp_array.push([0, 0, 0, 0]);
+    }
+    answers.value = temp_array
+    console.log(response.data.questions)
   } catch (error) {
+    console.log(error.message)
     return {
       message: error.message
     }
+  }
+}
+
+function updateScore(question_id, answer, right_answer, mark) {
+  for (let i = 0; i < 4; i++) {
+    answers.value[question_id][i] = false;
+  }
+  answers.value[question_id][answer - 1] = true
+  if (answer == right_answer) {
+    score.value[question_id] = mark;
+  } else {
+    score.value[question_id] = 0;
   }
 }
 
@@ -76,7 +99,12 @@ onMounted(() => {
                   persistent-hint
                 ></v-text-field>
               </v-responsive>
-                <v-checkbox-btn class="mx-4" color="success" @click="setAnswer($event, 0)" />
+                <v-checkbox-btn 
+                  class="mx-4" 
+                  color="success" 
+                  @click="updateScore(index, 1, question.rightanswer, question.mark)"
+                  v-model="answers[index][0]"
+                  />
             </div>
             <div class="d-flex mx-2 my-2">
               <v-responsive :width="`90%`">
@@ -87,7 +115,12 @@ onMounted(() => {
                   persistent-hint
                 ></v-text-field>
               </v-responsive>
-                <v-checkbox-btn class="mx-4" color="success" @click="setAnswer($event, 1)"/>
+                <v-checkbox-btn 
+                class="mx-4" 
+                color="success" 
+                @click="updateScore(index, 2, question.rightanswer, question.mark)"
+                v-model="answers[index][1]"
+                />
             </div>
             <div class="d-flex mx-2 my-2">
               <v-responsive :width="`90%`">
@@ -98,7 +131,12 @@ onMounted(() => {
                   persistent-hint
                 ></v-text-field>
               </v-responsive>
-                <v-checkbox-btn class="mx-4" color="success" @click="setAnswer($event, 2)"/>
+                <v-checkbox-btn 
+                class="mx-4" 
+                color="success" 
+                @click="updateScore(index, 3, question.rightanswer, question.mark)"
+                v-model="answers[index][2]"
+                />
             </div>
             <div class="d-flex mx-2 my-2">
               <v-responsive :width="`90%`">
@@ -109,7 +147,12 @@ onMounted(() => {
                   persistent-hint
                 ></v-text-field>
               </v-responsive>
-                <v-checkbox-btn class="mx-4" color="success" @click="setAnswer($event, 3)"/>
+                <v-checkbox-btn 
+                class="mx-4" 
+                color="success"
+                @click="updateScore(index, 4, question.rightanswer, question.mark)"
+                v-model="answers[index][3]"
+                />
             </div>
           </v-list>
         </v-list>
