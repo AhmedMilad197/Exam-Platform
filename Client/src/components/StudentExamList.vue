@@ -34,6 +34,7 @@ async function getExams() {
   try {
     const response = await StudentService.getExams({
       studentId: user.user.id,
+      courseId: route.params.id
     });
     exams.value = response.data;
     initEnableExams(response.data.length);
@@ -104,7 +105,7 @@ onMounted(() => {
                 class="my-auto mx-4"
                 @click="navigateTo({name: 'exam', params: { exam: exam.id }})"
                 :disabled="enableExams[index]"
-                >ENTER EXAM</v-btn>
+                >إبدأ الإختبار</v-btn>
               </div>
             </div>
 

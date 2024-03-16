@@ -200,7 +200,7 @@ const router = createRouter({
       props: true
     },
     {
-      path: '/student/exam-list',
+      path: '/student/exam-list/:id',
       name: 'student-exam-list',
       component: StudentExamListView,
       props: true

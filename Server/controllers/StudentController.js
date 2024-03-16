@@ -127,6 +127,7 @@ const availableStudents = async (req, res) => {
 const exams = async (req, res) => {
     const Exam = db.exams;
     const studentId = req.body.studentId;
+    const courseId = req.body.courseId;
     const Op = db.Sequelize.Op;
     const { QueryTypes } = require('sequelize');
   
@@ -138,9 +139,9 @@ const exams = async (req, res) => {
   
     try {
       const teachers = await db.sequelize.query(
-        'SELECT teacherid FROM studies WHERE studentid = :id',
+        'SELECT teacherid FROM studies WHERE studentid = :id AND coursid = :courseId',
         {
-          replacements: { id: studentId },
+          replacements: { id: studentId, courseId: courseId },
           type: QueryTypes.SELECT
         }
       );
@@ -149,13 +150,16 @@ const exams = async (req, res) => {
         where: {
           teacherid: {
             [Op.in]: teachers.map(obj => obj.teacherid)
+          },
+          courseid: {
+            [Op.eq]: courseId
           }
         }
       });
   
       res.send(studentExams);
     } catch (error) {
-      res.status(500).send('Internal server error');
+        res.status(500).send('Internal server error');
     }
 };
 

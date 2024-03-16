@@ -8,7 +8,6 @@ const user = useUserStore();
 const router = useRouter();
 const route = useRoute();
 const Subjects = ref();
-const enableSubjects = ref();
 function navigateTo (path) {
   router.push(path);
 }
@@ -64,11 +63,11 @@ onMounted(() => {
               <v-btn 
               color="primary" 
               class="my-auto mx-4"
-              @click="navigateTo({ name: 'student-exam-list' });"
-              >ENTER SUBJECT</v-btn>
+              @click="navigateTo({ name: 'student-exam-list', params: { id: subject.id }});"
+              >عرض الإختبارات</v-btn>
             </div>
           </div>
-
+          <hr>
         </div>
       </div>
     </v-card>
