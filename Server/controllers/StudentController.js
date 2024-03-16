@@ -159,6 +159,41 @@ const exams = async (req, res) => {
     }
 };
 
+const courses = async (req, res) => {
+    const Courses = db.courses;
+    const studentId = req.body.studentId;
+    const Op = db.Sequelize.Op;
+    const { QueryTypes } = require('sequelize');
+  
+    // Check if studentId is provided
+    if (!studentId) {
+      res.status(400).send('Missing studentId');
+      return;
+    }
+  
+    try {
+      const courseIds = await db.sequelize.query(
+        'SELECT coursid FROM studies WHERE studentid = :id',
+        {
+          replacements: { id: studentId },
+          type: QueryTypes.SELECT
+        }
+      );
+  
+      const studentCourses = await Courses.findAll({
+        where: {
+          id: {
+            [Op.in]: courseIds.map(obj => obj.coursid)
+          }
+        }
+      });
+
+      res.send(studentCourses);
+    } catch (error) {
+        res.status(500).send('Internal server error');
+    }
+}
+
 module.exports = {
     addStudent,
     getAllStudent,
@@ -167,5 +202,6 @@ module.exports = {
     deleteStudent,
     login,
     availableStudents,
-    exams
+    exams,
+    courses
 };

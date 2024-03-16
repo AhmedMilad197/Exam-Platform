@@ -1,33 +1,33 @@
 <script setup>
-  import StudentService from "../services/StudentService";
-  import { useUserStore } from "@/stores/user";
+import StudentService from "../services/StudentService";
+import { useUserStore } from "@/stores/user";
 
-  import { ref } from 'vue'
-  import { useRouter } from 'vue-router'
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 
-  const user = useUserStore(); 
-  const router = useRouter();
-  const username = ref();
-  const password = ref();
-  const error = ref(null);
+const user = useUserStore(); 
+const router = useRouter();
+const username = ref();
+const password = ref();
+const error = ref(null);
 
-  function navigateTo (path) {
-    router.push(path)
+function navigateTo (path) {
+  router.push(path)
+}
+
+async function login () {
+  try {
+    const response = await StudentService.login({
+      username: username.value,
+      password: password.value,
+    })
+    user.user = response.data.student;
+    user.token = response.data.token;
+    navigateTo({ name: 'student-subject-list' });
+  } catch (err) {
+    return err.message;
   }
-
-  async function login () {
-    try {
-      const response = await StudentService.login({
-        username: username.value,
-        password: password.value,
-      })
-      user.user = response.data.student;
-      user.token = response.data.token;
-      navigateTo({ name: 'student-exam-list' });
-    } catch (err) {
-      return err.message;
-    }
-  }
+}
 
 </script>
 <template>

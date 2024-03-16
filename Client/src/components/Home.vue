@@ -50,48 +50,45 @@ onMounted(() => {
 </script>
 
 <template>
-  <v-layout column>
-    <v-sheet width="800px" class="mx-auto">
-      <v-toolbar color="primary">
-        <v-toolbar-title>
-          Subjects
-        </v-toolbar-title>
-      </v-toolbar>
-      <v-container>
-        <v-row align="center" justify="center">
-          <v-col
-            v-for="(subject, i) in subjects"
-            :key="i"
-            cols="auto"
-          >
-            <v-card
-              class="mx-auto"
-              max-width="344"
-              :color="getColor()"
-            >
-              <v-card-item>
-                <div>
-                  <div class="text-overline mb-1">
-                    Subject
-                  </div>
-                  <div class="text-h6 mb-1">
-                    {{ subject.name }}
-                  </div>
-                  <div class="text-caption">See the exams related to {{ subject.name  }}</div>
-                </div>
-              </v-card-item>
-
-              <v-card-actions>
-                <v-btn @click="navigateTo(subject.id)">
-                  Enter
-                </v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-col>
-        </v-row>
-      </v-container>  
-    </v-sheet>
-  </v-layout>
+  <v-locale-provider rtl>
+    <v-layout column>
+      <v-sheet width="800px" class="mx-auto">
+        <v-toolbar color="purple">
+          <v-toolbar-title>
+            المواد
+          </v-toolbar-title>
+        </v-toolbar>
+          <div v-for="(subject, i) in subjects" :key="i">
+            <div class="d-flex">
+              <div>
+                <v-list>
+                  <v-list-item
+                    class="mx-4"
+                  >
+                    <v-list-item-title
+                      class="my-2"
+                    >
+                      <b>
+                        {{ subject.name }}
+                      </b>
+                    </v-list-item-title>
+                  </v-list-item>
+                </v-list>
+              </div>
+              <v-spacer></v-spacer>
+              <div class="d-flex">
+                <v-btn 
+                color="primary" 
+                class="my-auto mx-4"
+                @click="navigateTo(subject.id)"
+                >تفاصيل</v-btn>
+              </div>
+            </div>
+            <hr>
+          </div>
+      </v-sheet>
+    </v-layout>
+  </v-locale-provider>
 </template>
 
 <style scoped>

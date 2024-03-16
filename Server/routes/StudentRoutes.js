@@ -10,6 +10,8 @@ Studentrouter.post('/login',StudentController.login)
 
 Studentrouter.post('/exams',StudentController.exams)
 
+Studentrouter.post('/courses',StudentController.courses)
+
 Studentrouter.get('/allStudent', StudentController.getAllStudent)
 
 Studentrouter.get('/available/:courseId', StudentController.availableStudents)
