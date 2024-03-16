@@ -17,6 +17,7 @@ const selectedItems = [];
 
 function formatDate(hour, minute) {
   const dateObject = new Date(date.value);
+  dateObject.setHours(dateObject.getHours() + 2);
   dateObject.setHours(hour);
   dateObject.setMinutes(minute);
 
@@ -155,7 +156,7 @@ onMounted(() => {
               <div class="mx-2 my-2">
                 <v-combobox
                   label="hour"
-                  :items="['8', '9', '10', '11', '12','1', '2', '3', '4', '5']"
+                  :items="['8', '9', '10', '11', '12','13', '14', '15', '16', '17']"
                   v-model="starthour"
                 ></v-combobox>
               </div>
@@ -174,7 +175,7 @@ onMounted(() => {
               <div class="mx-2 my-2">
                 <v-combobox
                   label="hour"
-                  :items="['8', '9', '10', '11', '12','1', '2', '3', '4', '5']"
+                  :items="['8', '9', '10', '11', '12','13', '14', '15', '16', '17']"
                   v-model="endhour"
                 ></v-combobox>
               </div>
