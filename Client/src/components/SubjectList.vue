@@ -4,7 +4,6 @@ import { useRouter } from 'vue-router'
 import SubjectService from '@/services/SubjectService'
 
 const router = useRouter()
-const selectedItem = ref();
 const subjects = ref();
 
 function navigateTo (route) {
@@ -38,14 +37,6 @@ onMounted(() => {
       <div class="d-flex">
         <v-spacer/>
         <v-btn color="primary" class="my-4 mx-4" @click="navigateTo({name: 'add-subject'})">ADD subject</v-btn>
-        <!-- <v-btn color="green" class="my-4 mr-4">UPDATE LIST</v-btn>
-        <div style="width: 200px;" class=" my-auto mr-4">
-          <v-combobox
-          label="Subject"
-          :items="['Math', 'Physics', 'Chemistry', 'Geometry']"
-          v-model="selectedItem"
-          ></v-combobox>
-        </div> -->
       </div>
       <v-toolbar color="purple">
         <v-toolbar-title>subjects List</v-toolbar-title>
