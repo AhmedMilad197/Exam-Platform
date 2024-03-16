@@ -157,7 +157,7 @@ const exams = async (req, res) => {
     } catch (error) {
       res.status(500).send('Internal server error');
     }
-  };
+};
 
 module.exports = {
     addStudent,

@@ -1,16 +1,33 @@
 <script setup>
-import { useRouter, useRoute } from 'vue-router'
-import {ref, onMounted} from 'vue'
+import { useRouter, useRoute } from 'vue-router';
+import { ref, onMounted } from 'vue';
 import { useUserStore } from "@/stores/user";
-import StudentService from "@/services/StudentService"
+import StudentService from "@/services/StudentService";
 
 const user = useUserStore(); 
-const router = useRouter()
+const router = useRouter();
 const route = useRoute();
 const exams = ref();
-
+const enableExams = ref();
 function navigateTo (path) {
   router.push(path);
+}
+
+function triggerAtBeginningOfNextMinute() {
+  const currentTime = new Date();
+  const secondsRemaining = 60 - currentTime.getSeconds();
+  const millisecondsRemaining = secondsRemaining * 1000;
+  
+  setTimeout(() => {
+    checkTime();
+    setInterval(checkTime, 60000); // Trigger every minute thereafter
+  }, millisecondsRemaining);
+}
+
+function initEnableExams(length) {
+  let temp_array = []
+  while(length--) temp_array.push(true);
+  enableExams.value = temp_array;
 }
 
 async function getExams() {
@@ -19,13 +36,30 @@ async function getExams() {
       studentId: user.user.id,
     });
     exams.value = response.data;
-    console.log(response.data)
+    initEnableExams(response.data.length);
+    checkTime()
+    triggerAtBeginningOfNextMinute()
   } catch (error) {
     return {
       message: error.message
     }
   }
 }
+
+const checkTime = () => {
+  let currentTime = new Date();
+  currentTime = new Date(currentTime.getTime() + 2 * 60 * 60 * 1000);
+  currentTime = currentTime.toISOString()
+  exams.value.forEach(async (exam, index) => {
+    const start_time = exam.start_time;
+    const end_time = exam.end_time;
+    if (currentTime >= start_time && currentTime <= end_time) {
+      enableExams.value[index] = false
+    } else {
+      enableExams.value[index] = true
+    }
+  });
+};
 
 onMounted(() => {
   getExams();
@@ -44,31 +78,36 @@ onMounted(() => {
       <v-toolbar-title>اختبارات</v-toolbar-title>
     </v-toolbar>
       <div class="d-flex flex-column">
-        <div v-for="exam in exams" :key="exam.id">
-          <v-card
-            class="mx-auto"
-            max-width="100%"
-            link
-            @click="navigateTo({name: 'exam', params: { exam: exam.id }})"
-          >
-            <v-list>
-              <v-list-item
-                class="mx-4"
-              >
+        <div v-for="(exam, index) in exams" :key="index">
+          
+            <div class="d-flex">
+              <div>
+                <v-list>
+                  <v-list-item
+                    class="mx-4"
+                  >
+                    <v-list-item-title
+                      class="my-2"
+                    >
+                      {{ exam.name }}
+                    </v-list-item-title>
+                    <v-list-item-subtitle>
+                      {{ exam.description }}
+                    </v-list-item-subtitle>
+                  </v-list-item>
+                </v-list>
+              </div>
+              <v-spacer></v-spacer>
+              <div class="d-flex">
+                <v-btn 
+                color="primary" 
+                class="my-auto mx-4"
+                @click="navigateTo({name: 'exam', params: { exam: exam.id }})"
+                :disabled="enableExams[index]"
+                >ENTER EXAM</v-btn>
+              </div>
+            </div>
 
-                <v-list-item-title
-                  class="my-2"
-                >
-                  {{ exam.name }}
-                </v-list-item-title>
-
-                <v-list-item-subtitle>
-                  {{ exam.description }}
-                </v-list-item-subtitle>
-                
-              </v-list-item>
-            </v-list>
-          </v-card>
         </div>
       </div>
     </v-card>
