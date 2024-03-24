@@ -10,6 +10,9 @@ export default {
   update (data) {
     return api().put(`api/Student/${data.id}`, data);
   },
+  delete (studentId) {
+    return api().delete(`api/Student/${studentId}`);
+  },
   index () {
     return api().get('api/Student/allStudent');
   },
