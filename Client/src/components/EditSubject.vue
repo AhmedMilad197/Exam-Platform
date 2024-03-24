@@ -54,34 +54,40 @@ async function update () {
 </script>
 
 <template>
-<v-layout column>
-    <v-sheet width="600px" class="mx-auto">
-      <v-toolbar color="primary">
-        <v-toolbar-title>
-          Update Subject
-        </v-toolbar-title>
-      </v-toolbar>
-      <v-form @submit.prevent class="justify-center mt-4 slot-text-center">
-        <v-text-field
-          class="ml-2 mr-2"
-          v-model="subjectname"
-        ></v-text-field>
-        <v-text-field
-          class="ml-2 mr-2"
-          v-model="desctiption"
-        ></v-text-field>
-        <v-combobox
-          label="hour"
-          :items="['1', '2', '3', '4', '5']"
-          v-model="units"
-        />
-        <div class="error ml-2" />
-        <v-col class="text-center" cols="12">
-          <v-btn type="submit" color="primary" @click="update()">UPDATE</v-btn>
-        </v-col>
-      </v-form>
-    </v-sheet>
-  </v-layout>
+<v-locale-provider rtl>
+
+  <v-layout column>
+      <v-sheet width="600px" class="mx-auto">
+        <v-toolbar color="primary">
+          <v-toolbar-title>
+            Update Subject
+          </v-toolbar-title>
+        </v-toolbar>
+        <v-form @submit.prevent class="justify-center mt-4 slot-text-center">
+          <v-text-field
+            label="اسم المادة"
+            class="ml-2 mr-2"
+            v-model="subjectname"
+          ></v-text-field>
+          <v-text-field
+            label="وصف المادة"
+            class="ml-2 mr-2"
+            v-model="desctiption"
+          ></v-text-field>
+          <v-combobox
+            class="ml-2 mr-2"
+            label="الوحدات"
+            :items="['1', '2', '3', '4', '5']"
+            v-model="units"
+          />
+          <div class="error ml-2" />
+          <v-col class="text-center" cols="12">
+            <v-btn type="submit" color="primary" @click="update()">UPDATE</v-btn>
+          </v-col>
+        </v-form>
+      </v-sheet>
+    </v-layout>
+</v-locale-provider>
 </template>
 
 <style scoped>
