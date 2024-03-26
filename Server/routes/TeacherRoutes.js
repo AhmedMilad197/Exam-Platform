@@ -4,6 +4,8 @@ const Teacherrouter = require('express').Router()
 
 Teacherrouter.post('/login',TeacherController.login)
 
+Teacherrouter.post('/block',TeacherController.block)
+
 Teacherrouter.post('/addTeacher',TeacherController.addTeacher)
 
 Teacherrouter.post('/availableTeachers',TeacherController.availableTeachers)

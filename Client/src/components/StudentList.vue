@@ -113,7 +113,6 @@ function close() {
 
 async function save () {
   if (editedIndex.value > -1) {
-    console.log(editItem.value);
     update(editedItem.value);
     Object.assign(students.value[editedIndex.value], editedItem.value)
     console.log(editedItem.value);

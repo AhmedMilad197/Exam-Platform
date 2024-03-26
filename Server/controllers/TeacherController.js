@@ -197,6 +197,20 @@ const getExams = async (req, res) => {
     } else {
         res.send({})
     }
+}
+
+const block = async (req, res) => {
+    try {
+        const id = req.body.teacherId;
+        const teacher = await Teacher.update({ active : false }, { where: { id: id } });
+        if (teacher[0] === 0) {
+            return res.status(404).json({ error: 'Teacher not found' });
+        }
+        res.status(200).send(teacher);
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).json({ error: 'Internal server error' });
+    }
 } 
 
 module.exports = {
@@ -211,4 +225,5 @@ module.exports = {
     getStudents,
     getQuestions,
     getExams,
+    block
 };

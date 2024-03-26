@@ -24,5 +24,8 @@ export default {
   },
   getExams(data) {
     return api().post('api/Teacher/exams', data);
+  },
+  block(data) {
+    return api().post('api/Teacher/block', data);
   }
 }
