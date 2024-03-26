@@ -5,12 +5,34 @@ import SubjectService from '@/services/SubjectService'
 import { useUserStore } from '@/stores/user';
 
 const user = useUserStore()
-
 const router = useRouter()
+const headers = ref([
+  {
+    title: 'id',
+    key: 'id',
+    align: 'start',
+  },
+  {
+    title: 'إسم المادة',
+    sortable: false,
+    key: 'name',
+  },
+  { title: 'وصف', key: 'description', sortable: false },
+  { title: 'Actions', key: 'actions', sortable: false },
+]);
+const editedIndex = ref(-1)
+const editedItem = ref({
+  id: 0,
+  name: '',
+  description: '',
+})
 
-function navigateTo (subject) {
+
+function navigateTo (item) {
+  editedIndex.value = subjects.value.indexOf(item)
+  editedItem.value = Object.assign({}, item)
   router.push({
-    path: `/${subject}/exam-list`,
+    path: `/${editedItem.value.id}/exam-list`,
   });
 }
 
@@ -51,7 +73,7 @@ onMounted(() => {
 
 <template>
   <v-locale-provider rtl>
-    <v-layout column>
+    <!-- <v-layout column>
       <v-sheet width="800px" class="mx-auto">
         <v-toolbar color="purple">
           <v-toolbar-title>
@@ -87,7 +109,35 @@ onMounted(() => {
             <hr>
           </div>
       </v-sheet>
-    </v-layout>
+    </v-layout> -->
+
+    <v-data-table
+      :headers="headers"
+      :items="subjects"
+    >
+      <template v-slot:top>
+        <v-toolbar
+          flat
+        >
+          <v-toolbar-title>المواد</v-toolbar-title>
+          <v-divider
+            class="mx-4"
+            inset
+            vertical
+          ></v-divider>
+        </v-toolbar>
+      </template>
+      <template v-slot:item.actions="{ item }">
+        
+        <v-btn 
+          color="primary" 
+          class="my-auto mx-4"
+          @click="navigateTo(item)"
+        >تفاصيل</v-btn>
+
+      </template>
+    </v-data-table>
+
   </v-locale-provider>
 </template>
 
