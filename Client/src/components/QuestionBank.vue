@@ -158,23 +158,23 @@ function closeEditQuestionDialog () {
           <v-btn color="white" class="primary" @click="goBack()">العودة</v-btn>
         </v-toolbar>
         <v-table
-        fixed-header
-        height="100%"
-        density="comfortable"
-      >
-      <thead>
-            <tr>
-              <th class="text-right">
-                السؤال
-              </th>
-              <th class="text-right">
-                id
-              </th>
-              <th class="text-center">
-                Actions
-              </th>
-            </tr>
-          </thead>
+          fixed-header
+          height="100%"
+          density="comfortable"
+        >
+        <thead>
+          <tr>
+            <th class="text-right">
+              السؤال
+            </th>
+            <th class="text-right">
+              id
+            </th>
+            <th class="text-center">
+              Actions
+            </th>
+          </tr>
+        </thead>
         <tbody>
           <tr
               v-for="question in questions"
