@@ -22,10 +22,16 @@ export default {
   getQuestions(data) {
     return api().post('api/Teacher/questions', data);
   },
+  getCourseQuestions(data) {
+    return api().post('api/Teacher/course/questions', data);
+  },
   getExams(data) {
     return api().post('api/Teacher/exams', data);
   },
   block(data) {
     return api().post('api/Teacher/block', data);
+  },
+  removeStudent(data) {
+    return api().post('api/Teacher/students/remove', data);
   }
 }

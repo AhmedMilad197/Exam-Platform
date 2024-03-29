@@ -75,10 +75,11 @@ onMounted(() => {
     class="mx-auto"
     max-width="800"
     >
-    <v-toolbar color="purple">
+    <v-toolbar>
       <v-toolbar-title>اختبارات</v-toolbar-title>
+      <v-btn color="white" class="primary" @click="router.go(-1)">العودة</v-btn>
     </v-toolbar>
-      <div class="d-flex flex-column">
+      <!-- <div class="d-flex flex-column">
         <div v-for="(exam, index) in exams" :key="index">
           
             <div class="d-flex">
@@ -110,7 +111,47 @@ onMounted(() => {
             </div>
 
         </div>
-      </div>
+      </div> -->
+
+      <v-table
+          fixed-header
+          height="100%"
+          density="comfortable"
+        >
+        <thead>
+          <tr>
+            <th class="text-right">
+              الإختبارات
+            </th>
+            <th class="text-center">
+              Actions
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+              v-for="(exam, index) in exams" :key="index"
+              style="height: 50px;"
+            >
+              <td>{{ exam.name }}</td>
+              <td>
+                <div class="d-flex">
+                  <div class="mx-auto">
+                    <div class="d-flex">
+                      <v-btn 
+                      color="purple" 
+                      class="my-auto mx-4"
+                      @click="navigateTo({name: 'exam', params: { exam: exam.id }})"
+                      :disabled="enableExams[index]"
+                      >إبدأ الإختبار</v-btn>
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+        </tbody>
+      </v-table>
+
     </v-card>
   </v-locale-provider>
 </template>
@@ -123,6 +164,10 @@ onMounted(() => {
 
 .list-item:hover{
   background-color: bisque;
+}
+
+.primary {
+  background-color: RGB(24,103,192);
 }
 
 </style>

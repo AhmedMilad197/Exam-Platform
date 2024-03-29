@@ -182,6 +182,18 @@ const getQuestions = async(req, res) => {
     res.send(questions);
 }
 
+const getCourseQuestions = async(req, res) => {
+    console.log(req.body)
+    const Question = db.questions
+    const questions = await Question.findAll({
+        where: {
+          teacherid: req.body.teacherId,
+          courseid: req.body.couresId
+        }
+      });
+    res.send(questions);
+}
+
 const getExams = async (req, res) => {
     let teacher = await Teacher.findOne({
         where: { 
@@ -246,6 +258,26 @@ const sendPassword = async (req, res) => {
     });
 }
 
+const removeStudent = async (req, res) => {
+    try {
+        await db.studies.destroy({
+            where: {
+                studentid: req.body.studentId,
+                coursid: req.body.courseId,
+                teacherid: req.body.teacherId,
+            },
+        });
+        res.status(200).send({
+            message: 'Student Removed Successfully.'
+        });
+    } catch (error) {
+        res.status(500).json({ 
+            // error: 'Internal server error',
+            message: error.message
+        });
+    }
+} 
+
 module.exports = {
     addTeacher,
     getAllTeacher,
@@ -259,5 +291,7 @@ module.exports = {
     getStudents,
     getQuestions,
     getExams,
-    block
+    block,
+    removeStudent,
+    getCourseQuestions
 };

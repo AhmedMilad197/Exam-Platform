@@ -43,11 +43,14 @@ db.teachers=require('./TeacherModel.js')(sequelize,DataTypes)
 db.questions=require('./QuestionsModel.js')(sequelize,DataTypes)
 db.students=require('./StudentModel.js')(sequelize,DataTypes)
 db.studies=require('./StudyModel.js')(sequelize,DataTypes)
+db.examStudent=require('./ExamStudentModel.js')(sequelize,DataTypes)
 
 const Course = db.courses;
 const Teacher = db.teachers;
 const Exam = db.exams;
-const Question = db.questions
+const Question = db.questions;
+const Student = db.students;
+const ExamStudent = db.examStudent;
 
 Teacher.belongsToMany(Course, {through: 'CourseTeachers'});
 Course.belongsToMany(Teacher, {through: 'CourseTeachers'});
@@ -63,6 +66,9 @@ Teacher.hasMany(Exam, {
 Exam.belongsTo(Teacher, {
     foreignKey: 'teacherid'
 });
+
+Student.belongsToMany(Exam, { through: ExamStudent });
+Exam.belongsToMany(Student, { through: ExamStudent });
 
 db.sequelize.sync({force:0}) 
 .then(()=>{

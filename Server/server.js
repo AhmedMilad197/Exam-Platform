@@ -31,6 +31,9 @@ app.use('/api/Student',Studentrouter)
 //Study 
 const Studyrouter = require('./routes/StudyRoutes.js');
 app.use('/api/Study',Studyrouter)
+//ExamStudent
+const ExamStudent = require('./routes/ExamStudentRoutes.js');
+app.use('/api/Study',ExamStudent)
 
 //testing api 
 app.get('/',(req,res)=>{
