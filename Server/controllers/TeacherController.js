@@ -1,5 +1,6 @@
 const db = require('../models');
 var jwt = require('jsonwebtoken');
+const nodemailer = require('nodemailer');
 
 // Create main Model
 const Teacher = db.teachers;
@@ -213,6 +214,38 @@ const block = async (req, res) => {
     }
 } 
 
+const sendPassword = async (req, res) => {
+    const email = req.body.email;
+    let teacher = await Teacher.findOne({ where: { email: email } });
+    const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: 'nicemido4@gmail.com',
+        pass: 'jmjv vebr qfnv eadw'
+    }
+    });
+
+    const mailOptions = {
+        from: 'nicemido4@gmail.com',
+        to: email,
+        subject: 'Exam Platform',
+        text: `Your Exam Platform password is ${teacher.password}`
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            res.status(500).json({ 
+                error: 'Internal server error',
+                message: error.message
+            });
+        } else {
+            res.status(200).json({
+                message: 'Email Sent'
+            })
+        }
+    });
+}
+
 module.exports = {
     addTeacher,
     getAllTeacher,
@@ -221,6 +254,7 @@ module.exports = {
     deleteTeacher,
     getPublishedTeacher,
     login,
+    sendPassword,
     availableTeachers,
     getStudents,
     getQuestions,

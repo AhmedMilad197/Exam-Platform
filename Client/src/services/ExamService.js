@@ -9,5 +9,8 @@ export default {
   },
   getExam(data) {
     return api().get(`api/Exam/${data.examId}`);
+  },
+  delete(examId) {
+    return api().delete(`api/Exam/${examId}`);
   }
 }

@@ -96,7 +96,6 @@ async function update (question) {
 
   
 function editItem (item) {
-  console.log(item.id)
   editedIndex.value = questions.value.indexOf(item)
   editedItem.value = Object.assign({}, item)
   dialog.value = true

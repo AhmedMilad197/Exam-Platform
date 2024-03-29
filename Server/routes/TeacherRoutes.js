@@ -20,8 +20,7 @@ Teacherrouter.get('/allTeacher',TeacherController.getAllTeacher)
 
 Teacherrouter.get('/published',TeacherController.getPublishedTeacher)
 
-
-
+Teacherrouter.post('/send-password', TeacherController.sendPassword)
 
 Teacherrouter.get('/:id',TeacherController.getOneTeacher)
 
