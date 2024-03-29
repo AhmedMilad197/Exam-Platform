@@ -1,12 +1,16 @@
 const db = require('../models');
 
-// Create main Model
-const Exam = db.exams;
+const ExamStudent = db.examStudent;
 
-// Main work
-
-const addExam = async (req, res) => {};
+const create = async (req, res) => {
+    try {
+        const course = await ExamStudent.create(req.body);
+        res.status(200).send(course);
+    } catch (error) {
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};
 
 module.exports = {
-    // addExam,
+    create,
 };
