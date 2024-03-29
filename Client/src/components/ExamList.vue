@@ -156,7 +156,6 @@ onMounted(() => {
               <v-btn
                 class="mb-2 primary mr-2"
                 color  = "white"
-                v-bind="props"
                 @click="router.go(-1)"
               >
                 العودة
@@ -164,17 +163,6 @@ onMounted(() => {
               
             </template>
             
-          </v-dialog>
-          <v-dialog v-model="dialogDelete" max-width="500px">
-            <v-card>
-              <v-card-title class="text-h5">Are you sure you want to delete this item?</v-card-title>
-              <v-card-Answer4>
-                <v-spacer></v-spacer>
-                <v-btn color="blue-darken-1" variant="text" @click="closeDelete">Cancel</v-btn>
-                <v-btn color="blue-darken-1" variant="text" @click="deleteItemConfirm">OK</v-btn>
-                <v-spacer></v-spacer>
-              </v-card-Answer4>
-            </v-card>
           </v-dialog>
         </v-toolbar>
       </template>
@@ -189,6 +177,7 @@ onMounted(() => {
         <v-icon
           size="small"
           @click="deleteExam(item)"
+          color="red"
         >
           mdi-delete
         </v-icon>
@@ -196,7 +185,7 @@ onMounted(() => {
     </v-data-table>
 
     <v-dialog v-model="dialog" width="auto">
-      <v-card max-width="400" prepend-icon="mdi-update"
+      <v-card max-width="400" prepend-icon="mdi-alert-circle"
         text="هل تريد حذف هذا الإختبار؟"
         title="تأكيد">
         <template v-slot:actions>
