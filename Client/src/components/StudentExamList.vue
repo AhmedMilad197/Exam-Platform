@@ -121,7 +121,7 @@ onMounted(() => {
         <thead>
           <tr>
             <th class="text-right">
-              المواد
+              الإختبارات
             </th>
             <th class="text-center">
               Actions
