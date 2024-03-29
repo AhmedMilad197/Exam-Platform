@@ -182,6 +182,18 @@ const getQuestions = async(req, res) => {
     res.send(questions);
 }
 
+const getCourseQuestions = async(req, res) => {
+    console.log(req.body)
+    const Question = db.questions
+    const questions = await Question.findAll({
+        where: {
+          teacherid: req.body.teacherId,
+          courseid: req.body.couresId
+        }
+      });
+    res.send(questions);
+}
+
 const getExams = async (req, res) => {
     let teacher = await Teacher.findOne({
         where: { 
@@ -280,5 +292,6 @@ module.exports = {
     getQuestions,
     getExams,
     block,
-    removeStudent
+    removeStudent,
+    getCourseQuestions
 };
