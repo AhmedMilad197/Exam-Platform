@@ -8,7 +8,7 @@ import ExamService from '@/services/ExamService';
 const user = useUserStore(); 
 const router = useRouter()
 const route = useRoute();
-const exams = ref();
+const exams = ref([]);
 const dialog = ref(false);
 const snackbar = ref(false);
 const headers = ref([
@@ -27,7 +27,7 @@ function navigateTo (path) {
   router.push(path);
 }
 
-async function getQuestions() {
+async function getExams() {
   try {
     const response = await TeacherService.getExams({
       teacherId: user.user.id,
@@ -55,7 +55,7 @@ function deleteExam(item) {
 
 async function destroy () {
   try {
-    const response = ExamService.delete(currentExam.value.id);
+    const response = await ExamService.delete(currentExam.value.id);
     exams.value.splice(editedIndex.value, 1)
     dialog.value = false;
     snackbar.value = true;
@@ -66,8 +66,15 @@ async function destroy () {
   }
 }
 
+function theExams() {
+  if (Object.keys(exams.value).length > 0) {
+    return exams.value;
+  }
+  return [];
+}
+
 onMounted(() => {
-  getQuestions();
+  getExams();
 });
 
 </script>
@@ -109,7 +116,7 @@ onMounted(() => {
 
     <v-data-table
       :headers="headers"
-      :items="exams"
+      :items="theExams()"
     >
       <template v-slot:top>
         <v-toolbar
