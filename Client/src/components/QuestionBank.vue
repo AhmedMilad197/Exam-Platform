@@ -41,6 +41,10 @@ async function destroy(questionId) {
   }
 }
 
+function goBack() {
+  router.go(-1);  
+}
+
 onMounted(() => {
   getTeacherQuestions();
 });
@@ -58,6 +62,7 @@ onMounted(() => {
         <v-toolbar-title>My Questions</v-toolbar-title>
       </v-toolbar>
       <v-btn color="blue-grey-darken-4" class="mx-4 my-4" @click="navigateTo({ name: 'add-question', params: {subject: route.params.subject} })">ADD QUESTION</v-btn>
+      <v-btn color="primary" @click="goBack()">GO BACK</v-btn>
       <v-table
         fixed-header
         height="100%"

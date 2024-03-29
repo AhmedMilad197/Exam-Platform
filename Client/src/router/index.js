@@ -18,12 +18,17 @@ import SubjectDetailsView from '../views/SubjectDetailsView.vue'
 import EditSubjectView from '../views/EditSubjectView.vue'
 import AddSubjectView from '../views/AddSubjectView.vue'
 import LoginView from '../views/LoginView.vue'
+import StudentLoginView from '../views/StudentLoginView.vue'
 import QuestionBankView from '../views/QuestionBankView.vue'
 import CreateExamView from '../views/CreateExamView.vue'
 import TeacherStudent from '../views/TeacherStudentView.vue'
 import AddStudentToSubject from '../views/AddStudentToSubjectView.vue'
 import EditExamView from '../views/EditExamView.vue'
 import AddTeacherToSubjectView from '../views/AddTeacherToSubjectView.vue'
+import ViewQuestionView from '../views/ViewQuestionView.vue'
+import ViewExamView from '../views/ViewExamView.vue'
+import StudentExamListView from '../views/StudentExamListView.vue'
+import StudentSubjectListView from '../views/StudentSubjectListView.vue'
 
 
 const router = createRouter({
@@ -58,7 +63,8 @@ const router = createRouter({
       props: true
     },
     {
-      path: '/:subject/exam/:exam',
+      // path: '/:subject/exam/:exam',
+      path: '/student/exam/:exam',
       name: 'exam',
       component: ExamView,
     },
@@ -173,6 +179,36 @@ const router = createRouter({
       path: '/teacher-course/:course',
       name: 'subject-teacher',
       component: AddTeacherToSubjectView,
+      props: true
+    },
+    {
+      path: '/view-question/:id',
+      name: 'view-question',
+      component: ViewQuestionView,
+      props: true
+    },
+    {
+      path: '/view-exam/:id',
+      name: 'view-exam',
+      component: ViewExamView,
+      props: true
+    },
+    {
+      path: '/student/login',
+      name: 'student-login',
+      component: StudentLoginView,
+      props: true
+    },
+    {
+      path: '/student/exam-list/:id',
+      name: 'student-exam-list',
+      component: StudentExamListView,
+      props: true
+    },
+    {
+      path: '/student/subject-list',
+      name: 'student-subject-list',
+      component: StudentSubjectListView,
       props: true
     },
   ]

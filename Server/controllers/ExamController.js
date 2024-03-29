@@ -11,14 +11,16 @@ const addExam = async (req, res) => {
         let info = {
             start_time: req.body.start_time,
             end_time: req.body.end_time,
-            name: req.body.name,
-            full_mark: req.body.full_mark,
-            teacherid: req.body.teacherid,
-        
+            name: req.body.title,
+            description: req.body.description,
+            full_mark: 100,
+            teacherid: req.body.teacherId,
+            courseid: req.body.courseId
         };
         const exam = await Exam.create(info);
         res.status(200).send(exam);
-        console.log(exam);
+        exam.setQuestions(req.body.questions)
+        res.status(201);
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Internal server error' });
@@ -40,7 +42,7 @@ const getAllExam = async (req, res) => {
 const getOneExam = async (req, res) => {
     try {
         let id = req.params.id;
-        let exams = await Exam.findOne({ where: { id: id } });
+        let exams = await Exam.findOne({ where: { id: id }, include: { model: db.questions, as: 'questions' } });
         if (!exams) {
             return res.status(404).json({ error: 'Exam not found' });
         }
@@ -80,8 +82,6 @@ const deleteExam = async (req, res) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 };
-
-
 
 module.exports = {
     addExam,

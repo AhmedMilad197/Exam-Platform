@@ -2,8 +2,10 @@
 
 import { useRouter, useRoute } from 'vue-router'
 import { ref, onMounted } from 'vue'
-import StudentService from '@/services/StudentService'
+import TeacherService from '@/services/TeacherService'
+import { useUserStore } from "@/stores/user";
 
+const user = useUserStore(); 
 const router = useRouter()
 const route = useRoute();
 const students = ref();
@@ -15,13 +17,18 @@ function navigateTo (path) {
 
 async function getStudnets() {
   try {
-    const response = await StudentService.getTeacherStudent(teacherId);
+    const response = await TeacherService.getTeacherStudent(route.params.subject, user.user.id);
     students.value = response.data;
+    console.log(response.data)
   } catch (error) {
     return {
       message: error.message
     }
   }
+}
+
+function goBack() {
+  router.go(-1);  
 }
 
 onMounted(() => {
@@ -41,7 +48,8 @@ onMounted(() => {
       <v-toolbar-title>My Students</v-toolbar-title>
     </v-toolbar>
     <div class="d-flex mx-4 my-4">
-      <v-btn color="primary" @click="navigateTo({ name: 'teacher-add-student', params: { subject: route.params.subject } })">ADD STUDENT</v-btn>
+      <v-btn color="pink-darken-2" @click="navigateTo({ name: 'teacher-add-student', params: { subject: route.params.subject } })">ADD STUDENT</v-btn>
+      <v-btn color="primary" class="mx-4" @click="goBack()">GO BACK</v-btn>
     </div>
     <v-table
       fixed-header
@@ -67,7 +75,7 @@ onMounted(() => {
           :key="student.id"
           style="height: 50px;"
         >
-          <td>{{ student.firstname }}</td>
+          <td>{{ student.name }}</td>
           <td>{{ student.id }}</td>
           <td>
             <div class="d-flex">

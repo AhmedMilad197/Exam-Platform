@@ -1,5 +1,6 @@
 const db = require('../models');
 var jwt = require('jsonwebtoken');
+const nodemailer = require('nodemailer');
 
 // Create main Model
 const Teacher = db.teachers;
@@ -145,6 +146,106 @@ const availableTeachers = async (req, res) => {
     res.send(teachersNotInCurrentCourse);
 }
 
+const getStudents = async (req, res) => {
+    const Student = db.students;
+    const courseId = req.body.subject;
+    const teacherId = req.body.teacherId;
+    const Op = db.Sequelize.Op;
+    const { QueryTypes } = require('sequelize');
+    const availableStudents = await db.sequelize.query(
+        'SELECT studentid FROM studies WHERE coursid = :id and teacherid = :teacherId',
+        {
+          replacements: { 
+            id: courseId,
+            teacherId: teacherId
+         },
+          type: QueryTypes.SELECT
+        }
+      );
+    const studentsInCurrentCourse = await Student.findAll({
+        where: {
+          id: {
+            [Op.in]: availableStudents.map(obj => obj.studentid)
+          }
+        }
+      });
+    res.send(studentsInCurrentCourse);
+}
+
+const getQuestions = async(req, res) => {
+    const Question = db.questions
+    const questions = await Question.findAll({
+        where: {
+          teacherid: req.body.teacherId
+        }
+      });
+    res.send(questions);
+}
+
+const getExams = async (req, res) => {
+    let teacher = await Teacher.findOne({
+        where: { 
+            id: req.body.teacherId 
+        }, include: { 
+            model: db.exams, 
+            as: 'exams',
+            where: { 
+                courseid: req.body.courseId 
+            }
+        } });
+    if (teacher != null) {
+        res.send(teacher.exams)
+    } else {
+        res.send({})
+    }
+}
+
+const block = async (req, res) => {
+    try {
+        const id = req.body.teacherId;
+        const teacher = await Teacher.update({ active : false }, { where: { id: id } });
+        if (teacher[0] === 0) {
+            return res.status(404).json({ error: 'Teacher not found' });
+        }
+        res.status(200).send(teacher);
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+} 
+
+const sendPassword = async (req, res) => {
+    const email = req.body.email;
+    let teacher = await Teacher.findOne({ where: { email: email } });
+    const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: 'nicemido4@gmail.com',
+        pass: 'jmjv vebr qfnv eadw'
+    }
+    });
+
+    const mailOptions = {
+        from: 'nicemido4@gmail.com',
+        to: email,
+        subject: 'Exam Platform',
+        text: `Your Exam Platform password is ${teacher.password}`
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            res.status(500).json({ 
+                error: 'Internal server error',
+                message: error.message
+            });
+        } else {
+            res.status(200).json({
+                message: 'Email Sent'
+            })
+        }
+    });
+}
+
 module.exports = {
     addTeacher,
     getAllTeacher,
@@ -153,5 +254,10 @@ module.exports = {
     deleteTeacher,
     getPublishedTeacher,
     login,
+    sendPassword,
     availableTeachers,
+    getStudents,
+    getQuestions,
+    getExams,
+    block
 };

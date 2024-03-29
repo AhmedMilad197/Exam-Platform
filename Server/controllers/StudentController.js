@@ -56,6 +56,7 @@ const getOneStudent = async (req, res) => {
 // 4. Update Student
 const updateStudent = async (req, res) => {
     try {
+        console.log(req.body)
         let id = req.params.id;
         const student = await Student.update(req.body, { where: { id: id } });
         if (student[0] === 0) {
@@ -123,6 +124,80 @@ const availableStudents = async (req, res) => {
     res.send(studentsNotInCurrentCourse);
 }
 
+const exams = async (req, res) => {
+    const Exam = db.exams;
+    const studentId = req.body.studentId;
+    const courseId = req.body.courseId;
+    const Op = db.Sequelize.Op;
+    const { QueryTypes } = require('sequelize');
+  
+    // Check if studentId is provided
+    if (!studentId) {
+      res.status(400).send('Missing studentId');
+      return;
+    }
+  
+    try {
+      const teachers = await db.sequelize.query(
+        'SELECT teacherid FROM studies WHERE studentid = :id AND coursid = :courseId',
+        {
+          replacements: { id: studentId, courseId: courseId },
+          type: QueryTypes.SELECT
+        }
+      );
+  
+      const studentExams = await Exam.findAll({
+        where: {
+          teacherid: {
+            [Op.in]: teachers.map(obj => obj.teacherid)
+          },
+          courseid: {
+            [Op.eq]: courseId
+          }
+        }
+      });
+  
+      res.send(studentExams);
+    } catch (error) {
+        res.status(500).send('Internal server error');
+    }
+};
+
+const courses = async (req, res) => {
+    const Courses = db.courses;
+    const studentId = req.body.studentId;
+    const Op = db.Sequelize.Op;
+    const { QueryTypes } = require('sequelize');
+  
+    // Check if studentId is provided
+    if (!studentId) {
+      res.status(400).send('Missing studentId');
+      return;
+    }
+  
+    try {
+      const courseIds = await db.sequelize.query(
+        'SELECT coursid FROM studies WHERE studentid = :id',
+        {
+          replacements: { id: studentId },
+          type: QueryTypes.SELECT
+        }
+      );
+  
+      const studentCourses = await Courses.findAll({
+        where: {
+          id: {
+            [Op.in]: courseIds.map(obj => obj.coursid)
+          }
+        }
+      });
+
+      res.send(studentCourses);
+    } catch (error) {
+        res.status(500).send('Internal server error');
+    }
+}
+
 module.exports = {
     addStudent,
     getAllStudent,
@@ -130,5 +205,7 @@ module.exports = {
     updateStudent,
     deleteStudent,
     login,
-    availableStudents
+    availableStudents,
+    exams,
+    courses
 };

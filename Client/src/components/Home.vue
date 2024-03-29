@@ -5,12 +5,34 @@ import SubjectService from '@/services/SubjectService'
 import { useUserStore } from '@/stores/user';
 
 const user = useUserStore()
-
 const router = useRouter()
+const headers = ref([
+  {
+    title: 'id',
+    key: 'id',
+    align: 'start',
+  },
+  {
+    title: 'إسم المادة',
+    sortable: false,
+    key: 'name',
+  },
+  { title: 'وصف', key: 'description', sortable: false },
+  { title: 'Actions', key: 'actions', sortable: false },
+]);
+const editedIndex = ref(-1)
+const editedItem = ref({
+  id: 0,
+  name: '',
+  description: '',
+})
 
-function navigateTo (subject) {
+
+function navigateTo (item) {
+  editedIndex.value = subjects.value.indexOf(item)
+  editedItem.value = Object.assign({}, item)
   router.push({
-    path: `/${subject}/exam-list`,
+    path: `/${editedItem.value.id}/exam-list`,
   });
 }
 
@@ -50,48 +72,73 @@ onMounted(() => {
 </script>
 
 <template>
-  <v-layout column>
-    <v-sheet width="800px" class="mx-auto">
-      <v-toolbar color="primary">
-        <v-toolbar-title>
-          Subjects
-        </v-toolbar-title>
-      </v-toolbar>
-      <v-container>
-        <v-row align="center" justify="center">
-          <v-col
-            v-for="(subject, i) in subjects"
-            :key="i"
-            cols="auto"
-          >
-            <v-card
-              class="mx-auto"
-              max-width="344"
-              :color="getColor()"
-            >
-              <v-card-item>
-                <div>
-                  <div class="text-overline mb-1">
-                    Subject
-                  </div>
-                  <div class="text-h6 mb-1">
-                    {{ subject.name }}
-                  </div>
-                  <div class="text-caption">See the exams related to {{ subject.name  }}</div>
-                </div>
-              </v-card-item>
+  <v-locale-provider rtl>
+    <!-- <v-layout column>
+      <v-sheet width="800px" class="mx-auto">
+        <v-toolbar color="purple">
+          <v-toolbar-title>
+            المواد
+          </v-toolbar-title>
+        </v-toolbar>
+          <div v-for="(subject, i) in subjects" :key="i">
+            <div class="d-flex">
+              <div>
+                <v-list>
+                  <v-list-item
+                    class="mx-4"
+                  >
+                    <v-list-item-title
+                      class="my-2"
+                    >
+                      <b>
+                        {{ subject.name }}
+                      </b>
+                    </v-list-item-title>
+                  </v-list-item>
+                </v-list>
+              </div>
+              <v-spacer></v-spacer>
+              <div class="d-flex">
+                <v-btn 
+                color="primary" 
+                class="my-auto mx-4"
+                @click="navigateTo(subject.id)"
+                >تفاصيل</v-btn>
+              </div>
+            </div>
+            <hr>
+          </div>
+      </v-sheet>
+    </v-layout> -->
 
-              <v-card-actions>
-                <v-btn @click="navigateTo(subject.id)">
-                  Enter
-                </v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-col>
-        </v-row>
-      </v-container>  
-    </v-sheet>
-  </v-layout>
+    <v-data-table
+      :headers="headers"
+      :items="subjects"
+    >
+      <template v-slot:top>
+        <v-toolbar
+          flat
+        >
+          <v-toolbar-title>المواد</v-toolbar-title>
+          <v-divider
+            class="mx-4"
+            inset
+            vertical
+          ></v-divider>
+        </v-toolbar>
+      </template>
+      <template v-slot:item.actions="{ item }">
+        
+        <v-btn 
+          color="primary" 
+          class="my-auto mx-4"
+          @click="navigateTo(item)"
+        >تفاصيل</v-btn>
+
+      </template>
+    </v-data-table>
+
+  </v-locale-provider>
 </template>
 
 <style scoped>
