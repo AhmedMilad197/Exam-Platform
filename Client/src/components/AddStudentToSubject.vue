@@ -65,66 +65,70 @@ onMounted(() => {
 </script>
 
 <template>
-  <div>
-      <v-card
-      class="mx-auto"
-      max-width="1000"
-      >
-      <v-toolbar color="purple">
-        <v-toolbar-title>All Students</v-toolbar-title>
-      </v-toolbar>
-      
-      <div class="d-flex">
-        <v-btn color="primary" class="mx-4 my-4" @click="addStudent()">ADD STUDENT</v-btn>
-      </div>
-      <v-table
-        fixed-header
-        height="100%"
-        density="comfortable"
-      >
-        <thead>
-          <tr>
-            <th class="text-left">
-              Student Name
-            </th>
-            <th class="text-left">
-              Username
-            </th>
-            <th class="text-left">
-              id
-            </th>
-            <th class="text-left">
-              Actions
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr
-            v-for="student in students"
-            :key="student.id"
-            style="height: 50px;"
-          >
-            <td>
-              <v-checkbox class="custom-checkbox" :label=student.name @click="updateSelectedItems($event, student.id)" />
-            </td>
-            <td>
-              {{ student.username }}
-            </td>
-            <td>
-              {{ student.id }}
-            </td>
-            <td>
-              <div class="d-flex">
-                <div>
-                  <v-btn color="indigo-darken-3" @click="navigateTo({name: 'student', params: {id: student.id}})">VIEW</v-btn>
+  <v-locale-provider rtl>
+
+    <div>
+        <v-card
+        class="mx-auto"
+        max-width="1000"
+        >
+        <v-toolbar>
+          <v-toolbar-title>الطلبة</v-toolbar-title>
+          <div class="d-flex">
+            <v-btn color="white" class="mx-4 my-4 success-green" @click="addStudent()">إضافة</v-btn>
+            <v-btn color="white" class="ml-4 my-4 primary" @click="router.go(-1)">العودة</v-btn>
+          </div>
+        </v-toolbar>
+        
+        <v-table
+          fixed-header
+          height="100%"
+          density="comfortable"
+        >
+          <thead>
+            <tr>
+              <th class="text-right">
+                إسم الطالب
+              </th>
+              <th class="text-right">
+                إسم المستخدم
+              </th>
+              <th class="text-right">
+                id
+              </th>
+              <!-- <th class="text-right">
+                Actions
+              </th> -->
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              v-for="student in students"
+              :key="student.id"
+              style="height: 50px;"
+            >
+              <td>
+                <v-checkbox class="custom-checkbox" :label=student.name @click="updateSelectedItems($event, student.id)" />
+              </td>
+              <td>
+                {{ student.username }}
+              </td>
+              <td>
+                {{ student.id }}
+              </td>
+              <!-- <td>
+                <div class="d-flex">
+                  <div>
+                    <v-btn color="indigo-darken-3" @click="navigateTo({name: 'student', params: {id: student.id}})">VIEW</v-btn>
+                  </div>
                 </div>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </v-table>
-    </v-card>
-  </div>
+              </td> -->
+            </tr>
+          </tbody>
+        </v-table>
+      </v-card>
+    </div>
+  </v-locale-provider>
 </template>
 
 <style scoped>
@@ -142,6 +146,14 @@ onMounted(() => {
 }
 .firstname-text {
   width: 90;
+}
+
+.success-green {
+  background-color: rgb(24, 103, 24)
+}
+
+.primary {
+  background-color: rgb(24,103,192);
 }
 
 </style>
