@@ -12,6 +12,8 @@ Teacherrouter.post('/availableTeachers',TeacherController.availableTeachers)
 
 Teacherrouter.post('/students',TeacherController.getStudents)
 
+Teacherrouter.post('/students/remove',TeacherController.removeStudent)
+
 Teacherrouter.post('/questions',TeacherController.getQuestions)
 
 Teacherrouter.post('/exams',TeacherController.getExams)

@@ -27,5 +27,8 @@ export default {
   },
   block(data) {
     return api().post('api/Teacher/block', data);
+  },
+  removeStudent(data) {
+    return api().post('api/Teacher/students/remove', data);
   }
 }

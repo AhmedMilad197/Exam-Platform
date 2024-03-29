@@ -246,6 +246,26 @@ const sendPassword = async (req, res) => {
     });
 }
 
+const removeStudent = async (req, res) => {
+    try {
+        await db.studies.destroy({
+            where: {
+                studentid: req.body.studentId,
+                coursid: req.body.courseId,
+                teacherid: req.body.teacherId,
+            },
+        });
+        res.status(200).send({
+            message: 'Student Removed Successfully.'
+        });
+    } catch (error) {
+        res.status(500).json({ 
+            // error: 'Internal server error',
+            message: error.message
+        });
+    }
+} 
+
 module.exports = {
     addTeacher,
     getAllTeacher,
@@ -259,5 +279,6 @@ module.exports = {
     getStudents,
     getQuestions,
     getExams,
-    block
+    block,
+    removeStudent
 };
