@@ -31,6 +31,9 @@ export default {
   verifyOTP(data) {
     return api().post('api/Teacher/otp-verification', data);
   },
+  resetPassword(data) {
+    return api().post('api/Teacher/reset-password', data);
+  },
   getExams(data) {
     return api().post('api/Teacher/exams', data);
   },

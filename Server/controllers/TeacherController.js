@@ -315,6 +315,24 @@ const verifyOTP = (req, res) => {
     })
 }
 
+const resetPassword = async (req, res) => {
+    const newPassword = req.body.new_password;
+    const key = 'OTPCode';
+    const data = cache.get(key);
+    const email = data.email
+    let teacher = await Teacher.findOne({ where: { email: email } });
+
+    if (teacher) {
+        teacher.password = newPassword;
+        await teacher.save();
+        res.status(200).send({
+            message: 'Password updated successfully.'
+        });
+      } else {
+        res.status(500).json({ error: 'Internal server error' });
+      }
+}
+
 module.exports = {
     addTeacher,
     getAllTeacher,
@@ -325,6 +343,7 @@ module.exports = {
     login,
     sendPassword,
     verifyOTP,
+    resetPassword,
     availableTeachers,
     getStudents,
     getQuestions,

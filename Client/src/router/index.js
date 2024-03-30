@@ -32,6 +32,7 @@ import StudentSubjectListView from '../views/StudentSubjectListView.vue'
 import TeacherSubjectListView from '../views/TeacherSubjectListView.vue'
 import SendOTPView from '../views/SendOTPView.vue'
 import OTPVerificationView from '../views/OTPVerificationView.vue'
+import ResetPasswordView from '../views/ResetPasswordView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -229,6 +230,12 @@ const router = createRouter({
       path: '/otp-verification',
       name: 'otp-verification',
       component: OTPVerificationView,
+      props: true
+    },
+    {
+      path: '/reset-password',
+      name: 'reset-password',
+      component: ResetPasswordView,
       props: true
     },
   ]
