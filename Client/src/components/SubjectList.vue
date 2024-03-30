@@ -5,28 +5,25 @@ import SubjectService from '@/services/SubjectService'
 
 const router = useRouter()
 const subjects = ref();
-const dialog= ref(false)
-const dialogDelete = ref(false)
+const dialog= ref(false);
+const dialogDelete = ref(false);
+const editSubjectDialog = ref(false);
 const editedItem = ref({
     id: 0,
     content : '',
     description : '',
-    units : 1,
+    unit : null,
 })
-const formTitle = ref('Edit Subject')
 const defaultItem = ref({
   content : '',
   description : '',
-  units : 1,
+  unit : null,
 })
 
 const headers = ref([
-  {
-    title: 'Subject',
-    align: 'start',
-    sortable: false,
-    key: 'name',
-  },
+  { title: 'id', key: 'id', align: 'start' },
+  { title: 'المادة', sortable: false, key: 'name' },
+  { title: 'الوحدات', key: 'unit' },
   { title: 'Actions', key: 'actions', sortable: false },
 ])
 const editedIndex = ref(-1)
@@ -51,9 +48,9 @@ onMounted(() => {
 });
 
 function editItem (item) {
-  editedIndex.value = subjects.value.indexOf(item)
-  editedItem.value = Object.assign({}, item)
-  dialog.value = true
+  editedIndex.value = subjects.value.indexOf(item);
+  editedItem.value = Object.assign({}, item);
+  editSubjectDialog.value = true;
 }
 
 function deleteItem (item) {
@@ -63,10 +60,11 @@ function deleteItem (item) {
 }
 
 function close() {
-  dialog.value = false
+  dialog.value = false;
+  editSubjectDialog.value = false;
   nextTick(() => {
-    editedItem.value = Object.assign({}, defaultItem)
-    editedIndex.value = -1
+    editedItem.value = Object.assign({}, defaultItem);
+    editedIndex.value = -1;
   })
 }
 
@@ -77,9 +75,9 @@ async function AddSubject(subject) {
       active: true,
       description: subject.description,
       image: '/todo-later',
-      unit: subject.units,
+      unit: subject.unit,
     });
-    navigateTo('subjects');
+    getSubjects();
   } catch (err) {
     return {
       message: err.message
@@ -93,9 +91,8 @@ async function update (subject) {
       id: subject.id,
       name: subject.name,
       description: subject.description,
-      unit: subject.units,
+      unit: subject.unit,
     }, subject.id);
-    navigateTo({name: 'subjects'});
   } catch (error) {
     return {
       message: error.message
@@ -104,16 +101,14 @@ async function update (subject) {
 }
 
 async function save () {
-  
-  if (editedIndex.value > -1) {
-    update(editedItem.value);
-    Object.assign(subjects.value[editedIndex.value], editedItem.value)
-    console.log(editedItem.value);
-  } else {
-    AddSubject(editedItem.value);
-    subjects.value.push(editedItem.value)
-  }
+  AddSubject(editedItem.value);
   close()
+}
+
+function updateSubject () {
+  update(editedItem.value);
+  Object.assign(subjects.value[editedIndex.value], editedItem.value)
+  close();
 }
 
 async function destroy(subjectId) {
@@ -121,11 +116,9 @@ async function destroy(subjectId) {
     const response = await SubjectService.delete({
       id: subjectId
     });
+    getSubjects();
     dialog.value = false;
     deletedSuccessfully.value = true;
-    navigateTo({
-      name: 'subjects'
-    });
   } catch (error) {
     dialog.value = false;
     snackbar.value = true;
@@ -141,11 +134,16 @@ function deleteItemConfirm() {
   closeDelete()
 }
 
+function closeDelete () {
+  dialogDelete.value = false
+  editedItem.value = defaultItem.value;
+}
+
 </script>
 
 <template>
   <v-locale-provider rtl>
-  <div>
+  <!-- <div>
     <v-card
       class="mx-auto"
       max-width="1000"
@@ -195,18 +193,17 @@ function deleteItemConfirm() {
         </tbody>
       </v-table>
     </v-card>
-  </div>
+  </div> -->
     
-      <!-- <v-data-table
+    <v-data-table
       :headers="headers"
       :items="subjects"
-      :sort-by="[{ key: 'Answer1', order: 'asc' }]"
     >
       <template v-slot:top>
         <v-toolbar
           flat
         >
-          <v-toolbar-title>System Subjects</v-toolbar-title>
+          <v-toolbar-title>كل المواد</v-toolbar-title>
           <v-divider
             class="mx-4"
             inset
@@ -219,17 +216,18 @@ function deleteItemConfirm() {
           >
             <template v-slot:activator="{ props }">
               <v-btn
-                class="mb-2"
-                color="primary"
+                class="mb-2 primary"
+                color="white"
                 dark
                 v-bind="props"
+                @click="console.log('test')"
               >
-                New Subject
+                إضافة مادة
               </v-btn>
             </template>
             <v-card>
               <v-card-title>
-                <span class="text-h5">{{ formTitle }}</span>
+                <span class="text-h5">إضافة مادة</span>
               </v-card-title>
     
               <v-card-text>
@@ -263,37 +261,113 @@ function deleteItemConfirm() {
                     <v-combobox
                       label="units"
                       :items="['1', '2', '3', '4', '5']"
-                      v-model="editedItem.units"
+                      v-model="editedItem.unit"
                     />
                     </v-col>
                   </v-row>
                 </v-container>
               </v-card-text>
+              <div class="d-flex">
+                <div class="mx-auto mb-4">
+                  <v-btn
+                    class="ml-4"
+                    color="green-darken-1"
+                    @click="save"
+                  >
+                    إضافة
+                  </v-btn>
+                  <v-btn
+                    color="blue-darken-1"
+                    @click="close"
+                  >
+                    إلغاء
+                  </v-btn>
+                </div>
+              </div>
+            </v-card>
+          </v-dialog>
+          
+          <v-dialog v-model="editSubjectDialog" max-width="500px" persistent>
+
+            <v-card>
+              <v-card-title>
+                <span class="text-h5">تعديل المادة</span>
+              </v-card-title>
+    
+              <v-card-text>
+                <v-container>
+                  <v-row>
+                    <v-col
+                      cols="12"
+                      md="12"
+                      sm="12"
+                    >
+                      <v-text-field
+                        v-model="editedItem.name"
+                        label="Subject"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col
+                      cols="12"
+                      md="12"
+                      sm="12"
+                    >
+                      <v-text-field
+                        v-model="editedItem.description"
+                        label="Description"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col
+                      cols="12"
+                      md="12"
+                      sm="12"
+                    >
+                    <v-combobox
+                      label="units"
+                      :items="['1', '2', '3', '4', '5']"
+                      v-model="editedItem.unit"
+                    />
+                    </v-col>
+                  </v-row>
+                </v-container>
+              </v-card-text>
+              <div class="d-flex">
+                <div class="mx-auto mb-4">
+                  <v-btn
+                    class="ml-4"
+                    color="green-darken-1"
+                    @click="updateSubject"
+                  >
+                    تعديل
+                  </v-btn>
+                  <v-btn
+                    color="blue-darken-1"
+                    @click="close"
+                  >
+                    إلغاء
+                  </v-btn>
+                </div>
+              </div>
+            </v-card>
+
+          </v-dialog>
+
+          <v-dialog v-model="dialogDelete" max-width="500px" persistent>
+            <v-card 
+              prepend-icon="mdi-alert-circle"
+              text="هل تريد حذف هذه المادة؟"
+              title="تأكيد"
+              color="orange"
+            >
               <v-card>
-                <v-btn
-                  color="blue-darken-1"
-                  variant="text"
-                  @click="close"
-                >
-                  Cancel
-                </v-btn>
-                <v-btn
-                  color="blue-darken-1"
-                  variant="text"
-                  @click="save"
-                >
-                  Save
-                </v-btn>
+                <v-spacer></v-spacer>
+                <v-btn color="red-darken-1" class="mx-2 my-4" @click="deleteItemConfirm">نعم</v-btn>
+                <v-btn color="blue-darken-1" @click="closeDelete">إلغاء</v-btn>
+                <v-spacer></v-spacer>
               </v-card>
             </v-card>
           </v-dialog>
-          <v-dialog v-model="dialogDelete" max-width="500px">
-            <v-card>
-              <v-card-title class="text-h5">Are you sure you want to delete this item?</v-card-title>
-              <v-btn color="blue-darken-1" variant="text" @click="closeDelete">Cancel</v-btn>
-              <v-btn color="blue-darken-1" variant="text" @click="deleteItemConfirm">OK</v-btn>
-            </v-card>
-          </v-dialog>
+
         </v-toolbar>
       </template>
       <template v-slot:item.actions="{ item }">
@@ -301,25 +375,23 @@ function deleteItemConfirm() {
           class="me-2"
           size="small"
           @click="editItem(item)"
+          color="green"
         >
           mdi-pencil
         </v-icon>
         <v-icon
           size="small"
+          class="ml-2"
           @click="deleteItem(item)"
+          color="red"
         >
           mdi-delete
         </v-icon>
         <v-icon
-          class="mx-4"
-          @click="deleteItem(item)"
+          size="small"
+          color="blue"
         >
-          mdi-account-plus
-        </v-icon>
-        <v-icon
-          @click="deleteItem(item)"
-        >
-          mdi-account-remove
+          mdi-account-multiple
         </v-icon>
       </template>
       <template v-slot:no-data>
@@ -330,11 +402,13 @@ function deleteItemConfirm() {
           Reset
         </v-btn>
       </template>
-    </v-data-table> -->
+    </v-data-table>
   </v-locale-provider>
 
 </template>
 
 <style scoped>
-
+.primary {
+  background-color: RGB(24,103,192);
+}
 </style>
