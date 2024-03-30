@@ -139,6 +139,12 @@ function closeDelete () {
   editedItem.value = defaultItem.value;
 }
 
+function goToTeachers(item) {
+  editedIndex.value = subjects.value.indexOf(item);
+  editedItem.value = Object.assign({}, item);
+  navigateTo({name: 'subject', params: {id: editedItem.value.id}})
+}
+
 </script>
 
 <template>
@@ -390,6 +396,7 @@ function closeDelete () {
         <v-icon
           size="small"
           color="blue"
+          @click="goToTeachers(item)"
         >
           mdi-account-multiple
         </v-icon>
