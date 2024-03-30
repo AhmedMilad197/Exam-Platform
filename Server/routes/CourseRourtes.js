@@ -13,21 +13,20 @@ const verifyToken = (req, res, next) => {
   // }
 }
 
-Courserouter.post('/addCourse',CourseController.addCourse)
+Courserouter.post('/addCourse', CourseController.addCourse)
 
-Courserouter.post('/addTeacher',CourseController.addTeacher)
+Courserouter.post('/addTeacher', CourseController.addTeacher)
 
 Courserouter.get('/allCourse', CourseController.getAllCourse)
 
-Courserouter.get('/published',CourseController.getPublishedCourse)
+Courserouter.get('/published', CourseController.getPublishedCourse)
 
+Courserouter.post('/teacher/remove', CourseController.removeTeacher)
 
+Courserouter.get('/:id', CourseController.getOneCourse)
 
+Courserouter.put('/:id', CourseController.updateCourse)
 
-Courserouter.get('/:id',CourseController.getOneCourse)
-
-Courserouter.put('/:id',CourseController.updateCourse)
-
-Courserouter.delete('/:id',CourseController.deleteCourse)
+Courserouter.delete('/:id', CourseController.deleteCourse)
 
 module.exports=Courserouter

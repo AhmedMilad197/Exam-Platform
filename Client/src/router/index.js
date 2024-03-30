@@ -29,7 +29,7 @@ import ViewQuestionView from '../views/ViewQuestionView.vue'
 import ViewExamView from '../views/ViewExamView.vue'
 import StudentExamListView from '../views/StudentExamListView.vue'
 import StudentSubjectListView from '../views/StudentSubjectListView.vue'
-
+import TeacherSubjectListView from '../views/TeacherSubjectListView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -209,6 +209,12 @@ const router = createRouter({
       path: '/student/subject-list',
       name: 'student-subject-list',
       component: StudentSubjectListView,
+      props: true
+    },
+    {
+      path: '/subject/teachers/:id',
+      name: 'teacher-subject-list',
+      component: TeacherSubjectListView,
       props: true
     },
   ]

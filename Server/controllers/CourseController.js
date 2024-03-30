@@ -57,7 +57,7 @@ const getAllCourse = async (req, res) => {
 const getOneCourse = async (req, res) => {
     try {
         let id = req.params.id;
-        let courses = await Course.findOne({ where: { id: id } });
+        let courses = await Course.findOne({ where: { id: id }, include: [db.teachers]  });
         if (!courses) {
             return res.status(404).json({ error: 'Course not found' });
         }
@@ -114,6 +114,24 @@ const addTeacher = async (req, res) => {
     course.addTeachers(req.body.teachers);
 }
 
+const removeTeacher = async (req, res) => {
+    let courseId = req.body.courseId;
+    let teacherId = req.body.teacherId;
+    Course.findByPk(courseId).then(course => {
+        if (course) {
+          course.removeTeachers(teacherId).then(() => {
+            res.status(200).json({ error: 'Teacher removed from the course successfully' });
+          }).catch(err => {
+            console.error('Error:', err);
+          });
+        } else {
+          console.log('Course not found');
+        }
+      }).catch(err => {
+        res.status(500).json({ error: 'Internal server error' });
+      });
+}
+
 module.exports = {
     addCourse,
     getAllCourse,
@@ -121,5 +139,6 @@ module.exports = {
     updateCourse,
     deleteCourse,
     getPublishedCourse,
-    addTeacher
+    addTeacher,
+    removeTeacher
 };
