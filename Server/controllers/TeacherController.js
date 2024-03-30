@@ -8,15 +8,17 @@ const Teacher = db.teachers;
 
 // 1. Create Teacher
 const addTeacher = async (req, res) => {
+    const currentDate = new Date();
+    currentDate.setHours(currentDate.getHours() + 2);
     try {
         let info = {
             name: req.body.name,
             username: req.body.username,
-            nameadmin: req.body.nameadmin,
+            email: req.body.email,
             password: req.body.password,
             image: req.body.image,
             specialist: req.body.specialist,
-            lastlogin: req.body.lastlogin,
+            lastlogin: currentDate,
             active: req.body.active ? req.body.active : false,
         };
         const teacher = await Teacher.create(info);

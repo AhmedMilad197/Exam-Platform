@@ -9,6 +9,7 @@ const router = useRouter();
 const name = ref('');
 const username = ref('');
 const email = ref('');
+const specialist = ref('');
 const password = ref('');
 const error = ref(null);
 
@@ -22,6 +23,7 @@ async function register () {
       name: name.value,
       username: username.value,
       email: email.value,
+      specialist: specialist.value,
       password: password.value,
     })
     user.user = response.data.teacher;
@@ -35,52 +37,69 @@ async function register () {
 </script>
 
 <template>
+  <v-locale-provider rtl>
 
     <v-sheet width="600px" class="mx-auto">
-      <v-toolbar color="primary">
+      <v-toolbar>
         <v-toolbar-title>
           Register
         </v-toolbar-title>
       </v-toolbar>
       <v-form @submit.prevent class="mt-4">
         <v-text-field
-          label="Name"
-          class="ml-2 mr-2"
+          label="الأسم"
+          class="ml-2 mr-2 mb-2"
           v-model="name"
+          hint="أدخل الإسم بالكامل"
+          persistent-hint
         ></v-text-field>
         <v-text-field
-          label="User Name"
-          class="ml-2 mr-2"
+          label="اسم المستخدم"
+          class="ml-2 mr-2 mb-2"
           v-model="username"
+          hint="أدخل الإسم المستخدم"
+          persistent-hint
         ></v-text-field>
         <v-text-field
-          label="Email"
-          class="ml-2 mr-2"
+          label="البريد الإلكتروني"
+          class="ml-2 mr-2 mb-2"
           v-model="email"
+          hint="أدخل البريد الإلكتروني"
+          persistent-hint
+        ></v-text-field>
+        <v-text-field
+          label="التخصص"
+          class="ml-2 mr-2 mb-2"
+          v-model="specialist"
+          hint="أدخل التخصص"
+          persistent-hint
         ></v-text-field>
         <v-text-field
           type="password"
-          label="Password"
-          class="ml-2 mr-2"
+          label="الرمز السري"
+          class="ml-2 mr-2 mb-2"
           v-model="password"
+          hint="أدخل الرمز السري"
+          persistent-hint
         ></v-text-field>
-        <div class="error ml-2" />
+        <div class="error ml-2 mb-2" />
         
         <div class="d-flex">
-          <v-btn type="submit" class="mx-auto my-2" @click="register()">Register</v-btn>
+          <v-btn type="submit" color="primary" class="mx-auto my-2" @click="register()">تسجيل</v-btn>
         </div>
         <div class="d-flex">
           <div class="mx-auto my-4">
             <span class="info">
-              If you already have an account you can
+              إذا قمت بإنشاء حساب في وقت سابق يمكنك 
             </span>
             <span class="sign-in" @click="navigateTo({name: 'login'})">
-              Sign in
+              تسجيل الدخول
             </span>
           </div>
         </div>
       </v-form>
     </v-sheet>
+  </v-locale-provider>
 
 </template>
 
@@ -90,7 +109,7 @@ async function register () {
   }
 
   .v-sheet {
-    border: 1px rgb(185, 175, 175) solid;
+    border: 1px rgb(238,238,238) solid;
     border-radius: 2px;
   }
 
