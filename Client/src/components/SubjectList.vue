@@ -142,7 +142,7 @@ function closeDelete () {
 function goToTeachers(item) {
   editedIndex.value = subjects.value.indexOf(item);
   editedItem.value = Object.assign({}, item);
-  navigateTo({name: 'subject', params: {id: editedItem.value.id}})
+  navigateTo({name: 'teacher-subject-list', params: {id: editedItem.value.id}})
 }
 
 </script>
