@@ -19,7 +19,7 @@
       const response = await TeacherService.sendOTP({
         email: email.value,
       })
-      // navigateTo({ name: 'home' });
+      navigateTo({ name: 'otp-verification' });
     } catch (err) {
       console.log(err.message);
     }

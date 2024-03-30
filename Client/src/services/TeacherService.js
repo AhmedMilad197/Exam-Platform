@@ -28,6 +28,9 @@ export default {
   sendOTP(data) {
     return api().post('api/Teacher/sendOTP', data);
   },
+  verifyOTP(data) {
+    return api().post('api/Teacher/otp-verification', data);
+  },
   getExams(data) {
     return api().post('api/Teacher/exams', data);
   },

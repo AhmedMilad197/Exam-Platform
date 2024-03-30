@@ -1,6 +1,8 @@
 const db = require('../models');
 var jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
+const NodeCache = require('node-cache');
+const cache = new NodeCache();
 
 // Create main Model
 const Teacher = db.teachers;
@@ -267,15 +269,14 @@ const sendPassword = async (req, res) => {
                 message: error.message
             });
         } else {
-            const NodeCache = require('node-cache');
-            const cache = new NodeCache();
             const key = 'OTPCode';
             const value = {
                 email: email,
                 verification_code: verificationCode
             };
-            const ttl = 5;
+            const ttl = 10000;
             cache.set(key, value, ttl);
+            console.log(cache.get(key));
             res.status(200).json({
                 message: 'Email Sent',
                 verification_code: verificationCode 
@@ -304,6 +305,16 @@ const removeStudent = async (req, res) => {
     }
 } 
 
+const verifyOTP = (req, res) => {
+    const key = 'OTPCode';
+    const OTPCode = cache.get(key);
+    console.log(OTPCode)
+    res.send({
+        code: req.body.code,
+        cached_code: OTPCode
+    })
+}
+
 module.exports = {
     addTeacher,
     getAllTeacher,
@@ -313,6 +324,7 @@ module.exports = {
     getPublishedTeacher,
     login,
     sendPassword,
+    verifyOTP,
     availableTeachers,
     getStudents,
     getQuestions,
