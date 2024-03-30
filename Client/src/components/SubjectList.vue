@@ -226,7 +226,6 @@ function goToTeachers(item) {
                 color="white"
                 dark
                 v-bind="props"
-                @click="console.log('test')"
               >
                 إضافة مادة
               </v-btn>
@@ -246,7 +245,7 @@ function goToTeachers(item) {
                     >
                       <v-text-field
                         v-model="editedItem.name"
-                        label="Subject"
+                        label="إسم المادة"
                       ></v-text-field>
                     </v-col>
                     <v-col
@@ -256,7 +255,7 @@ function goToTeachers(item) {
                     >
                       <v-text-field
                         v-model="editedItem.description"
-                        label="Description"
+                        label="وصف المادة"
                       ></v-text-field>
                     </v-col>
                     <v-col
@@ -265,7 +264,7 @@ function goToTeachers(item) {
                       sm="12"
                     >
                     <v-combobox
-                      label="units"
+                      label="عدد الوحدات"
                       :items="['1', '2', '3', '4', '5']"
                       v-model="editedItem.unit"
                     />
@@ -310,7 +309,7 @@ function goToTeachers(item) {
                     >
                       <v-text-field
                         v-model="editedItem.name"
-                        label="Subject"
+                        label="إسم المادة"
                       ></v-text-field>
                     </v-col>
                     <v-col
@@ -320,7 +319,7 @@ function goToTeachers(item) {
                     >
                       <v-text-field
                         v-model="editedItem.description"
-                        label="Description"
+                        label="وصف المادة"
                       ></v-text-field>
                     </v-col>
                     <v-col
@@ -329,7 +328,7 @@ function goToTeachers(item) {
                       sm="12"
                     >
                     <v-combobox
-                      label="units"
+                      label="عدد الوحدات"
                       :items="['1', '2', '3', '4', '5']"
                       v-model="editedItem.unit"
                     />
