@@ -57,7 +57,7 @@
         ></v-text-field>
         <div class="error ml-2" />
         <div class="d-flex">
-          <span class="sign-in mx-2 my-2" @click="navigateTo({ name: 'register' })">
+          <span class="sign-in mx-2 my-2" @click="navigateTo({ name: 'send-otp' })">
             نسيت الرمز السري
           </span>
         </div>

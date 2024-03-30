@@ -30,6 +30,7 @@ import ViewExamView from '../views/ViewExamView.vue'
 import StudentExamListView from '../views/StudentExamListView.vue'
 import StudentSubjectListView from '../views/StudentSubjectListView.vue'
 import TeacherSubjectListView from '../views/TeacherSubjectListView.vue'
+import SendOTPView from '../views/SendOTPView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -215,6 +216,12 @@ const router = createRouter({
       path: '/subject/teachers/:id',
       name: 'teacher-subject-list',
       component: TeacherSubjectListView,
+      props: true
+    },
+    {
+      path: '/forgot-my-password',
+      name: 'send-otp',
+      component: SendOTPView,
       props: true
     },
   ]

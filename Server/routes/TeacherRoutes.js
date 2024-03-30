@@ -18,6 +18,8 @@ Teacherrouter.post('/questions',TeacherController.getQuestions)
 
 Teacherrouter.post('/course/questions',TeacherController.getCourseQuestions)
 
+Teacherrouter.post('/sendOTP',TeacherController.sendPassword)
+
 Teacherrouter.post('/exams',TeacherController.getExams)
 
 Teacherrouter.get('/allTeacher',TeacherController.getAllTeacher)

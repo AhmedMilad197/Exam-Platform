@@ -25,6 +25,9 @@ export default {
   getCourseQuestions(data) {
     return api().post('api/Teacher/course/questions', data);
   },
+  sendOTP(data) {
+    return api().post('api/Teacher/sendOTP', data);
+  },
   getExams(data) {
     return api().post('api/Teacher/exams', data);
   },

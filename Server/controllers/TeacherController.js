@@ -228,22 +228,36 @@ const block = async (req, res) => {
     }
 } 
 
+function generateRandomString(length) {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let randomString = '';
+    
+    for (let i = 0; i < length; i++) {
+      const randomIndex = Math.floor(Math.random() * characters.length);
+      randomString += characters.charAt(randomIndex);
+    }
+    
+    return randomString;
+  }
+  
+
 const sendPassword = async (req, res) => {
+    const verificationCode = generateRandomString(8);
     const email = req.body.email;
     let teacher = await Teacher.findOne({ where: { email: email } });
     const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-        user: 'nicemido4@gmail.com',
-        pass: 'jmjv vebr qfnv eadw'
-    }
+        service: 'gmail',
+        auth: {
+            user: 'nicemido4@gmail.com',
+            pass: 'jmjv vebr qfnv eadw'
+        }
     });
 
     const mailOptions = {
         from: 'nicemido4@gmail.com',
         to: email,
         subject: 'Exam Platform',
-        text: `Your Exam Platform password is ${teacher.password}`
+        text: `Your Exam Platform verification code is ${verificationCode}`
     };
 
     transporter.sendMail(mailOptions, (error, info) => {
@@ -253,8 +267,18 @@ const sendPassword = async (req, res) => {
                 message: error.message
             });
         } else {
+            const NodeCache = require('node-cache');
+            const cache = new NodeCache();
+            const key = 'OTPCode';
+            const value = {
+                email: email,
+                verification_code: verificationCode
+            };
+            const ttl = 5;
+            cache.set(key, value, ttl);
             res.status(200).json({
-                message: 'Email Sent'
+                message: 'Email Sent',
+                verification_code: verificationCode 
             })
         }
     });
