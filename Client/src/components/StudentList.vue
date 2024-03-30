@@ -227,9 +227,8 @@ onMounted(() => {
           >
             <template v-slot:activator="{ props }">
               <v-btn
-                class="mb-2"
-                color="primary"
-                dark
+                class="mb-2 primary"
+                color="white"
                 v-bind="props"
               >
                 إضافة طالب
@@ -297,23 +296,23 @@ onMounted(() => {
                 </v-container>
               </v-card-text>
     
-              <v-card>
-                <v-spacer></v-spacer>
-                <v-btn
-                  color="blue-darken-1"
-                  variant="text"
-                  @click="close"
-                >
-                  Cancel
-                </v-btn>
-                <v-btn
-                  color="blue-darken-1"
-                  variant="text"
-                  @click="save"
-                >
-                  Save
-                </v-btn>
-              </v-card>
+              <div class="d-flex">
+                <div class="mx-auto mb-4">
+                  <v-btn
+                    color="green-darken-1"
+                    class="mx-2"
+                    @click="save"
+                  >
+                    إضافة
+                  </v-btn>
+                  <v-btn
+                    color="blue-darken-1"
+                    @click="close"
+                  >
+                    إغلاق
+                  </v-btn>
+                </div>
+              </div>
             </v-card>
           </v-dialog>
           <v-dialog v-model="dialogDelete" max-width="500px">
@@ -334,12 +333,14 @@ onMounted(() => {
           class="me-2"
           size="small"
           @click="editItem(item)"
+          color="green"
         >
           mdi-pencil
         </v-icon>
         <v-icon
           size="small"
           @click="deleteItem(item)"
+          color="red"
         >
           mdi-delete
         </v-icon>
@@ -383,5 +384,9 @@ onMounted(() => {
 </template>
 
 <style scoped>
+
+.primary {
+  background-color: RGB(24,103,192);
+}
 
 </style>

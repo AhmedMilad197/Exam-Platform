@@ -207,10 +207,10 @@ onMounted(() => {
         </v-toolbar>
       </template>
       <template v-slot:item.actions="{ item }">
-        <v-icon class="me-2" size="small" @click="editItem(item)">
+        <v-icon class="me-2" size="small" @click="editItem(item)" color="blue">
           mdi-eye-arrow-right
         </v-icon>
-        <v-icon size="small" @click="selectTeacherToBlock(item)">
+        <v-icon size="small" @click="selectTeacherToBlock(item)" color="red">
           mdi-cancel
         </v-icon>
         <v-dialog v-model="blockTeacherConfirmation" width="auto">
