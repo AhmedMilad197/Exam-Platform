@@ -25,6 +25,15 @@ export default {
   getCourseQuestions(data) {
     return api().post('api/Teacher/course/questions', data);
   },
+  sendOTP(data) {
+    return api().post('api/Teacher/sendOTP', data);
+  },
+  verifyOTP(data) {
+    return api().post('api/Teacher/otp-verification', data);
+  },
+  resetPassword(data) {
+    return api().post('api/Teacher/reset-password', data);
+  },
   getExams(data) {
     return api().post('api/Teacher/exams', data);
   },

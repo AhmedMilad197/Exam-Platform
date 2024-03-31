@@ -9,10 +9,16 @@ module.exports=(sequelize,DataTypes)=>{
             allowNull:false
         },
         username:{
-            type:DataTypes.STRING
+            type:DataTypes.STRING,
+            unique: true,
+
         },
-        nameadmin:{
-            type :DataTypes.STRING
+        email:{
+            type :DataTypes.STRING,
+            unique: true,
+            validate: {
+                isEmail: true,
+            },
         },
         password:{
             type:DataTypes.STRING

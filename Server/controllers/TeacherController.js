@@ -1,6 +1,8 @@
 const db = require('../models');
 var jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
+const NodeCache = require('node-cache');
+const cache = new NodeCache();
 
 // Create main Model
 const Teacher = db.teachers;
@@ -8,15 +10,17 @@ const Teacher = db.teachers;
 
 // 1. Create Teacher
 const addTeacher = async (req, res) => {
+    const currentDate = new Date();
+    currentDate.setHours(currentDate.getHours() + 2);
     try {
         let info = {
             name: req.body.name,
             username: req.body.username,
-            nameadmin: req.body.nameadmin,
+            email: req.body.email,
             password: req.body.password,
             image: req.body.image,
             specialist: req.body.specialist,
-            lastlogin: req.body.lastlogin,
+            lastlogin: currentDate,
             active: req.body.active ? req.body.active : false,
         };
         const teacher = await Teacher.create(info);
@@ -226,22 +230,36 @@ const block = async (req, res) => {
     }
 } 
 
+function generateRandomString(length) {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let randomString = '';
+    
+    for (let i = 0; i < length; i++) {
+      const randomIndex = Math.floor(Math.random() * characters.length);
+      randomString += characters.charAt(randomIndex);
+    }
+    
+    return randomString;
+  }
+  
+
 const sendPassword = async (req, res) => {
+    const verificationCode = generateRandomString(8);
     const email = req.body.email;
     let teacher = await Teacher.findOne({ where: { email: email } });
     const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-        user: 'nicemido4@gmail.com',
-        pass: 'jmjv vebr qfnv eadw'
-    }
+        service: 'gmail',
+        auth: {
+            user: 'nicemido4@gmail.com',
+            pass: 'jmjv vebr qfnv eadw'
+        }
     });
 
     const mailOptions = {
         from: 'nicemido4@gmail.com',
         to: email,
         subject: 'Exam Platform',
-        text: `Your Exam Platform password is ${teacher.password}`
+        text: `Your Exam Platform verification code is ${verificationCode}`
     };
 
     transporter.sendMail(mailOptions, (error, info) => {
@@ -251,8 +269,17 @@ const sendPassword = async (req, res) => {
                 message: error.message
             });
         } else {
+            const key = 'OTPCode';
+            const value = {
+                email: email,
+                verification_code: verificationCode
+            };
+            const ttl = 10000;
+            cache.set(key, value, ttl);
+            console.log(cache.get(key));
             res.status(200).json({
-                message: 'Email Sent'
+                message: 'Email Sent',
+                verification_code: verificationCode 
             })
         }
     });
@@ -278,6 +305,34 @@ const removeStudent = async (req, res) => {
     }
 } 
 
+const verifyOTP = (req, res) => {
+    const key = 'OTPCode';
+    const OTPCode = cache.get(key);
+    console.log(OTPCode)
+    res.send({
+        code: req.body.code,
+        cached_code: OTPCode
+    })
+}
+
+const resetPassword = async (req, res) => {
+    const newPassword = req.body.new_password;
+    const key = 'OTPCode';
+    const data = cache.get(key);
+    const email = data.email
+    let teacher = await Teacher.findOne({ where: { email: email } });
+
+    if (teacher) {
+        teacher.password = newPassword;
+        await teacher.save();
+        res.status(200).send({
+            message: 'Password updated successfully.'
+        });
+      } else {
+        res.status(500).json({ error: 'Internal server error' });
+      }
+}
+
 module.exports = {
     addTeacher,
     getAllTeacher,
@@ -287,6 +342,8 @@ module.exports = {
     getPublishedTeacher,
     login,
     sendPassword,
+    verifyOTP,
+    resetPassword,
     availableTeachers,
     getStudents,
     getQuestions,

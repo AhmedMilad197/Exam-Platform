@@ -16,6 +16,12 @@ export default {
   addTeachers (teachers) {
     return api().post('api/Course/addTeacher', teachers);
   },
+  getTeachers (id) {
+    return api().get(`api/Course/${id}`);
+  },
+  removeTeacher (data) {
+    return api().post(`api/Course/teacher/remove`, data);
+  },
   delete (data) {
     return api().delete(`api/Course/${data.id}`);
   }

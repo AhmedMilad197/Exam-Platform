@@ -15,6 +15,7 @@ import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 
 const vuetify = createVuetify({
   components,
+  
   directives,
 })
 

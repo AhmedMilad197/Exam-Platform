@@ -19,6 +19,7 @@
     "express": "^4.19.2",
     "jsonwebtoken": "^9.0.2",
     "mysql2": "^3.9.0",
+    "node-cache": "^5.1.2",
     "nodemailer": "^6.9.13",
     "sequelize": "^6.8.0"
   },

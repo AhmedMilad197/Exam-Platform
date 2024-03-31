@@ -31,40 +31,55 @@
 
 </script>
 <template>
+  <v-locale-provider rtl>
+
     <v-sheet width="600px" class="mx-auto">
-      <v-toolbar color="primary">
+      <v-toolbar>
         <v-toolbar-title>
-          Login
+          تسجيل الدخول
         </v-toolbar-title>
       </v-toolbar>
       <v-form @submit.prevent class="mt-4">
         <v-text-field
-          label="username"
+          label="إاسم المستخدم"
           class="ml-2 mr-2"
           v-model="username"
+          hint="أدخل إاسم المستخدم"
+          persistent-hint
         ></v-text-field>
         <v-text-field
           type="password"
-          label="Password"
+          label="الرمز السري"
           class="ml-2 mr-2"
           v-model="password"
+          hint="أدخل الرمز السري"
+          persistent-hint
         ></v-text-field>
         <div class="error ml-2" />
         <div class="d-flex">
-          <v-btn type="submit" class="mx-auto my-2" @click="login()">Login</v-btn>
+          <span class="sign-in mx-2 my-2" @click="navigateTo({ name: 'send-otp' })">
+            نسيت الرمز السري
+          </span>
+        </div>
+        <div class="d-flex">
+          <v-btn type="submit" color="primary" class="mx-auto my-2" @click="login()">تسجيل الدخول</v-btn>
         </div>
         <div class="d-flex">
           <div class="mx-auto my-4">
             <span class="info">
-              If you don't have an account you can
+              إذا لم يكن لديك حساب يمكنك
             </span>
-            <span class="sign-un" @click="navigateTo({ name: 'register' })">
-              Sign up
+            <span class="sign-in" @click="navigateTo({ name: 'register' })">
+              انشاء حساب
+            </span>
+            <span class="info">
+              جديد
             </span>
           </div>
         </div>
       </v-form>
     </v-sheet>
+  </v-locale-provider>
 </template>
 
 <style scoped>
@@ -80,7 +95,7 @@
   .slot-text-center {
     text-align: center;
   }
-  .sign-un {
+  .sign-in {
     cursor: pointer;
     text-decoration: underline;
     color: blue;

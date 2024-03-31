@@ -1,12 +1,16 @@
 <script setup>
 import { ref, onMounted } from 'vue'
+import { useUserStore } from "@/stores/user";
 import { useRoute, useRouter } from 'vue-router'
 import ExamService from "@/services/ExamService"
+import ExamStudentService from "@/services/ExamStudentService"
 
 const route = useRoute();
 const router = useRouter();
 const score = ref([]);
-const answers = ref()
+const answers = ref();
+const maxScore = ref();
+const user = useUserStore(); 
 
 const exam = ref([]);
 
@@ -37,14 +41,15 @@ async function getExam() {
     exam.value = response.data
     let length = response.data.questions.length;
     let temp_array = []
+    let temp_mark = 0
     while(length--) {
+      temp_mark += response.data.questions[length].mark
       score.value.push(0);
       temp_array.push([0, 0, 0, 0]);
     }
+    maxScore.value = temp_mark
     answers.value = temp_array
-    console.log(response.data.questions)
   } catch (error) {
-    console.log(error.message)
     return {
       message: error.message
     }
@@ -60,6 +65,27 @@ function updateScore(question_id, answer, right_answer, mark) {
     score.value[question_id] = mark;
   } else {
     score.value[question_id] = 0;
+  }
+}
+
+async function submit() {
+  try {
+    let max_score = parseInt(maxScore.value)
+    let student_score = 0
+    score.value.forEach(element => {
+      student_score += parseInt(element)
+    });
+    let ans = parseInt(student_score / max_score * 100)
+    const response = ExamStudentService.create({
+      studentId: user.user.id,
+      examId: route.params.exam,
+      score: ans
+    });
+    router.go(-1);
+  } catch (error) {
+    return {
+      message: error.message
+    }
   }
 }
 
@@ -160,7 +186,7 @@ onMounted(() => {
       </div>
     
       <div class="d-flex flex-row">
-        <v-btn color="primary" class="mx-auto my-4">Submit</v-btn>
+        <v-btn color="primary" class="mx-auto my-4" @click="submit()">إرسال</v-btn>
       </div>
     
     </v-card>

@@ -70,6 +70,9 @@ Exam.belongsTo(Teacher, {
 Student.belongsToMany(Exam, { through: ExamStudent });
 Exam.belongsToMany(Student, { through: ExamStudent });
 
+ExamStudent.belongsTo(Exam);
+ExamStudent.belongsTo(Student);
+
 db.sequelize.sync({force:0}) 
 .then(()=>{
     console.log('yes re-sync ddone!')

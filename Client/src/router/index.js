@@ -29,7 +29,11 @@ import ViewQuestionView from '../views/ViewQuestionView.vue'
 import ViewExamView from '../views/ViewExamView.vue'
 import StudentExamListView from '../views/StudentExamListView.vue'
 import StudentSubjectListView from '../views/StudentSubjectListView.vue'
-
+import TeacherSubjectListView from '../views/TeacherSubjectListView.vue'
+import SendOTPView from '../views/SendOTPView.vue'
+import OTPVerificationView from '../views/OTPVerificationView.vue'
+import ResetPasswordView from '../views/ResetPasswordView.vue'
+import StudentExamMarkView from '../views/StudentExamMarkView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -209,6 +213,36 @@ const router = createRouter({
       path: '/student/subject-list',
       name: 'student-subject-list',
       component: StudentSubjectListView,
+      props: true
+    },
+    {
+      path: '/subject/teachers/:id',
+      name: 'teacher-subject-list',
+      component: TeacherSubjectListView,
+      props: true
+    },
+    {
+      path: '/forgot-my-password',
+      name: 'send-otp',
+      component: SendOTPView,
+      props: true
+    },
+    {
+      path: '/otp-verification',
+      name: 'otp-verification',
+      component: OTPVerificationView,
+      props: true
+    },
+    {
+      path: '/reset-password',
+      name: 'reset-password',
+      component: ResetPasswordView,
+      props: true
+    },
+    {
+      path: '/view-exam/students/:id',
+      name: 'student-exam-marks',
+      component: StudentExamMarkView,
       props: true
     },
   ]
