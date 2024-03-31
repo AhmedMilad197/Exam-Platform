@@ -20,9 +20,6 @@ module.exports=(sequelize,DataTypes)=>{
                  key: 'id',
                         }
         },
-        type:{
-            type :DataTypes.INTEGER
-        },
         content:{
             type:DataTypes.STRING
         },
@@ -40,9 +37,6 @@ module.exports=(sequelize,DataTypes)=>{
         },
         rightanswer:{
             type:DataTypes.INTEGER
-        },
-        active:{
-            type:DataTypes.BOOLEAN
         },
         mark:{
             type:DataTypes.INTEGER

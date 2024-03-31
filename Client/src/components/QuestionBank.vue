@@ -58,14 +58,12 @@ async function addQuestion() {
     await QuestionService.create({
       courseid: route.params.subject,
       teacherid: user.user.id,
-      type: 1,
       content: question.value,
       answer1: answer1.value,
       answer2: answer2.value,
       answer3: answer3.value,
       answer4: answer4.value,
       rightanswer: rightAnswer.value,
-      active: true,
       mark: mark.value
     });
     getTeacherQuestions();
