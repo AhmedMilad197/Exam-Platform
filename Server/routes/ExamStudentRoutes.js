@@ -7,4 +7,6 @@ ExamStudentRouter.post('/',ExamStudentController.create)
 
 ExamStudentRouter.get('/students/:id',ExamStudentController.getStudents)
 
+ExamStudentRouter.get('/excel/store/:id',ExamStudentController.storeToExcel)
+
 module.exports=ExamStudentRouter

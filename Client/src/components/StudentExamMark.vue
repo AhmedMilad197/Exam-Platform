@@ -17,6 +17,16 @@ async function index() {
   }
 }
 
+async function storeToExcel() {
+  try {
+    const response = await ExamStudentService.storeToExcel(route.params.id);
+  } catch (error) {
+    return {
+      message: error.message
+    }
+  }
+}
+
 onMounted(() => {
   index();
 });
@@ -34,7 +44,7 @@ onMounted(() => {
               flat
             >
               <v-toolbar-title>اختباراتك</v-toolbar-title>
-              <v-btn color="white" class="success-green">طباعة إلى excel</v-btn>
+              <v-btn color="white" class="success-green" @click="storeToExcel()">طباعة إلى excel</v-btn>
             </v-toolbar>
           </template>
 
