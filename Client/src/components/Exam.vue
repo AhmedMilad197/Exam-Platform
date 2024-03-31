@@ -70,10 +70,16 @@ function updateScore(question_id, answer, right_answer, mark) {
 
 async function submit() {
   try {
+    let max_score = parseInt(maxScore.value)
+    let student_score = 0
+    score.value.forEach(element => {
+      student_score += parseInt(element)
+    });
+    let ans = parseInt(student_score / max_score * 100)
     const response = ExamStudentService.create({
       studentId: user.user.id,
       examId: route.params.exam,
-      score: Math.ceil(score.value / maxScore.value) * 100
+      score: ans
     });
     router.go(-1);
   } catch (error) {

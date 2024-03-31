@@ -61,6 +61,11 @@ onMounted(() => {
       >
       <v-toolbar>
         <v-toolbar-title>بيانات الإختبار</v-toolbar-title>
+          <v-btn 
+            color="white" 
+            class="blue"
+            @click="navigateTo({ name: 'student-exam-marks' })"
+          >درجات الطلبة</v-btn>
       </v-toolbar>
       <v-table
         fixed-header
@@ -197,4 +202,9 @@ onMounted(() => {
   .slot-text-center {
     text-align: center;
   }
+
+  .blue {
+    background-color: #0091EA
+  }
+
 </style>

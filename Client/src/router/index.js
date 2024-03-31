@@ -33,6 +33,7 @@ import TeacherSubjectListView from '../views/TeacherSubjectListView.vue'
 import SendOTPView from '../views/SendOTPView.vue'
 import OTPVerificationView from '../views/OTPVerificationView.vue'
 import ResetPasswordView from '../views/ResetPasswordView.vue'
+import StudentExamMarkView from '../views/StudentExamMarkView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -236,6 +237,12 @@ const router = createRouter({
       path: '/reset-password',
       name: 'reset-password',
       component: ResetPasswordView,
+      props: true
+    },
+    {
+      path: '/view-exam/students/:id',
+      name: 'student-exam-marks',
+      component: StudentExamMarkView,
       props: true
     },
   ]
