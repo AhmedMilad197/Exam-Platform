@@ -62,108 +62,111 @@ async function goBack () {
 </script>
 
 <template>
-  <v-layout column>
-    <v-sheet width="600px" class="mx-auto">
-      <v-toolbar color="primary">
-        <v-toolbar-title>
-          View Question
-        </v-toolbar-title>
-      </v-toolbar>
-      <v-form @submit.prevent class="mt-4">
-        <div class="mx-4">
-          <span class="text-h5">
-            Question
-          </span>
-        </div>
-        <v-text-field
-          label="Question"
-          class="ml-2 mr-2"
-          v-model="question"
-          hint="Edit the question if you want."
-          persistent-hint
-        ></v-text-field>
-        <div class="error ml-2" />
-        <div class="mx-4">
-          <span class="text-h5">
-            Choices
-          </span>
-        </div>
-        <v-list class="mx-4">
-        <div class="d-flex mx-2 my-2">
-          <v-responsive :width="`500px`">
-            <v-text-field
-              label="Choice 1"
-              hint="Insert Choice 1 please."
-              persistent-hint
-              v-model="answer1"
-            ></v-text-field>
-          </v-responsive>
-            <v-checkbox-btn 
-            class="mx-4" 
-            color="success" 
-            :model-value="(rightAnswer == 1 ? true: false)"
-            @click="setAnswer($event, 1)" 
-            disabled
-            />
-        </div>
-        <div class="d-flex mx-2 my-2">
-          <v-responsive :width="`500px`">
-            <v-text-field
-              label="Choice 2"
-              hint="Insert Choice 2 please."
-              persistent-hint
-              v-model="answer2"
-            ></v-text-field>
-          </v-responsive>
-            <v-checkbox-btn 
-            class="mx-4" 
-            color="success" 
-            :model-value="(rightAnswer == 2 ? true: false)"
-            @click="setAnswer($event, 2)"
-            disabled
-            />
-        </div>
-        <div class="d-flex mx-2 my-2">
-          <v-responsive :width="`500px`">
-            <v-text-field
-              label="Choice 3"
-              hint="Insert Choice 3 please."
-              persistent-hint
-              v-model="answer3"
-            ></v-text-field>
-          </v-responsive>
-            <v-checkbox-btn 
-            class="mx-4" 
-            color="success" 
-            :model-value="(rightAnswer == 3 ? true: false)"
-            @click="setAnswer($event, 3)"
-            disabled
-            />
-        </div>
-        <div class="d-flex mx-2 my-2">
-          <v-responsive :width="`500px`">
-            <v-text-field
-              label="Choice 4"
-              hint="Insert Choice 4 please."
-              persistent-hint
-              v-model="answer4"
-            ></v-text-field>
-          </v-responsive>
-            <v-checkbox-btn 
-            class="mx-4" 
-            color="success" 
-            :model-value="(rightAnswer == 4 ? true: false)"
-            @click="setAnswer($event, 4)"
-            disabled
-            />
-        </div>
-      </v-list>
-        <v-col class="text-center" cols="12">
-          <v-btn color="primary" @click="goBack()">Go Back</v-btn>
-        </v-col>
-      </v-form>
-    </v-sheet>
-  </v-layout>
+  <v-locale-provider rtl>
+
+    <v-layout column>
+      <v-sheet width="600px" class="mx-auto">
+        <v-toolbar>
+          <v-toolbar-title>
+            عرض السؤال
+          </v-toolbar-title>
+        </v-toolbar>
+        <v-form @submit.prevent class="mt-4">
+          <div class="mx-4">
+            <span class="text-h5">
+              السؤال
+            </span>
+          </div>
+          <v-text-field
+            label="السؤال"
+            class="ml-2 mr-2 no-select"
+            v-model="question"
+            hint="نص السؤال"
+            persistent-hint
+          ></v-text-field>
+          <div class="error ml-2" />
+          <div class="mx-4">
+            <span class="text-h5">
+              الإختيارات
+            </span>
+          </div>
+          <v-list class="mx-4">
+          <div class="d-flex mx-2 my-2">
+            <v-responsive :width="`500px`">
+              <v-text-field
+                label="الإختيار الأول"
+                hint="نص الإختيار الأول"
+                persistent-hint
+                v-model="answer1"
+                class="no-select"
+              ></v-text-field>
+            </v-responsive>
+              <v-checkbox-btn 
+              class="mx-4" 
+              color="success" 
+              :model-value="(rightAnswer == 1 ? true: false)"
+              disabled
+              />
+          </div>
+          <div class="d-flex mx-2 my-2">
+            <v-responsive :width="`500px`">
+              <v-text-field
+                label="الإختيار الثاني"
+                hint="نص الإختيار الثاني"
+                persistent-hint
+                v-model="answer2"
+                class="no-select"
+              ></v-text-field>
+            </v-responsive>
+              <v-checkbox-btn 
+              class="mx-4" 
+              color="success" 
+              :model-value="(rightAnswer == 2 ? true: false)"
+              disabled
+              />
+          </div>
+          <div class="d-flex mx-2 my-2">
+            <v-responsive :width="`500px`">
+              <v-text-field
+                label="الإختيار الثالث"
+                hint="نص الإختيار الثالث"
+                persistent-hint
+                v-model="answer3"
+                class="no-select"
+              ></v-text-field>
+            </v-responsive>
+              <v-checkbox-btn 
+              class="mx-4" 
+              color="success" 
+              :model-value="(rightAnswer == 3 ? true: false)"
+              disabled
+              />
+          </div>
+          <div class="d-flex mx-2 my-2">
+            <v-responsive :width="`500px`">
+              <v-text-field
+                label="الإختيار الرابع"
+                hint="نص الإختيار الرابع"
+                persistent-hint
+                v-model="answer4"
+                class="no-select"
+              ></v-text-field>
+            </v-responsive>
+              <v-checkbox-btn 
+              class="mx-4" 
+              color="success" 
+              :model-value="(rightAnswer == 4 ? true: false)"
+              disabled
+              />
+          </div>
+        </v-list>
+          <v-col class="text-center" cols="12">
+            <v-btn color="primary" @click="goBack()">العودة</v-btn>
+          </v-col>
+        </v-form>
+      </v-sheet>
+    </v-layout>
+  </v-locale-provider>
   
 </template>
 
@@ -179,5 +182,9 @@ async function goBack () {
 
   .slot-text-center {
     text-align: center;
+  }
+
+  .no-select {
+    pointer-events: none;
   }
 </style>
