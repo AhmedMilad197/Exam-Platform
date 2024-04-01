@@ -31,21 +31,27 @@ async function login () {
 
 </script>
 <template>
+  <v-locale-provider rtl>
+
     <v-sheet width="600px" class="mx-auto">
-      <v-toolbar color="primary">
+      <v-toolbar>
         <v-toolbar-title>
-          Student Login
+          تسجيل الدخول
         </v-toolbar-title>
       </v-toolbar>
       <v-form @submit.prevent class="mt-4">
         <v-text-field
-          label="Your Username"
+          label="إسم المستخدم"
+          hint="ادخل إسم المستخدم الخاص بك"
+          persistent-hint
           class="ml-2 mr-2"
           v-model="username"
         ></v-text-field>
         <v-text-field
           type="password"
-          label="Your Password"
+          label="الرمز السري"
+          hint="ادخل الرمز السري الخاص بك"
+          persistent-hint
           class="ml-2 mr-2"
           v-model="password"
         ></v-text-field>
@@ -55,6 +61,7 @@ async function login () {
         </div>
       </v-form>
     </v-sheet>
+  </v-locale-provider>
 </template>
 
 <style scoped>
