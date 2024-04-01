@@ -51,14 +51,12 @@ async function addQuestion() {
     await QuestionService.create({
       courseid: route.params.subject,
       teacherid: user.user.id,
-      type: 1,
       content: question.value,
       answer1: answers.value[0].value,
       answer2: answers.value[1].value,
       answer3: answers.value[2].value,
       answer4: answers.value[3].value,
       rightanswer: answerId,
-      active: true,
       mark: 22
     });
     router.go(-1);

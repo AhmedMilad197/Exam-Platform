@@ -10,14 +10,12 @@ const addQuestion = async (req, res) => {
         let info = {
             courseid: req.body.courseid,
             teacherid: req.body.teacherid,
-            type: req.body.type,
             content: req.body.content,
             answer1: req.body.answer1,
             answer2: req.body.answer2,
             answer3: req.body.answer3,
             answer4: req.body.answer4,
             rightanswer: req.body.rightanswer,
-            active: req.body.active ? req.body.active : false,
             mark: req.body.mark,
         };
 

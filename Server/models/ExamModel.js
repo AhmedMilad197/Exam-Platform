@@ -15,9 +15,6 @@ module.exports=(sequelize,DataTypes)=>{
         description:{
             type :DataTypes.STRING
         },
-        full_mark:{
-            type:DataTypes.INTEGER
-        },
         teacherid :{
             type:DataTypes.INTEGER,
             onDelete: 'RESTRICT',

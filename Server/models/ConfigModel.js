@@ -17,9 +17,6 @@ module.exports=(sequelize,DataTypes)=>{
         password:{
             type:DataTypes.STRING
         },
-        active:{
-            type:DataTypes.BOOLEAN
-        },
         goals:{
             type:DataTypes.STRING
         },

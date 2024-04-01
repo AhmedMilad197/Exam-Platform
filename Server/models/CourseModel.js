@@ -8,14 +8,8 @@ module.exports=(sequelize,DataTypes)=>{
             type:DataTypes.STRING,
             allowNull:false
         },
-        active:{
-            type:DataTypes.BOOLEAN
-        },
         description:{
             type :DataTypes.STRING
-        },
-        image:{
-            type:DataTypes.STRING
         },
         unit:{
             type:DataTypes.INTEGER

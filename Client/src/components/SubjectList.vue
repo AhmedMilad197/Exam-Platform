@@ -72,9 +72,7 @@ async function AddSubject(subject) {
   try {
     await SubjectService.create({
       name: subject.name,
-      active: true,
       description: subject.description,
-      image: '/todo-later',
       unit: subject.unit,
     });
     getSubjects();
