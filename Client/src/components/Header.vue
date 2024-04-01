@@ -13,19 +13,19 @@ function navigateTo (link) {
 
 const items = ref([
   {
-    title: 'Teachers',
+    title: 'المدرسين',
     value: {
       name: 'teachers'
     }
   },
   {
-    title: 'Students',
+    title: 'الطلبة',
     value: {
       name: 'students'
     }
   },
   {
-    title: 'Questions',
+    title: 'الأسئلة',
     value: {
       name: 'questions',
       params: {
@@ -34,13 +34,13 @@ const items = ref([
     }
   },
   {
-    title: 'Subjects',
+    title: 'المواد',
     value: {
       name: 'subjects'
     }
   },
   {
-    title: 'Log Out',
+    title: 'تسجيل الخروج',
     color: 'red',
     value: {
       name: 'logout'
@@ -53,24 +53,29 @@ const drawer = ref(false);
 </script>
 
 <template>
+  
   <v-card>
     <v-layout class="mb-15">
-      <v-app-bar
-        color="primary"
-        prominent
-      >
-        <v-app-bar-nav-icon variant="text" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-        <v-toolbar-title>
-          <span class="title-text" @click="navigateTo({ name: 'home' })">
-            Exam Platform
-          </span>
-        </v-toolbar-title>
-        <v-spacer></v-spacer>
-      </v-app-bar>
+      <v-locale-provider rtl>
+    
+        <v-app-bar
+          color="primary"
+          prominent
+        >
+          <v-app-bar-nav-icon variant="text" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+          <v-toolbar-title>
+            <span class="title-text" @click="navigateTo({ name: 'home' })">
+              Exam Platform
+            </span>
+          </v-toolbar-title>
+          <v-spacer></v-spacer>
+        </v-app-bar>
+      </v-locale-provider>
 
       <v-navigation-drawer
         v-model="drawer"
-        location="left"
+        location="right"
+        style="z-index: 1;"
         temporary
       >
         <v-list density="compact">
@@ -78,9 +83,10 @@ const drawer = ref(false);
             v-for="(item, i) in items"
             :key="i"
             :value="item.value"
+            style="text-align: right;"
             @click="navigateTo(item.value)"
           >
-            <div v-if="item.title == 'Log Out'">
+            <div v-if="item.title == 'تسجيل الخروج'">
               <v-list-item-title style="color: red;">{{ item.title }}</v-list-item-title>
             </div>
             <div v-else>
