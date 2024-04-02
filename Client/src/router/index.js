@@ -34,14 +34,15 @@ import SendOTPView from '../views/SendOTPView.vue'
 import OTPVerificationView from '../views/OTPVerificationView.vue'
 import ResetPasswordView from '../views/ResetPasswordView.vue'
 import StudentExamMarkView from '../views/StudentExamMarkView.vue'
+import LandingPageView from '../views/LandingPageView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',
-      name: 'welcome',
-      component: WelcomeView
+      name: 'LandingPageView',
+      component: LandingPageView
     },
     {
       path: '/home',
