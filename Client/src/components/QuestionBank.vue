@@ -243,6 +243,7 @@ function closeEditQuestionDialog () {
               class="ml-2 mr-2"
               v-model="question"
               hint="عدل السؤال إذا أردت"
+              :rules="[v => !!v || 'يجب إدخال نص السؤال']"
               persistent-hint
             ></v-text-field>
             <v-text-field
@@ -251,6 +252,7 @@ function closeEditQuestionDialog () {
               type="number"
               v-model="mark"
               hint="عدل في درجة السؤال إذا أردت"
+              :rules="[v => !!v || 'يجب إدخال الدرجة']"
               persistent-hint
             ></v-text-field>
             <div class="error ml-2" />
@@ -265,6 +267,7 @@ function closeEditQuestionDialog () {
                 <v-text-field
                   label="الإختيار الأول"
                   hint="عدل الإختيار الأول"
+                  :rules="[v => !!v || 'يجب إدخال الإختيار الأول']"
                   persistent-hint
                   v-model="answer1"
                 ></v-text-field>
@@ -281,6 +284,7 @@ function closeEditQuestionDialog () {
                 <v-text-field
                   label="الإختيار الثاني"
                   hint="عدل الإختيار الثاني"
+                  :rules="[v => !!v || 'يجب إدخال الإختيار الثاني']"
                   persistent-hint
                   v-model="answer2"
                 ></v-text-field>
@@ -297,6 +301,7 @@ function closeEditQuestionDialog () {
                 <v-text-field
                   label="الإختيار الثالث"
                   hint="عدل الإختيار الثالث"
+                  :rules="[v => !!v || 'يجب إدخال الإختيار الثالث']"
                   persistent-hint
                   v-model="answer3"
                 ></v-text-field>
@@ -313,6 +318,7 @@ function closeEditQuestionDialog () {
                 <v-text-field
                   label="الإختيار الرابع"
                   hint="عدل الإختيار الرابع"
+                  :rules="[v => !!v || 'يجب إدخال الإختيار الرابع']"
                   persistent-hint
                   v-model="answer4"
                 ></v-text-field>
@@ -357,6 +363,7 @@ function closeEditQuestionDialog () {
               class="ml-2 mr-2"
               v-model="question"
               hint="أضف السؤال"
+              :rules="[v => !!v || 'يجب إدخال نص السؤال']"
               persistent-hint
             ></v-text-field>
             <v-text-field
@@ -365,6 +372,7 @@ function closeEditQuestionDialog () {
               v-model="mark"
               type="number"
               hint="أضف درجة السؤال"
+              :rules="[v => !!v || 'يجب إدخال درجة السؤال']"
               persistent-hint
             ></v-text-field>
             <div class="error ml-2" />
@@ -379,6 +387,7 @@ function closeEditQuestionDialog () {
                 <v-text-field
                   label="الإختيار الأول"
                   hint="الإختيار الأول"
+                  :rules="[v => !!v || 'يجب إدخال الإختيار الأول']"
                   persistent-hint
                   v-model="answer1"
                 ></v-text-field>
@@ -395,6 +404,7 @@ function closeEditQuestionDialog () {
                 <v-text-field
                   label="الإختيار الثاني"
                   hint="الإختيار الثاني"
+                  :rules="[v => !!v || 'يجب إدخال الإختيار الثاني']"
                   persistent-hint
                   v-model="answer2"
                 ></v-text-field>
@@ -411,6 +421,7 @@ function closeEditQuestionDialog () {
                 <v-text-field
                   label="الإختيار الثالث"
                   hint="الإختيار الثالث"
+                  :rules="[v => !!v || 'يجب إدخال الإختيار الثالث']"
                   persistent-hint
                   v-model="answer3"
                 ></v-text-field>
@@ -427,6 +438,7 @@ function closeEditQuestionDialog () {
                 <v-text-field
                   label="الإختيار الرابع"
                   hint="الإختيار الرابع"
+                  :rules="[v => !!v || 'يجب إدخال الإختيار الرابع']"
                   persistent-hint
                   v-model="answer4"
                 ></v-text-field>

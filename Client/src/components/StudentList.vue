@@ -4,7 +4,7 @@ import { useRouter } from 'vue-router'
 import StudentService from '@/services/StudentService'
 
 const router = useRouter()
-const selectedItem = ref();
+const addStudentForm = ref();
 const students = ref();
 const snackbar = ref(false);
 
@@ -74,18 +74,21 @@ async function addStudent (student) {
 }
 
 async function update (student) {
-  try {
-    const response = await StudentService.update({
-      id: student.id,
-      name: student.name,
-      username: student.username,
-      phone: student.phone,
-      password: student.password,
-      address: student.address
-    });
-  } catch (error) {
-    return {
-      message: error.message
+  const {valid, errors} = await addStudentForm.value?.validate()
+  if (valid) {
+    try {
+      const response = await StudentService.update({
+        id: student.id,
+        name: student.name,
+        username: student.username,
+        phone: student.phone,
+        password: student.password,
+        address: student.address
+      });
+    } catch (error) {
+      return {
+        message: error.message
+      }
     }
   }
 }
@@ -112,15 +115,18 @@ function close() {
 }
 
 async function save () {
-  if (editedIndex.value > -1) {
-    update(editedItem.value);
-    Object.assign(students.value[editedIndex.value], editedItem.value)
-    console.log(editedItem.value);
-  } else {
-    addStudent(editedItem.value);
-    students.value.push(editedItem.value)
+  const {valid, errors} = await addStudentForm.value?.validate()
+  if (valid) {
+    if (editedIndex.value > -1) {
+      update(editedItem.value);
+      Object.assign(students.value[editedIndex.value], editedItem.value)
+      console.log(editedItem.value);
+    } else {
+      addStudent(editedItem.value);
+      students.value.push(editedItem.value)
+    }
+    close()
   }
-  close()
 }
 
 function closeDelete() {
@@ -148,6 +154,15 @@ function deleteItem (item) {
 onMounted(() => {
   index();
 });
+
+function phoneRule (value) {
+  if (value?.length == 10 && /[0-9-]+/.test(value)) {
+    let prefix = value.slice(0, 3);
+    let prefixs = ['091', '092', '093'];
+    if (prefixs.includes(prefix)) return true;
+  }
+  return 'بيانات رقم الهاتف غير صحيحة';
+}
 
 </script>
 
@@ -239,7 +254,7 @@ onMounted(() => {
                 <span class="text-h5"> إضافة طالب </span>
               </v-card-title>
     
-              <v-card-text>
+              <v-form ref="addStudentForm">
                 <v-container>
                   <v-row>
                     <v-col
@@ -250,6 +265,7 @@ onMounted(() => {
                       <v-text-field
                         v-model="editedItem.name"
                         label="إسم الطالب"
+                        :rules="[v => !!v || 'يجب إدخال إسم الطالب']"
                       ></v-text-field>
                     </v-col>
                     <v-col
@@ -259,7 +275,8 @@ onMounted(() => {
                     >
                       <v-text-field
                         v-model="editedItem.username"
-                        label="username"
+                        label="إسم المستخدم"
+                        :rules="[v => !!v || 'يجب إدخال إسم المستخدم']"
                       ></v-text-field>
                     </v-col>
                     <v-col
@@ -270,6 +287,7 @@ onMounted(() => {
                       <v-text-field
                         v-model="editedItem.password"
                         label="الرمز السري"
+                        :rules="[v => !!v || 'يجب إدخال الرمز السري']"
                       ></v-text-field>
                     </v-col>
                     <v-col
@@ -280,6 +298,7 @@ onMounted(() => {
                       <v-text-field
                         v-model="editedItem.phone"
                         label="رقم الهاتف"
+                        :rules="[v => phoneRule(v)]"
                       ></v-text-field>
                     </v-col>
                     <v-col
@@ -290,11 +309,12 @@ onMounted(() => {
                       <v-text-field
                         v-model="editedItem.address"
                         label="العنوان"
+                        :rules="[v => !!v || 'يجب إدخال العنوان']"
                       ></v-text-field>
                     </v-col>
                   </v-row>
                 </v-container>
-              </v-card-text>
+              </v-form>
     
               <div class="d-flex">
                 <div class="mx-auto mb-4">

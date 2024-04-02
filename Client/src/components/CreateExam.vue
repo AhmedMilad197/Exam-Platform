@@ -126,6 +126,7 @@ onMounted(() => {
               label="عنوان الإختبار"
               v-model="examTitle"
               hint="أضف عنوان للإختبار"
+              :rules="[v => !!v || 'يجب إدخال عنوان الإختبار']"
               persistent-hint
             ></v-text-field>
           </div>
@@ -137,6 +138,7 @@ onMounted(() => {
           <div>
             <v-text-field
               label="وصف الإختبار"
+              :rules="[v => !!v || 'يجب إدخال وصف الإختبار']"
               v-model="examDescription"
               hint="أضف وصف للإختبار"
               persistent-hint
@@ -147,6 +149,7 @@ onMounted(() => {
           <div class="mx-4">
             <v-date-picker
               header="موعد الإختبار"
+              :rules="[v => !!v || 'يجب إدخال موعد الإختبار']"
               bg-color="primary"
               v-model="date"
             ></v-date-picker>
@@ -159,6 +162,7 @@ onMounted(() => {
                   <v-combobox
                     label="الساعة"
                     :items="['8', '9', '10', '11', '12','13', '14', '15', '16', '17']"
+                    :rules="[v => !!v || 'يجب إدخال الساعة']"
                     v-model="starthour"
                   ></v-combobox>
                 </div>
@@ -166,6 +170,7 @@ onMounted(() => {
                   <v-combobox
                     label="الدقيقة"
                     :items="['00', '05', '10', '15', '20', '25', '30', '35', '40', '45', '50', '55']"
+                    :rules="[v => !!v || 'يجب إدخال الدقائق']"
                     v-model="startminute"
                   ></v-combobox>
                 </div>
@@ -177,6 +182,7 @@ onMounted(() => {
                 <div class="mx-2 my-2">
                   <v-combobox
                     label="الساعة"
+                    :rules="[v => !!v || 'يجب إدخال الساعة']"
                     :items="['8', '9', '10', '11', '12','13', '14', '15', '16', '17']"
                     v-model="endhour"
                   ></v-combobox>
@@ -184,6 +190,7 @@ onMounted(() => {
                 <div class="mx-2 my-2">
                   <v-combobox
                     label="الدقيقة"
+                    :rules="[v => !!v || 'يجب إدخال الدقائق']"
                     :items="['00', '05', '10', '15', '20', '25', '30', '35', '40', '45', '50', '55']"
                     v-model="endminute"
                   ></v-combobox>
