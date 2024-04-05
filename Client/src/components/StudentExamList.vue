@@ -3,7 +3,7 @@ import { useRouter, useRoute } from 'vue-router';
 import { ref, onMounted } from 'vue';
 import { useUserStore } from "@/stores/user";
 import StudentService from "@/services/StudentService";
-import imgUrl from '../assets/exams-header1.jpg'
+import imgUrl from '../assets/exams-header.jpg'
 
 const user = useUserStore(); 
 const router = useRouter();
