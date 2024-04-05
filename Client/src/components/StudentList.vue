@@ -2,6 +2,7 @@
 import { ref, onMounted, nextTick } from 'vue'
 import { useRouter } from 'vue-router'
 import StudentService from '@/services/StudentService'
+import imgUrl from '../assets/students.jpg'
 
 const router = useRouter()
 const addStudentForm = ref();
@@ -220,8 +221,11 @@ function phoneRule (value) {
           </v-table>
         </v-card>
       </div> -->
-    
-      <v-data-table
+
+    <div class="mx-auto">
+      <img :src="imgUrl" alt="Logo" style="width: 1400px; height: 450px;">
+    </div>
+    <v-data-table
       :headers="headers"
       :items="students"
     >

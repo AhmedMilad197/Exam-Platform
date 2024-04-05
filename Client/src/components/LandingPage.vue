@@ -1,55 +1,82 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import imgUrl from '../assets/education.jpg'
+import imgUrl from '../assets/landing_page_background.jpg'
+import visionImgUrl from '../assets/vision.jpg'
+import goalsImgUrl from '../assets/goals.jpg'
 </script>
 
 <template>
   <v-locale-provider rtl>
 
-    <div class="d-flex flex-column">
-      <div class="mx-auto">
-        <img :src="imgUrl" alt="Logo" style="border-radius: 20px;">
+    <div class="d-flex flex-column" width="1400px">
+      <div class="mx-auto mt-10">
+        <img :src="imgUrl" alt="Logo" style="width: 1400px; height: 400px;">
       </div>
-      <div style=" margin: auto; width: 820px; background-color: #f2f2f2; padding: 20px; border-radius: 10px;">
-        <h3 style="color: #3366cc;">رؤيتنا:</h3>
-        <p style="color: #666666;">تهدف منصة الامتحانات الإلكترونية إلى تحويل عملية التقييم والامتحانات إلى تجربة رائدة
-          ومبتكرة في العصر الرقمي. نرى مستقبلًا حيث لا يكون هناك حاجة للورق والقلم والتصحيح اليدوي، حيث تتم جميع
-          العمليات بشكل آلي وفعال. نحن نسعى لأن نكون الخيار الأول للمؤسسات التعليمية عندما يتعلق الأمر بالامتحانات
-          الإلكترونية، ونسعى لتحقيق الابتكار المستدام والتطور المستمر لتلبية احتياجات المستخدمين وتطلعاتهم. ستكون المنصة
-          الإلكترونية للامتحانات أداة قوية لتحقيق التكافؤ وتعزيز العدالة التعليمية.
-        </p>
-        <br>
-        <!-- <h3 style="color: #3366cc;">أهدافنا:</h3> <ol style="color: #666666;"> <li>توفير بيئة افتراضية آمنة وموثوقة.</li> <li>تطوير واجهة مستخدم متطورة وسهلة الاستخدام.</li> <li>توفير ميزات إحصائية وتحليلية قوية.</li> <li>مرونة وتكيف مع البيئات التعليمية المختلفة.</li> <li>دعم التقييم الشامل والتنوع.</li> <li>التوسع العالمي والتعاون.</li> <li>الابتكار المستدام والتحسين المستمر.</li> </ol> </div> -->
-        <h3 style="color: #3366cc;">أهدافنا:</h3>
-        <ol style="color: #666666;">
-          <li>توفير بيئة افتراضية آمنة وموثوقة.</li>
-          <li>تطوير واجهة مستخدم متطورة وسهلة الاستخدام.</li>
-          <li>مرونة وتكيف مع البيئات التعليمية المختلفة.</li>
-          <li>دعم التقييم الإلكتروني.</li>
-          <li>الابتكار المستدام والتحسين المستمر.</li>
-        </ol>
-        <br>
-        <h3 style="color: #3366cc;">للتواصل:</h3>
-        <br>
-        <div class="d-flex">
-          <v-icon class="me-2 ml-2" size="small">
-            mdi-facebook
-          </v-icon>
-          <div>
-            https://www.facebook.com/ExamPlatform
+      <div class="d-flex my-15">
+        <div class="d-flex mx-auto">
+          <div class="image">
+            <img :src="goalsImgUrl" alt="Logo">
+          </div>
+          <div class="content mx-4">
+            <h3 style="color: #3366cc; font-size: 25px;">رؤيتنا:</h3>
+            <p style="font-size: 20px">تهدف منصة الامتحانات الإلكترونية إلى تحويل عملية التقييم والامتحانات إلى تجربة
+              رائدة
+              ومبتكرة في العصر الرقمي. نرى مستقبلًا حيث لا يكون هناك حاجة للورق والقلم والتصحيح اليدوي، حيث تتم جميع
+              العمليات بشكل آلي وفعال. نحن نسعى لأن نكون الخيار الأول للمؤسسات التعليمية عندما يتعلق الأمر بالامتحانات
+              الإلكترونية، ونسعى لتحقيق الابتكار المستدام والتطور المستمر لتلبية احتياجات المستخدمين وتطلعاتهم. ستكون
+              المنصة
+              الإلكترونية للامتحانات أداة قوية لتحقيق التكافؤ وتعزيز العدالة التعليمية.
+            </p>
           </div>
         </div>
-        <div class="d-flex">
-          <v-icon class="me-2 ml-2" size="small">
-            mdi-phone
-          </v-icon>
-          <div>
-            218-91-4212678
+      </div>
+
+      <div class="d-flex my-15">
+        <div class="d-flex mx-auto">
+          <div class="content">
+            <h3 style="color: #3366cc; font-size: 25px;">أهدافنا:</h3>
+            <ol style="font-size: 20px;">
+              <li class="mt-4">توفير بيئة افتراضية آمنة وموثوقة.</li>
+              <li class="mt-4">تطوير واجهة مستخدم متطورة وسهلة الاستخدام.</li>
+              <li class="mt-4">مرونة وتكيف مع البيئات التعليمية المختلفة.</li>
+              <li class="mt-4">دعم التقييم الإلكتروني.</li>
+              <li class="mt-4">الابتكار المستدام والتحسين المستمر.</li>
+            </ol>
+          </div>
+          <div class="image">
+            <img :src="visionImgUrl" alt="Logo">
           </div>
         </div>
       </div>
     </div>
+    <div class="d-flex bottom-bar-body">
+        <div class="bottom-bar my-4">
+          <h3 class="text-color" style="font-size: 25px">للتواصل:</h3>
+          <div>
+            <div class="d-flex">
+              <v-icon class="me-2 ml-2 my-auto" size="small" color="blue">
+                mdi-facebook
+              </v-icon>
+              <div>
+                <p class="text-color">
+                  https://www.facebook.com/ExamPlatform
+                </p>
+              </div>
+            </div>
+            <div class="d-flex">
+              <v-icon class="me-2 ml-2 my-auto" size="small" color="green">
+                mdi-phone
+              </v-icon>
+              <div>
+                <p class="text-color">
+                  218-91-4212678
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
   </v-locale-provider>
 </template>
 
@@ -59,4 +86,22 @@ import imgUrl from '../assets/education.jpg'
   padding: 20px;
   border-radius: 10px;
 }
+
+.content {
+  width: 400px;
+}
+
+.bottom-bar-body {
+  background-color: rgb(88,89,91);
+}
+
+.bottom-bar {
+  margin-right: 100px;
+}
+
+.text-color {
+  font-size: 20px;
+  color: white;
+}
+
 </style>

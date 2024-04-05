@@ -44,7 +44,7 @@ function emailRule (value) {
 <template>
   <v-locale-provider rtl>
 
-    <v-sheet width="600px" class="mx-auto">
+    <v-sheet width="600px" class="mx-auto mt-16">
       <v-toolbar>
         <v-toolbar-title>
           إنشاء حساب

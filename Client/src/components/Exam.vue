@@ -98,11 +98,11 @@ onMounted(() => {
 <template>
   <v-locale-provider rtl>
     <v-card
-      class="mx-auto"
-      max-width="800"
+    class="mx-auto mt-10"
+    max-width="800"
     >
 
-      <v-toolbar color="purple" rtl>
+      <v-toolbar rtl>
             <v-toolbar-title class="mx-5">اسئلة</v-toolbar-title>
       </v-toolbar>
 
