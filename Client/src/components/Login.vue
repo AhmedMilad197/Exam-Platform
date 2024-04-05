@@ -41,10 +41,11 @@
       </v-toolbar>
       <v-form @submit.prevent class="mt-4">
         <v-text-field
-          label="إاسم المستخدم"
+          label="إسم المستخدم"
           class="ml-2 mr-2"
           v-model="username"
-          hint="أدخل إاسم المستخدم"
+          hint="أدخل إسم المستخدم"
+          :rules="[v => !!v || 'يجب إدخال إسم المستخدم']"
           persistent-hint
         ></v-text-field>
         <v-text-field
@@ -53,6 +54,7 @@
           class="ml-2 mr-2"
           v-model="password"
           hint="أدخل الرمز السري"
+          :rules="[v => !!v || 'يجب إدخال الرمز السري']"
           persistent-hint
         ></v-text-field>
         <div class="error ml-2" />

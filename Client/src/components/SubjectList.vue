@@ -8,6 +8,7 @@ const subjects = ref();
 const dialog= ref(false);
 const dialogDelete = ref(false);
 const editSubjectDialog = ref(false);
+const addSubjectForm = ref(null)
 const editedItem = ref({
     id: 0,
     content : '',
@@ -99,8 +100,11 @@ async function update (subject) {
 }
 
 async function save () {
-  AddSubject(editedItem.value);
-  close()
+  const {valid, errors} = await addSubjectForm.value?.validate()
+  if (valid) {
+    AddSubject(editedItem.value);
+    close()
+  }
 }
 
 function updateSubject () {
@@ -233,7 +237,7 @@ function goToTeachers(item) {
                 <span class="text-h5">إضافة مادة</span>
               </v-card-title>
     
-              <v-card-text>
+              <v-form ref="addSubjectForm">
                 <v-container>
                   <v-row>
                     <v-col
@@ -244,6 +248,7 @@ function goToTeachers(item) {
                       <v-text-field
                         v-model="editedItem.name"
                         label="إسم المادة"
+                        :rules="[v => !!v || 'يجب إدخال إسم المادة']"
                       ></v-text-field>
                     </v-col>
                     <v-col
@@ -254,6 +259,7 @@ function goToTeachers(item) {
                       <v-text-field
                         v-model="editedItem.description"
                         label="وصف المادة"
+                        :rules="[v => !!v || 'يجب إدخال وصف المادة']"
                       ></v-text-field>
                     </v-col>
                     <v-col
@@ -263,13 +269,14 @@ function goToTeachers(item) {
                     >
                     <v-combobox
                       label="عدد الوحدات"
+                      :rules="[v => !!v || 'يجب إدخال عدد الوحدات']"
                       :items="['1', '2', '3', '4', '5']"
                       v-model="editedItem.unit"
                     />
                     </v-col>
                   </v-row>
                 </v-container>
-              </v-card-text>
+              </v-form>
               <div class="d-flex">
                 <div class="mx-auto mb-4">
                   <v-btn
@@ -308,6 +315,7 @@ function goToTeachers(item) {
                       <v-text-field
                         v-model="editedItem.name"
                         label="إسم المادة"
+                        :rules="[v => !!v || 'يجب إدخال إسم المادة']"
                       ></v-text-field>
                     </v-col>
                     <v-col
@@ -318,6 +326,7 @@ function goToTeachers(item) {
                       <v-text-field
                         v-model="editedItem.description"
                         label="وصف المادة"
+                        :rules="[v => !!v || 'يجب إدخال وصف المادة']"
                       ></v-text-field>
                     </v-col>
                     <v-col
@@ -328,6 +337,7 @@ function goToTeachers(item) {
                     <v-combobox
                       label="عدد الوحدات"
                       :items="['1', '2', '3', '4', '5']"
+                      :rules="[v => !!v || 'يجب إدخال عدد الوحدات']"
                       v-model="editedItem.unit"
                     />
                     </v-col>

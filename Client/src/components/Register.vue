@@ -34,6 +34,11 @@ async function register () {
   }
 }
 
+function emailRule (value) {
+  if (/^[a-z.-]+@[a-z.-]+\.[a-z]+$/i.test(value)) return true
+  return 'بيانات البريد الإلكتروني غير صحيحة'
+}
+
 </script>
 
 <template>
@@ -42,15 +47,16 @@ async function register () {
     <v-sheet width="600px" class="mx-auto">
       <v-toolbar>
         <v-toolbar-title>
-          Register
+          إنشاء حساب
         </v-toolbar-title>
       </v-toolbar>
       <v-form @submit.prevent class="mt-4">
         <v-text-field
-          label="الأسم"
+          label="الإسم بالكامل"
           class="ml-2 mr-2 mb-2"
           v-model="name"
           hint="أدخل الإسم بالكامل"
+          :rules="[v => !!v || 'يجب إدخال الإسم بالكامل']"
           persistent-hint
         ></v-text-field>
         <v-text-field
@@ -58,6 +64,7 @@ async function register () {
           class="ml-2 mr-2 mb-2"
           v-model="username"
           hint="أدخل الإسم المستخدم"
+          :rules="[v => !!v || 'يجب إدخال إسم المستخدم']"
           persistent-hint
         ></v-text-field>
         <v-text-field
@@ -65,6 +72,7 @@ async function register () {
           class="ml-2 mr-2 mb-2"
           v-model="email"
           hint="أدخل البريد الإلكتروني"
+          :rules="[v => emailRule(v)]"
           persistent-hint
         ></v-text-field>
         <v-text-field
@@ -72,11 +80,13 @@ async function register () {
           class="ml-2 mr-2 mb-2"
           v-model="specialist"
           hint="أدخل التخصص"
+          :rules="[v => !!v || 'يجب إدخال التخصص']"
           persistent-hint
         ></v-text-field>
         <v-text-field
           type="password"
           label="الرمز السري"
+          :rules="[v => !!v || 'يجب إدخال الرمز السري']"
           class="ml-2 mr-2 mb-2"
           v-model="password"
           hint="أدخل الرمز السري"

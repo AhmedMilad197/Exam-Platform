@@ -43,6 +43,7 @@ async function login () {
         <v-text-field
           label="إسم المستخدم"
           hint="ادخل إسم المستخدم الخاص بك"
+          :rules="[v => !!v || 'يجب إدخال إسم المستخدم']"
           persistent-hint
           class="ml-2 mr-2"
           v-model="username"
@@ -51,6 +52,7 @@ async function login () {
           type="password"
           label="الرمز السري"
           hint="ادخل الرمز السري الخاص بك"
+          :rules="[v => !!v || 'يجب إدخال الرمز السري']"
           persistent-hint
           class="ml-2 mr-2"
           v-model="password"

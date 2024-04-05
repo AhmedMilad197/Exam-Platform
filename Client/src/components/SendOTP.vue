@@ -25,6 +25,11 @@
     }
   }
 
+function emailRule (value) {
+  if (/^[a-z.-]+@[a-z.-]+\.[a-z]+$/i.test(value)) return true
+  return 'بيانات البريد الإلكتروني غير صحيحة'
+}
+
 </script>
 <template>
   <v-locale-provider rtl>
@@ -43,6 +48,7 @@
         </div>
         <v-text-field
           label="البريد الإلكتروني"
+          :rules="[v => emailRule(v)]"
           class="ml-2 mr-2"
           v-model="email"
           hint="أدخل البريد الإلكتروني"
