@@ -9,22 +9,36 @@ const Student = db.students;
 
 // 1. Create Student
 const addStudent = async (req, res) => {
-    try {
-        let info = {
-            name: req.body.name,
-            username: req.body.username,
-            password: req.body.password,
-            phone: req.body.phone,
-            address: req.body.address,
-        
-        };
-        const student = await Student.create(info);
-        res.status(200).send(student);
-        console.log(student);
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Internal server error' });
+  try {
+    const { name, username, password, phone, address } = req.body;
+
+    // التحقق من عدم وجود بيانات فارغة
+    if (!name || !username || !password || !phone || !address) {
+      return res.status(400).json({ error: 'يرجى إدخال جميع البيانات المطلوبة' });
     }
+
+
+     // التحقق من عدم تكرار البيانات
+     const existingStudent = await Student.findOne({ where: { username: username } });
+     if (existingStudent) {
+       return res.status(400).json({ error: 'اسم المستخدم مستخدم بالفعل' });
+     }
+
+    let info = {
+      name: name,
+      username: username,
+      password: password,
+      phone: phone,
+      address: address,
+    };
+
+    const student = await Student.create(info);
+    res.status(200).send(student);
+    console.log(student);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
 };
 
 // 2. Get all Student
