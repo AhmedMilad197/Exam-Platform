@@ -1,5 +1,6 @@
 const { Sequelize, DataTypes } = require('sequelize');
-const dbConfig =require('../config/dbConfig.js')
+const dbConfig =require('../config/dbConfig.js');
+const StudentExamHistoryModel = require('./StudentExamHistoryModel.js');
 
 
 const sequelize = new Sequelize(
@@ -44,6 +45,7 @@ db.questions=require('./QuestionsModel.js')(sequelize,DataTypes)
 db.students=require('./StudentModel.js')(sequelize,DataTypes)
 db.studies=require('./StudyModel.js')(sequelize,DataTypes)
 db.examStudent=require('./ExamStudentModel.js')(sequelize,DataTypes)
+db.studentexamhistory=require('./StudentExamHistoryModel.js')(sequelize,DataTypes)
 
 const Course = db.courses;
 const Teacher = db.teachers;
@@ -51,6 +53,7 @@ const Exam = db.exams;
 const Question = db.questions;
 const Student = db.students;
 const ExamStudent = db.examStudent;
+const StudentExamHistory = db.studentexamhistory;
 
 Teacher.belongsToMany(Course, {through: 'CourseTeachers'});
 Course.belongsToMany(Teacher, {through: 'CourseTeachers'});
@@ -72,6 +75,33 @@ Exam.belongsToMany(Student, { through: ExamStudent });
 
 ExamStudent.belongsTo(Exam);
 ExamStudent.belongsTo(Student);
+
+Exam.hasMany(StudentExamHistory, {
+    foreignKey: 'examid',
+    as: 'studentexamhistory'
+});
+
+Student.hasMany(StudentExamHistory, {
+    foreignKey: 'studentid',
+    as: 'studentexamhistory'
+});
+
+Question.hasMany(StudentExamHistory, {
+    foreignKey: 'questionid',
+    as: 'studentexamhistory'
+});
+
+StudentExamHistory.belongsTo(Exam, {
+    foreignKey: 'examid'
+});
+
+StudentExamHistory.belongsTo(Student, {
+    foreignKey: 'studentid'
+});
+
+StudentExamHistory.belongsTo(Question, {
+    foreignKey: 'questionid'
+});
 
 db.sequelize.sync({force:0}) 
 .then(()=>{
