@@ -3,6 +3,7 @@ import { useRouter, useRoute } from 'vue-router';
 import { ref, onMounted } from 'vue';
 import { useUserStore } from "@/stores/user";
 import StudentService from "@/services/StudentService";
+import imgUrl from '../assets/books.jpg'
 
 const user = useUserStore(); 
 const router = useRouter();
@@ -33,10 +34,14 @@ onMounted(() => {
 
 <template>
   <v-locale-provider rtl>
+
+    <div class="mx-auto">
+      <img :src="imgUrl" alt="Logo" style="width: 1400px; height: 450px;">
+    </div>
     
+    <!-- max-width="800" -->
     <v-card
     class="mx-auto"
-    max-width="800"
     >
     <v-toolbar>
       <v-toolbar-title>المواد</v-toolbar-title>

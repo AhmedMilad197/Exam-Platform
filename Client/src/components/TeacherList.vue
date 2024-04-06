@@ -2,6 +2,7 @@
 import { ref, onMounted, nextTick } from 'vue'
 import { useRouter } from 'vue-router'
 import TeacherService from '@/services/TeacherService'
+import imgUrl from '../assets/teacher.jpg'
 
 const selectedItem = ref();
 const router = useRouter();
@@ -163,6 +164,10 @@ onMounted(() => {
   </div> -->
 
   <v-locale-provider rtl>
+
+    <div class="mx-auto">
+      <img :src="imgUrl" alt="Logo" style="width: 1400px; height: 450px;">
+    </div>
 
     <v-data-table :headers="headers" :items="teachers">
       <template v-slot:top>

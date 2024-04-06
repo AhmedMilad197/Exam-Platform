@@ -69,8 +69,7 @@ onMounted(() => {
 
     <div>
         <v-card
-        class="mx-auto"
-        max-width="1000"
+        class="mx-auto mt-10"
         >
         <v-toolbar>
           <v-toolbar-title>الطلبة</v-toolbar-title>

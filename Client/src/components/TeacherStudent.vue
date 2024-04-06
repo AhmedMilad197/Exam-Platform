@@ -64,8 +64,7 @@ onMounted(() => {
 <div>
   <v-locale-provider rtl>
     <v-card
-      class="mx-auto"
-      max-width="1000"
+      class="mx-auto mt-10"
       max-height="100vh"
     >
       <v-toolbar>

@@ -3,6 +3,7 @@ import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import SubjectService from '@/services/SubjectService'
 import { useUserStore } from '@/stores/user';
+import imgUrl from '../assets/subject.png'
 
 const user = useUserStore()
 const router = useRouter()
@@ -110,6 +111,10 @@ onMounted(() => {
           </div>
       </v-sheet>
     </v-layout> -->
+
+    <div class="mx-auto">
+      <img :src="imgUrl" alt="Logo" style="width: 1400px; height: 396px;">
+    </div>
 
     <v-data-table
       :headers="headers"

@@ -4,6 +4,7 @@ import {ref, onMounted} from 'vue'
 import { useUserStore } from "@/stores/user";
 import TeacherService from "@/services/TeacherService"
 import ExamService from '@/services/ExamService';
+import imgUrl from '../assets/teachersubjects.jpg'
 
 const user = useUserStore(); 
 const router = useRouter()
@@ -114,6 +115,10 @@ onMounted(() => {
       </div>
     </v-card> -->
 
+    <div class="mx-auto">
+      <img :src="imgUrl" alt="Logo" style="width: 1400px; height: 450px;">
+    </div>
+    
     <v-data-table
       :headers="headers"
       :items="theExams()"

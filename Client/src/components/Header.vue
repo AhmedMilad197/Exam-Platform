@@ -61,8 +61,11 @@ const drawer = ref(false);
         <v-app-bar
           color="primary"
           prominent
+          height="100"
         >
-          <v-app-bar-nav-icon variant="text" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+          <v-app-bar-nav-icon 
+            @click.stop="drawer = !drawer"
+          />
           <v-toolbar-title>
             <span class="title-text" @click="navigateTo({ name: 'LandingPageView' })">
               Exam Platform
@@ -103,5 +106,6 @@ const drawer = ref(false);
 <style scoped>
 .title-text {
   cursor: pointer;
+  font-size: 40px;
 }
 </style>

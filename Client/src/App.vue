@@ -1,16 +1,22 @@
 <script setup>
 import '@mdi/font/css/materialdesignicons.css'
-import { RouterLink, RouterView } from 'vue-router'
 import pageHeader from './components/Header.vue'
 </script>
 
 <template>
-  <main class="container">
+  <!-- <main class="container mx-auto"> -->
+  <main style="width: 100%;">
     <pageHeader class="header"/>
-    <v-container class="container">
-      <RouterView />
-    </v-container>
+    <div class="d-flex">
+      <div class="container">
+        <RouterView />
+      </div>
+    </div>
   </main>
+  <!-- <div>
+    <pageHeader class="header"/>
+    <RouterView />
+  </div> -->
 </template>
 
 <style scoped>

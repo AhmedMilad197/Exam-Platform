@@ -2,6 +2,7 @@
 import { useRouter, useRoute } from 'vue-router'
 import {ref, onMounted, nextTick } from 'vue'
 import QuestionService from '@/services/QuestionService'
+import imgUrl from '../assets/pencil2.jpg'
 
 const router = useRouter()
 const route = useRoute();
@@ -97,6 +98,10 @@ function deleteItemConfirm() {
 
 <template>
   <v-locale-provider rtl>
+
+    <div class="mx-auto">
+      <img :src="imgUrl" alt="Logo" style="width: 1400px; height: 450px;">
+    </div>
 
     <v-data-table
       :headers="headers"
