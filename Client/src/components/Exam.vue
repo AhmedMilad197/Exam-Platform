@@ -90,11 +90,11 @@ async function submit() {
       studentId: user.user.id,
       history: studentAnswers.value
     });
-    // const response = ExamStudentService.create({
-    //   studentId: user.user.id,
-    //   examId: route.params.exam,
-    //   score: ans
-    // });
+    const response = ExamStudentService.create({
+      studentId: user.user.id,
+      examId: route.params.exam,
+      score: ans
+    });
     router.go(-1);
   } catch (error) {
     return {

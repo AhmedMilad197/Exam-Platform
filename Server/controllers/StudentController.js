@@ -154,7 +154,14 @@ const exams = async (req, res) => {
           courseid: {
             [Op.eq]: courseId
           }
-        }
+        },
+        include: [{
+          model: db.examStudent,
+          where: {
+            studentId: studentId
+          },
+          required: false
+        }]
       });
   
       res.send(studentExams);

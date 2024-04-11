@@ -143,12 +143,23 @@ onMounted(() => {
                 <div class="d-flex">
                   <div class="mx-auto">
                     <div class="d-flex">
-                      <v-btn 
-                      color="purple" 
-                      class="my-auto mx-4"
-                      @click="navigateTo({name: 'exam', params: { exam: exam.id }})"
-                      :disabled="enableExams[index]"
-                      >إبدأ الإختبار</v-btn>
+                      <div v-if="exam.examstudents.length == 0">
+                        <v-btn 
+                        color="purple" 
+                        class="my-auto mx-4"
+                        width="100"
+                        @click="navigateTo({name: 'exam', params: { exam: exam.id }})"
+                        :disabled="enableExams[index]"
+                        >إبدأ الإختبار</v-btn>
+                      </div>
+                      <div v-else>
+                        <v-btn 
+                        color="green" 
+                        class="my-auto mx-4"
+                        width="100"
+                        @click="navigateTo({name: 'exam', params: { exam: exam.id }})"
+                        >عرض إجاباتي</v-btn>
+                      </div>
                     </div>
                   </div>
                 </div>
