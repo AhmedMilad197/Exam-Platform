@@ -46,6 +46,26 @@ const getOneExam = async (req, res) => {
         if (!exams) {
             return res.status(404).json({ error: 'Exam not found' });
         }
+        // let exams = await Exam.findOne({
+        //     where: { id: id },
+        //     include: [
+        //       {
+        //         model: db.questions,
+        //         as: 'questions',
+        //         include: [
+        //           {
+        //             model: db.studentexamhistory,
+        //             as: 'studentexamhistory',
+        //             where: {
+        //               studentid: 1,
+        //               examid: id
+        //             },
+        //             required: true // This ensures that only questions with matching studentexamhistory records are included
+        //           }
+        //         ]
+        //       }
+        //     ]
+        //   });
         res.status(200).send(exams);
     } catch (error) {
         console.error(error);

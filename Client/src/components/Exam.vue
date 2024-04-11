@@ -4,13 +4,15 @@ import { useUserStore } from "@/stores/user";
 import { useRoute, useRouter } from 'vue-router'
 import ExamService from "@/services/ExamService"
 import ExamStudentService from "@/services/ExamStudentService"
+import StudentExamHistoryService from "@/services/StudentExamHistoryService";
 
 const route = useRoute();
 const router = useRouter();
 const score = ref([]);
 const answers = ref();
 const maxScore = ref();
-const user = useUserStore(); 
+const user = useUserStore();
+const studentAnswers = ref({});
 
 const exam = ref([]);
 
@@ -49,6 +51,7 @@ async function getExam() {
     }
     maxScore.value = temp_mark
     answers.value = temp_array
+    console.log(response.data.questions);
   } catch (error) {
     return {
       message: error.message
@@ -56,15 +59,21 @@ async function getExam() {
   }
 }
 
-function updateScore(question_id, answer, right_answer, mark) {
-  for (let i = 0; i < 4; i++) {
-    answers.value[question_id][i] = false;
-  }
-  answers.value[question_id][answer - 1] = true
-  if (answer == right_answer) {
-    score.value[question_id] = mark;
+function updateScore(index, question_id, answer, right_answer, mark, event) {
+  if (event.target.checked) {
+    for (let i = 0; i < 4; i++) {
+      answers.value[index][i] = false;
+    }
+    answers.value[index][answer - 1] = true
+    if (answer == right_answer) {
+      score.value[index] = mark;
+    } else {
+      score.value[index] = 0;
+    }
+    studentAnswers.value[question_id] = answer;
   } else {
-    score.value[question_id] = 0;
+    studentAnswers.value[question_id] = -1;
+    score.value[index] = 0;
   }
 }
 
@@ -76,11 +85,16 @@ async function submit() {
       student_score += parseInt(element)
     });
     let ans = parseInt(student_score / max_score * 100)
-    const response = ExamStudentService.create({
+    StudentExamHistoryService.create({
+      examId: exam.value.id,
       studentId: user.user.id,
-      examId: route.params.exam,
-      score: ans
+      history: studentAnswers.value
     });
+    // const response = ExamStudentService.create({
+    //   studentId: user.user.id,
+    //   examId: route.params.exam,
+    //   score: ans
+    // });
     router.go(-1);
   } catch (error) {
     return {
@@ -128,7 +142,7 @@ onMounted(() => {
                 <v-checkbox-btn 
                   class="mx-4" 
                   color="success" 
-                  @click="updateScore(index, 1, question.rightanswer, question.mark)"
+                  @click="updateScore(index, question.id, 1, question.rightanswer, question.mark, $event)"
                   v-model="answers[index][0]"
                   />
             </div>
@@ -144,7 +158,7 @@ onMounted(() => {
                 <v-checkbox-btn 
                 class="mx-4" 
                 color="success" 
-                @click="updateScore(index, 2, question.rightanswer, question.mark)"
+                @click="updateScore(index, question.id, 2, question.rightanswer, question.mark, $event)"
                 v-model="answers[index][1]"
                 />
             </div>
@@ -160,7 +174,7 @@ onMounted(() => {
                 <v-checkbox-btn 
                 class="mx-4" 
                 color="success" 
-                @click="updateScore(index, 3, question.rightanswer, question.mark)"
+                @click="updateScore(index, question.id, 3, question.rightanswer, question.mark, $event)"
                 v-model="answers[index][2]"
                 />
             </div>
@@ -176,7 +190,7 @@ onMounted(() => {
                 <v-checkbox-btn 
                 class="mx-4" 
                 color="success"
-                @click="updateScore(index, 4, question.rightanswer, question.mark)"
+                @click="updateScore(index, question.id, 4, question.rightanswer, question.mark, $event)"
                 v-model="answers[index][3]"
                 />
             </div>
