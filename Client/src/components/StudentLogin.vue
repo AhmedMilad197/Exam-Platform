@@ -20,9 +20,10 @@ async function login () {
     const response = await StudentService.login({
       username: username.value,
       password: password.value,
-    })
+    });
     user.user = response.data.student;
     user.token = response.data.token;
+    user.role = response.data.role;
     navigateTo({ name: 'student-subject-list' });
   } catch (err) {
     return err.message;

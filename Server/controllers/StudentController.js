@@ -16,13 +16,10 @@ const addStudent = async (req, res) => {
             password: req.body.password,
             phone: req.body.phone,
             address: req.body.address,
-        
         };
         const student = await Student.create(info);
         res.status(200).send(student);
-        console.log(student);
     } catch (error) {
-        console.error(error);
         res.status(500).json({ error: 'Internal server error' });
     }
 };
@@ -86,20 +83,26 @@ const deleteStudent = async (req, res) => {
   
 // 6. Student Login
 const login = async (req, res) => {
-    const username = req.body.username;
-    let student = await Student.findOne({ where: { username: username } });
-    if (student != null) {
-        if (student.password == req.body.password) {
-            jwt.sign({
-                user: req.body,
-                exp: Math.floor(Date.now() / 1000) + (60 * 60) // expires in one hour.
-            }, 'loginkey', (err, token) => {
-                res.send({
-                    student: student,
-                    token: token
-                });
-            });
-        }
+    try {
+      const username = req.body.username;
+      let student = await Student.findOne({ where: { username: username } });
+      if (student != null) {
+          if (student.password == req.body.password) {
+              jwt.sign({
+                  user: student,
+                  role: 'student',
+                  exp: Math.floor(Date.now() / 1000) + (60 * 60) // expires in one hour.
+              }, 'loginkey', (err, token) => {
+                  res.send({
+                      student: student,
+                      token: token,
+                      role: 'student'
+                  });
+              });
+          }
+      }
+    } catch (error) {
+      res.status(500).json({ error: 'Internal server error' });
     }
 }
 

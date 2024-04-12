@@ -48,10 +48,6 @@ const colors = [
   "orange-darken-3"
 ];
 
-function getColor() {
-  return colors[Math.floor(Math.random() * colors.length)];
-}
-
 const subjects = ref();
 
 // TODO make this function get only the subjects related to the teacher.

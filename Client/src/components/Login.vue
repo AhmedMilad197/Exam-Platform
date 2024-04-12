@@ -23,6 +23,7 @@
       })
       user.user = response.data.teacher;
       user.token = response.data.token;
+      user.role = response.data.role;
       navigateTo({ name: 'home' });
     } catch (err) {
       console.log(err.message);

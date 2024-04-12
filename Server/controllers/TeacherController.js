@@ -26,12 +26,14 @@ const addTeacher = async (req, res) => {
         const teacher = await Teacher.create(info);
         if (teacher != null) {
             jwt.sign({
-                user: info,
+                user: teacher,
+                role: 'teacher',
                 exp: Math.floor(Date.now() / 1000) + (60 * 60) // expires in one hour.
             }, 'loginkey', (err, token) => {
                 res.send({
                     teacher: teacher,
-                    token: token
+                    token: token,
+                    role: 'teacher'
                 });
             });
         }
@@ -115,12 +117,14 @@ const login = async (req, res) => {
     if (teacher != null) {
         if (teacher.password == req.body.password) {
             jwt.sign({
-                user: req.body,
+                user: teacher,
+                role: 'teacher',
                 exp: Math.floor(Date.now() / 1000) + (60 * 60) // expires in one hour.
             }, 'loginkey', (err, token) => {
                 res.send({
                     teacher: teacher,
-                    token: token
+                    token: token,
+                    role: 'teacher'
                 });
             });
         }
