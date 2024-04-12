@@ -8,7 +8,7 @@ Examrouter.post('/addExam',ExamController.addExam)
 
 Examrouter.get('/allExam',ExamController.getAllExam)
 
-Examrouter.get('/:id',ExamController.getOneExam)
+Examrouter.post('/',ExamController.getOneExam)
 
 Examrouter.put('/:id',ExamController.updateExam)
 

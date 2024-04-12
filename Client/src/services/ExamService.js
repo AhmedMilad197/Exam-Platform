@@ -8,7 +8,7 @@ export default {
     return api().post('api/Exam/addExam', data);
   },
   getExam(data) {
-    return api().get(`api/Exam/${data.examId}`);
+    return api().post('api/Exam', {data});
   },
   delete(examId) {
     return api().delete(`api/Exam/${examId}`);

@@ -37,7 +37,8 @@ function shuffle(array) {
 async function getExam() {
   try {
     const response = await ExamService.getExam({
-      examId: route.params.exam
+      examId: route.params.exam,
+      studentId: user.user.id
     })
     response.data.questions = shuffle(response.data.questions) 
     exam.value = response.data

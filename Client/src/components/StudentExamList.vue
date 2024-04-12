@@ -157,7 +157,7 @@ onMounted(() => {
                         color="green" 
                         class="my-auto mx-4"
                         width="100"
-                        @click="navigateTo({name: 'exam', params: { exam: exam.id }})"
+                        @click="navigateTo({name: 'student-exam-history', params: { id: exam.id }})"
                         >عرض إجاباتي</v-btn>
                       </div>
                     </div>
