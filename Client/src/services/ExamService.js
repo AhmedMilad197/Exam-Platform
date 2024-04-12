@@ -10,6 +10,9 @@ export default {
   getExam(data) {
     return api().post('api/Exam', {data});
   },
+  viewExam(data) {
+    return api().post('api/Exam/view', {data});
+  },
   delete(examId) {
     return api().delete(`api/Exam/${examId}`);
   }

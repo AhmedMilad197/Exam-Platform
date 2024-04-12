@@ -4,17 +4,82 @@ import {ref, onMounted, nextTick } from 'vue'
 import QuestionService from '@/services/QuestionService'
 import imgUrl from '../assets/pencil2.jpg'
 
-const router = useRouter()
+const router = useRouter();
 const route = useRoute();
-const dialog= ref(false)
-const dialogDelete = ref(false)
+const dialog= ref(false);
+const dialogDelete = ref(false);
 const headers = ref([
   { title: 'id', key: 'id', align: 'start' },
   { title: 'السؤال', key: 'content' },
   { title: 'الأستاذ', key: 'Teacher.name' },
   { title: 'Actions', key: 'actions' },
-])
-const questions = ref([])
+]);
+const questions = ref([]);
+const items = ref([
+  {
+    title: 'المدرسين',
+    value: {
+      name: 'teachers'
+    }
+  },
+  {
+    title: 'الطلبة',
+    value: {
+      name: 'students'
+    }
+  },
+  {
+    title: 'الأسئلة',
+    value: {
+      name: 'questions',
+      params: {
+        subject: 'all'
+      }
+    }
+  },
+  {
+    title: 'المواد',
+    value: {
+      name: 'subjects'
+    }
+  },
+  {
+    title: 'تسجيل الخروج',
+    color: 'red',
+    value: {
+      name: 'logout'
+    }
+  }
+]);
+
+const drawer = ref(false);
+const logoutDialog = ref(true);
+
+function navigateTo (path) {
+  router.push(path);
+}
+
+function handleRequest (title, value) {
+  if (title == 'تسجيل الخروج') {
+    logoutDialog.value = true;
+  } else {
+    navigateTo(value)
+  }
+}
+
+function deleteStoredUser () {
+  user.user = null;
+  user.token = null;
+  user.role = null;
+}
+
+async function logout () {
+  deleteStoredUser();
+  logoutDialog.value = false;
+  navigateTo({
+    name: 'LandingPageView'
+  })
+}
 
 const editedIndex = ref(-1)
 const editedItem = ref({
@@ -98,6 +163,52 @@ function deleteItemConfirm() {
 
 <template>
   <v-locale-provider rtl>
+
+    <v-layout class="mt-16">
+      <v-locale-provider rtl>
+        <v-app-bar
+          color="primary"
+          prominent
+          height="100"
+        >
+          <v-app-bar-nav-icon 
+            @click.stop="drawer = !drawer"
+          />
+          <v-toolbar-title>
+            <span class="title-text" @click="navigateTo({ name: 'LandingPageView' })">
+              Exam Platform
+            </span>
+          </v-toolbar-title>
+          <v-spacer></v-spacer>
+        </v-app-bar>
+      </v-locale-provider>
+
+      <v-navigation-drawer
+        v-model="drawer"
+        location="right"
+      >
+        <v-list density="compact">
+          <v-list-item
+            v-for="(item, i) in items"
+            :key="i"
+            :value="item.value"
+            style="text-align: right;"
+            @click="handleRequest(item.title, item.value)"
+          >
+            <div v-if="item.title == 'تسجيل الخروج'">
+              <v-list-item-title 
+                style="color: red;"
+                >
+                {{ item.title }}
+              </v-list-item-title>
+            </div>
+            <div v-else>
+              <v-list-item-title>{{ item.title }}</v-list-item-title>
+            </div>
+          </v-list-item>
+        </v-list>
+      </v-navigation-drawer>
+    </v-layout>
 
     <div class="mx-auto">
       <img :src="imgUrl" alt="Logo" style="width: 1400px; height: 450px;">
@@ -253,6 +364,11 @@ function deleteItemConfirm() {
 
 .no-select {
   pointer-events: none;
+}
+
+.title-text {
+  cursor: pointer;
+  font-size: 40px;
 }
 
 </style>

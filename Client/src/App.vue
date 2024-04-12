@@ -4,19 +4,14 @@ import pageHeader from './components/Header.vue'
 </script>
 
 <template>
-  <!-- <main class="container mx-auto"> -->
   <main style="width: 100%;">
-    <pageHeader class="header"/>
+    <!-- <pageHeader class="header"/> -->
     <div class="d-flex">
       <div class="container">
         <RouterView />
       </div>
     </div>
   </main>
-  <!-- <div>
-    <pageHeader class="header"/>
-    <RouterView />
-  </div> -->
 </template>
 
 <style scoped>

@@ -7,6 +7,44 @@ import imgUrl from '../assets/subject.png'
 
 const user = useUserStore()
 const router = useRouter()
+const items = ref([
+  {
+    title: 'موادي',
+    value: {
+      name: 'home'
+    }
+  },
+  {
+    title: 'تسجيل الخروج',
+    color: 'red',
+    value: {
+      name: 'student-login'
+    }
+  },
+]);
+const drawer = ref(false);
+const logoutDialog = ref(false);
+
+function handleRequest (title, value) {
+  if (title == 'تسجيل الخروج') {
+    logoutDialog.value = true;
+  } else {
+    goTo(value)
+  }
+}
+
+function deleteStoredUser () {
+  user.user = null;
+  user.token = null;
+  user.role = null;
+}
+
+async function logout () {
+  deleteStoredUser();
+  logoutDialog.value = false;
+  goTo('LandingPageView')
+}
+
 const headers = ref([
   {
     title: 'id',
@@ -28,6 +66,11 @@ const editedItem = ref({
   description: '',
 })
 
+function goTo(value) {
+  router.push({
+    name: value
+  });
+}
 
 function navigateTo (item) {
   editedIndex.value = subjects.value.indexOf(item)
@@ -70,44 +113,51 @@ onMounted(() => {
 
 <template>
   <v-locale-provider rtl>
-    <!-- <v-layout column>
-      <v-sheet width="800px" class="mx-auto">
-        <v-toolbar color="purple">
+    <v-layout class="mt-16">
+      <v-locale-provider rtl>
+        <v-app-bar
+          color="primary"
+          prominent
+          height="100"
+        >
+          <v-app-bar-nav-icon 
+            @click.stop="drawer = !drawer"
+          />
           <v-toolbar-title>
-            المواد
+            <span class="title-text" @click="goTo('LandingPageView')">
+              Exam Platform
+            </span>
           </v-toolbar-title>
-        </v-toolbar>
-          <div v-for="(subject, i) in subjects" :key="i">
-            <div class="d-flex">
-              <div>
-                <v-list>
-                  <v-list-item
-                    class="mx-4"
-                  >
-                    <v-list-item-title
-                      class="my-2"
-                    >
-                      <b>
-                        {{ subject.name }}
-                      </b>
-                    </v-list-item-title>
-                  </v-list-item>
-                </v-list>
-              </div>
-              <v-spacer></v-spacer>
-              <div class="d-flex">
-                <v-btn 
-                color="primary" 
-                class="my-auto mx-4"
-                @click="navigateTo(subject.id)"
-                >تفاصيل</v-btn>
-              </div>
-            </div>
-            <hr>
-          </div>
-      </v-sheet>
-    </v-layout> -->
+          <v-spacer></v-spacer>
+        </v-app-bar>
+      </v-locale-provider>
 
+      <v-navigation-drawer
+        v-model="drawer"
+        location="right"
+      >
+        <v-list density="compact">
+          <v-list-item
+            v-for="(item, i) in items"
+            :key="i"
+            :value="item.value"
+            style="text-align: right;"
+            @click="handleRequest(item.title, item.value)"
+          >
+            <div v-if="item.title == 'تسجيل الخروج'">
+              <v-list-item-title 
+                style="color: red;"
+                >
+                {{ item.title }}
+              </v-list-item-title>
+            </div>
+            <div v-else>
+              <v-list-item-title>{{ item.title }}</v-list-item-title>
+            </div>
+          </v-list-item>
+        </v-list>
+      </v-navigation-drawer>
+    </v-layout>
     <div class="mx-auto">
       <img :src="imgUrl" alt="Logo" style="width: 1400px; height: 396px;">
     </div>
@@ -139,12 +189,34 @@ onMounted(() => {
       </template>
     </v-data-table>
 
+    <v-dialog v-model="logoutDialog" max-width="500px">
+      <v-card 
+        prepend-icon="mdi-alert-circle"
+        text="هل تريد تسجيل الخروج؟"
+        title="تأكيد"
+        color="orange"
+      >
+        <v-card>
+          <v-spacer></v-spacer>
+          <v-btn color="red-darken-1" class="mx-2 my-4" @click="logout()">نعم</v-btn>
+          <v-btn color="blue-darken-1" @click="logoutDialog = false">إلغاء</v-btn>
+          <v-spacer></v-spacer>
+        </v-card>
+      </v-card>
+    </v-dialog>
   </v-locale-provider>
 </template>
 
 <style scoped>
+
 .v-sheet {
   border: 1px rgb(185, 175, 175) solid;
   border-radius: 2px;
 }
+
+.title-text {
+  cursor: pointer;
+  font-size: 40px;
+}
+
 </style>

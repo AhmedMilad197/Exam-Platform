@@ -57,7 +57,7 @@ const router = createRouter({
       props: true
     },
     {
-      path: '/question-list/:subject',
+      path: '/question-list',
       name: 'questions',
       component: QuestionListView,
       props: true
@@ -194,7 +194,7 @@ const router = createRouter({
       props: true
     },
     {
-      path: '/view-exam/:id',
+      path: '/view-exam/:subject/:id',
       name: 'view-exam',
       component: ViewExamView,
       props: true
