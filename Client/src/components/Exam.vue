@@ -13,6 +13,8 @@ const answers = ref();
 const maxScore = ref();
 const user = useUserStore();
 const studentAnswers = ref({});
+const showQuestion = ref([]);
+const isSkipped = ref(false);
 const items = ref([
   {
     title: 'المواد الدراسية',
@@ -92,6 +94,7 @@ async function getExam() {
       temp_mark += response.data.questions[length].mark
       score.value.push(0);
       temp_array.push([0, 0, 0, 0]);
+      showQuestion.value.push(1);
     }
     maxScore.value = temp_mark
     answers.value = temp_array
@@ -149,12 +152,22 @@ async function submit() {
   }
 }
 
-function getDate (date) {
+function skipQuestion(index) {
+  showQuestion.value[index] = 0;
+  isSkipped.value = true;
+}
+
+function unSkipQuestion(index) {
+  showQuestion.value[index] = 1;
+  isSkipped.value = false;
+}
+
+function getDate(date) {
   const dateTimeString = date;
   return dateTimeString.split("T");
 }
 
-function getTime (date) {
+function getTime(date) {
   const dateTimeParts = date.split("T");
   return dateTimeParts[1].slice(0, -5);
 }
@@ -199,7 +212,7 @@ onMounted(() => {
     <v-card style="margin-left: auto; margin-right: auto; margin-top: 10%;" max-width="800">
       <div width="100%" class="exam-details d-flex flex-column">
         <span class="mx-auto">
-          بيانات الإمتحان 
+          بيانات الإمتحان
         </span><br>
         <span style="font-size: 20px;">
           <div class="d-flex">
@@ -207,7 +220,7 @@ onMounted(() => {
               العنوان : <br>
               الوصف : <br>
               موعد البدأ : <br>
-              موعد الإنتهاء : <br> 
+              موعد الإنتهاء : <br>
             </div>
             <div>
               {{ exam.name }} <br>
@@ -216,63 +229,71 @@ onMounted(() => {
               {{ exam.end_time }} <br>
             </div>
           </div>
-           
+
         </span>
       </div>
       <v-toolbar rtl>
         <v-toolbar-title class="mx-5">اسئلة</v-toolbar-title>
       </v-toolbar>
 
-      <div v-for="(question, index) in exam.questions" :key="question.id">
-
-        <v-list lines="three" select-strategy="classic">
-          <v-sheet class="question-content">
-            {{ index + 1 }}. {{ question.content }}
-          </v-sheet>
-          <hr>
-          <span style="font-size: 20px; padding: 10px;">
-            الإختيارات
-          </span>
-          <v-list>
-            <div class="d-flex mx-2 my-2">
-              <v-responsive :width="`90%`">
-                <v-text-field label="الإختيار الأول" v-model="question.answer1"
-                  persistent-hint class="disabled-field" readonly/>
-              </v-responsive>
-              <v-checkbox-btn class="mx-4" color="success"
-                @click="updateScore(index, question.id, 1, question.rightanswer, question.mark, $event)"
-                v-model="answers[index][0]" />
-            </div>
-            <div class="d-flex mx-2 my-2">
-              <v-responsive :width="`90%`">
-                <v-text-field label="الإختيار الثاني" v-model="question.answer2"
-                  persistent-hint class="disabled-field" />
-              </v-responsive>
-              <v-checkbox-btn class="mx-4" color="success"
-                @click="updateScore(index, question.id, 2, question.rightanswer, question.mark, $event)"
-                v-model="answers[index][1]" />
-            </div>
-            <div class="d-flex mx-2 my-2">
-              <v-responsive :width="`90%`">
-                <v-text-field label="الإختيار الثالث" v-model="question.answer3"
-                  persistent-hint class="disabled-field" />
-              </v-responsive>
-              <v-checkbox-btn class="mx-4" color="success"
-                @click="updateScore(index, question.id, 3, question.rightanswer, question.mark, $event)"
-                v-model="answers[index][2]" />
-            </div>
-            <div class="d-flex mx-2 my-2">
-              <v-responsive :width="`90%`">
-                <v-text-field label="الإختيار الرابع" v-model="question.answer4"
-                  persistent-hint class="disabled-field" />
-              </v-responsive>
-              <v-checkbox-btn class="mx-4" color="success"
-                @click="updateScore(index, question.id, 4, question.rightanswer, question.mark, $event)"
-                v-model="answers[index][3]" />
-            </div>
+      <div v-for="(question, index) in exam.questions" :key="index">
+        <div v-if="showQuestion[index] == 1">
+          <v-list lines="three" select-strategy="classic">
+            <v-sheet class="question-content">
+              {{ index + 1 }}. {{ question.content }}
+            </v-sheet>
+            <hr>
+            <span style="font-size: 20px; padding: 10px;">
+              الإختيارات
+            </span>
+            <v-list>
+              <div class="d-flex mx-2 my-2">
+                <v-responsive :width="`90%`">
+                  <v-text-field label="الإختيار الأول" v-model="question.answer1" persistent-hint class="disabled-field"
+                    readonly />
+                </v-responsive>
+                <v-checkbox-btn class="mx-4" color="success"
+                  @click="updateScore(index, question.id, 1, question.rightanswer, question.mark, $event)"
+                  v-model="answers[index][0]" />
+              </div>
+              <div class="d-flex mx-2 my-2">
+                <v-responsive :width="`90%`">
+                  <v-text-field label="الإختيار الثاني" v-model="question.answer2" persistent-hint
+                    class="disabled-field" />
+                </v-responsive>
+                <v-checkbox-btn class="mx-4" color="success"
+                  @click="updateScore(index, question.id, 2, question.rightanswer, question.mark, $event)"
+                  v-model="answers[index][1]" />
+              </div>
+              <div class="d-flex mx-2 my-2">
+                <v-responsive :width="`90%`">
+                  <v-text-field label="الإختيار الثالث" v-model="question.answer3" persistent-hint
+                    class="disabled-field" />
+                </v-responsive>
+                <v-checkbox-btn class="mx-4" color="success"
+                  @click="updateScore(index, question.id, 3, question.rightanswer, question.mark, $event)"
+                  v-model="answers[index][2]" />
+              </div>
+              <div class="d-flex mx-2 my-2">
+                <v-responsive :width="`90%`">
+                  <v-text-field label="الإختيار الرابع" v-model="question.answer4" persistent-hint
+                    class="disabled-field" />
+                </v-responsive>
+                <v-checkbox-btn class="mx-4" color="success"
+                  @click="updateScore(index, question.id, 4, question.rightanswer, question.mark, $event)"
+                  v-model="answers[index][3]" />
+              </div>
+            </v-list>
           </v-list>
-        </v-list>
-        <v-btn color="primary" class="mx-5">تخطي</v-btn>
+          <v-btn color="primary" class="mx-5" :disabled="isSkipped" @click="skipQuestion(index)">تخطي</v-btn>
+        </div>
+        <div v-else class="d-flex py-10 my-4 skip-question-body">
+          <div class="mx-auto">
+            <v-btn color="orange-darken-2" @click="unSkipQuestion(index)">
+              عدم التخطي
+            </v-btn>
+          </div>
+        </div>
       </div>
 
       <div class="d-flex flex-row">
@@ -300,11 +321,13 @@ onMounted(() => {
 }
 
 .disabled-field {
-  pointer-events: none; /* Disable pointer events */
-  background-color: #f0f0f0; /* Set a light background color */
+  pointer-events: none;
+  /* Disable pointer events */
+  background-color: #f0f0f0;
+  /* Set a light background color */
 }
 
-.disabled-field >>> .v-input__details {
+.disabled-field>>>.v-input__details {
   display: none;
 }
 
@@ -319,4 +342,7 @@ onMounted(() => {
   font-size: 25px;
 }
 
+.skip-question-body {
+  background-color: #E0E0E0;
+}
 </style>
