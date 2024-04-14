@@ -42,5 +42,8 @@ export default {
   },
   removeStudent(data) {
     return api().post('api/Teacher/students/remove', data);
+  },
+  getSubjects(id) {
+    return api().get(`api/Teacher/courses/${id}`);
   }
 }

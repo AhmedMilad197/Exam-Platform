@@ -337,6 +337,16 @@ const resetPassword = async (req, res) => {
       }
 }
 
+const TeacherCourses = async (req, res) => {
+    let id = req.params.id;
+    try {
+        let teacher = await Teacher.findOne({ where: { id: id }, include: [db.courses] });
+        res.send(teacher)
+    } catch (error) {
+        res.status(500).json({ error: 'Internal server error' });
+    }
+}
+
 module.exports = {
     addTeacher,
     getAllTeacher,
@@ -354,5 +364,6 @@ module.exports = {
     getExams,
     block,
     removeStudent,
-    getCourseQuestions
+    getCourseQuestions,
+    TeacherCourses
 };

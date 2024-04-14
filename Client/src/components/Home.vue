@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import SubjectService from '@/services/SubjectService'
+import TeacherService from '@/services/TeacherService'
 import { useUserStore } from '@/stores/user';
 import imgUrl from '../assets/subject.png'
 
@@ -80,24 +80,13 @@ function navigateTo (item) {
   });
 }
 
-const colors = [
-  "primary",
-  "secondary", 
-  "indigo", 
-  "red", 
-  "pink", 
-  "purple", 
-  "cyan-accent-2",
-  "orange-darken-3"
-];
-
 const subjects = ref();
 
-// TODO make this function get only the subjects related to the teacher.
 async function getSubjects () {
   try {
-    const response = await SubjectService.index(user)
-    subjects.value = response.data.courses;
+    const response = await TeacherService.getSubjects(user.user.id)
+    console.log(response.data)
+    subjects.value = response.data.Courses;
   } catch (error) {
     return {
       message: error.message
