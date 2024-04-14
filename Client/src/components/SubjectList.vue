@@ -3,7 +3,9 @@ import { ref, onMounted, nextTick } from 'vue'
 import { useRouter } from 'vue-router'
 import SubjectService from '@/services/SubjectService'
 import imgUrl from '../assets/subjects.jpg'
+import { useUserStore } from "@/stores/user";
 
+const user = useUserStore(); 
 const router = useRouter()
 const subjects = ref();
 const dialog= ref(false);
@@ -48,7 +50,7 @@ const items = ref([
   }
 ]);
 const drawer = ref(false);
-const logoutDialog = ref(true);
+const logoutDialog = ref(false);
 
 function handleRequest (title, value) {
   if (title == 'تسجيل الخروج') {
@@ -481,6 +483,16 @@ function goToTeachers(item) {
       </template>
     </v-data-table>
     </v-card>
+    <v-dialog v-model="logoutDialog" max-width="500px">
+      <v-card prepend-icon="mdi-alert-circle" text="هل تريد تسجيل الخروج؟" title="تأكيد" color="orange">
+        <v-card>
+          <v-spacer></v-spacer>
+          <v-btn color="red-darken-1" class="mx-2 my-4" @click="logout()">نعم</v-btn>
+          <v-btn color="blue-darken-1" @click="logoutDialog = false">إلغاء</v-btn>
+          <v-spacer></v-spacer>
+        </v-card>
+      </v-card>
+    </v-dialog>
   </v-locale-provider>
 
 </template>

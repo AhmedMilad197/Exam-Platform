@@ -6,6 +6,8 @@ const router = require('express').Router()
 
 router.post('/addConfig',ConfigController.addConfig)
 
+router.post('/login',ConfigController.login)
+
 router.get('/allConfig',ConfigController.getAllConfig)
 
 router.get('/published',ConfigController.getPublishedConfig)

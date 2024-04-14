@@ -37,6 +37,7 @@ import StudentExamMarkView from '../views/StudentExamMarkView.vue'
 import LandingPageView from '../views/LandingPageView.vue'
 import StudentExamHistoryView from '../views/StudentExamHistoryView.vue'
 import ExamResultView from '../views/ExamResultView.vue'
+import AdminLoginView from '../views/AdminLoginView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -258,6 +259,12 @@ const router = createRouter({
       path: '/exam-result/:id',
       name: 'exam-result',
       component: ExamResultView,
+      props: true
+    },
+    {
+      path: '/admin/login',
+      name: 'admin-login',
+      component: AdminLoginView,
       props: true
     },
   ]
