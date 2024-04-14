@@ -150,6 +150,9 @@ onMounted(() => {
       <v-toolbar>
         <v-toolbar-title>بيانات الإختبار</v-toolbar-title>
         <v-btn color="white" class="blue" @click="navigateTo({ name: 'student-exam-marks' })">درجات الطلبة</v-btn>
+        <v-btn color="white" class="mx-2 primary" @click="router.go(-1)">
+              العودة
+            </v-btn>
       </v-toolbar>
       <v-table fixed-header height="100%" density="comfortable">
         <thead>
@@ -292,4 +295,9 @@ onMounted(() => {
   cursor: pointer;
   font-size: 40px;
 }
+
+.primary {
+  background-color: rgb(24,103,192);
+}
+
 </style>

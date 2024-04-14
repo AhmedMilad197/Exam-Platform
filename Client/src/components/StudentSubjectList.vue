@@ -124,9 +124,9 @@ onMounted(() => {
       <img :src="imgUrl" alt="Logo" style="width: 1400px; height: 450px;">
     </div>
     
-    <!-- max-width="800" -->
     <v-card
     class="mx-auto"
+    max-width="1000"
     >
     <v-toolbar>
       <v-toolbar-title>المواد</v-toolbar-title>

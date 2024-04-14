@@ -256,6 +256,7 @@ function closeEditQuestionDialog () {
         <v-card
           class="mx-auto mt-10"
           max-height="100vh"
+          max-width="1000"
         >
         <v-toolbar>
           <v-toolbar-title>أسئلتي</v-toolbar-title>

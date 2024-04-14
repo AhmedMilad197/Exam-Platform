@@ -279,159 +279,161 @@ function phoneRule (value) {
     <div class="mx-auto">
       <img :src="imgUrl" alt="Logo" style="width: 1400px; height: 450px;">
     </div>
-    <v-data-table
-      :headers="headers"
-      :items="students"
-    >
-      <template v-slot:top>
-        <v-toolbar
-          flat
-        >
-          <v-toolbar-title>الطلاب</v-toolbar-title>
-          <v-divider
-            class="mx-4"
-            inset
-            vertical
-          ></v-divider>
-          <v-spacer></v-spacer>
-          <v-dialog
-            v-model="dialog"
-            max-width="600px"
+    <v-card class="mx-auto" max-width="1000">
+      <v-data-table
+        :headers="headers"
+        :items="students"
+      >
+        <template v-slot:top>
+          <v-toolbar
+            flat
           >
-            <template v-slot:activator="{ props }">
-              <v-btn
-                class="mb-2 primary"
-                color="white"
-                v-bind="props"
-              >
-                إضافة طالب
-              </v-btn>
-            </template>
-            <v-card>
-              <v-card-title>
-                <span class="text-h5"> إضافة طالب </span>
-              </v-card-title>
-    
-              <v-form ref="addStudentForm">
-                <v-container>
-                  <v-row>
-                    <v-col
-                      cols="12"
-                      md="12"
-                      sm="12"
-                    >
-                      <v-text-field
-                        v-model="editedItem.name"
-                        label="إسم الطالب"
-                        :rules="[v => !!v || 'يجب إدخال إسم الطالب']"
-                      ></v-text-field>
-                    </v-col>
-                    <v-col
-                      cols="12"
-                      md="12"
-                      sm="12"
-                    >
-                      <v-text-field
-                        v-model="editedItem.username"
-                        label="إسم المستخدم"
-                        :rules="[v => !!v || 'يجب إدخال إسم المستخدم']"
-                      ></v-text-field>
-                    </v-col>
-                    <v-col
-                      cols="12"
-                      md="12"
-                      sm="12"
-                    >
-                      <v-text-field
-                        v-model="editedItem.password"
-                        label="الرمز السري"
-                        :rules="[v => !!v || 'يجب إدخال الرمز السري']"
-                      ></v-text-field>
-                    </v-col>
-                    <v-col
-                      cols="12"
-                      md="12"
-                      sm="12"
-                    >
-                      <v-text-field
-                        v-model="editedItem.phone"
-                        label="رقم الهاتف"
-                        :rules="[v => phoneRule(v)]"
-                      ></v-text-field>
-                    </v-col>
-                    <v-col
-                      cols="12"
-                      md="12"
-                      sm="12"
-                    >
-                      <v-text-field
-                        v-model="editedItem.address"
-                        label="العنوان"
-                        :rules="[v => !!v || 'يجب إدخال العنوان']"
-                      ></v-text-field>
-                    </v-col>
-                  </v-row>
-                </v-container>
-              </v-form>
-    
-              <div class="d-flex">
-                <div class="mx-auto mb-4">
-                  <v-btn
-                    color="green-darken-1"
-                    class="mx-2"
-                    @click="save"
-                  >
-                    إضافة
-                  </v-btn>
-                  <v-btn
-                    color="blue-darken-1"
-                    @click="close"
-                  >
-                    إغلاق
-                  </v-btn>
-                </div>
-              </div>
-            </v-card>
-          </v-dialog>
-          <v-dialog v-model="dialogDelete" max-width="500px">
-            <v-card>
-              <v-card-title class="text-h5">Are you sure you want to delete this item?</v-card-title>
+            <v-toolbar-title>الطلاب</v-toolbar-title>
+            <v-divider
+              class="mx-4"
+              inset
+              vertical
+            ></v-divider>
+            <v-spacer></v-spacer>
+            <v-dialog
+              v-model="dialog"
+              max-width="600px"
+            >
+              <template v-slot:activator="{ props }">
+                <v-btn
+                  class="mb-2 primary"
+                  color="white"
+                  v-bind="props"
+                >
+                  إضافة طالب
+                </v-btn>
+              </template>
               <v-card>
-                <v-spacer></v-spacer>
-                <v-btn color="blue-darken-1" variant="text" @click="closeDelete">Cancel</v-btn>
-                <v-btn color="blue-darken-1" variant="text" @click="deleteItemConfirm">OK</v-btn>
-                <v-spacer></v-spacer>
+                <v-card-title>
+                  <span class="text-h5"> إضافة طالب </span>
+                </v-card-title>
+      
+                <v-form ref="addStudentForm">
+                  <v-container>
+                    <v-row>
+                      <v-col
+                        cols="12"
+                        md="12"
+                        sm="12"
+                      >
+                        <v-text-field
+                          v-model="editedItem.name"
+                          label="إسم الطالب"
+                          :rules="[v => !!v || 'يجب إدخال إسم الطالب']"
+                        ></v-text-field>
+                      </v-col>
+                      <v-col
+                        cols="12"
+                        md="12"
+                        sm="12"
+                      >
+                        <v-text-field
+                          v-model="editedItem.username"
+                          label="إسم المستخدم"
+                          :rules="[v => !!v || 'يجب إدخال إسم المستخدم']"
+                        ></v-text-field>
+                      </v-col>
+                      <v-col
+                        cols="12"
+                        md="12"
+                        sm="12"
+                      >
+                        <v-text-field
+                          v-model="editedItem.password"
+                          label="الرمز السري"
+                          :rules="[v => !!v || 'يجب إدخال الرمز السري']"
+                        ></v-text-field>
+                      </v-col>
+                      <v-col
+                        cols="12"
+                        md="12"
+                        sm="12"
+                      >
+                        <v-text-field
+                          v-model="editedItem.phone"
+                          label="رقم الهاتف"
+                          :rules="[v => phoneRule(v)]"
+                        ></v-text-field>
+                      </v-col>
+                      <v-col
+                        cols="12"
+                        md="12"
+                        sm="12"
+                      >
+                        <v-text-field
+                          v-model="editedItem.address"
+                          label="العنوان"
+                          :rules="[v => !!v || 'يجب إدخال العنوان']"
+                        ></v-text-field>
+                      </v-col>
+                    </v-row>
+                  </v-container>
+                </v-form>
+      
+                <div class="d-flex">
+                  <div class="mx-auto mb-4">
+                    <v-btn
+                      color="green-darken-1"
+                      class="mx-2"
+                      @click="save"
+                    >
+                      إضافة
+                    </v-btn>
+                    <v-btn
+                      color="blue-darken-1"
+                      @click="close"
+                    >
+                      إغلاق
+                    </v-btn>
+                  </div>
+                </div>
               </v-card>
-            </v-card>
-          </v-dialog>
-        </v-toolbar>
-      </template>
-      <template v-slot:item.actions="{ item }">
-        <v-icon
-          class="me-2"
-          size="small"
-          @click="editItem(item)"
-          color="green"
-        >
-          mdi-pencil
-        </v-icon>
-        <v-icon
-          size="small"
-          @click="deleteItem(item)"
-          color="red"
-        >
-          mdi-delete
-        </v-icon>
-      </template>
-      <template v-slot:no-data>
-        <v-btn
-          color="primary"
-          @click="index"
-        >
-          Reset
-        </v-btn>
-      </template>
-    </v-data-table>
+            </v-dialog>
+            <v-dialog v-model="dialogDelete" max-width="500px">
+              <v-card>
+                <v-card-title class="text-h5">Are you sure you want to delete this item?</v-card-title>
+                <v-card>
+                  <v-spacer></v-spacer>
+                  <v-btn color="blue-darken-1" variant="text" @click="closeDelete">Cancel</v-btn>
+                  <v-btn color="blue-darken-1" variant="text" @click="deleteItemConfirm">OK</v-btn>
+                  <v-spacer></v-spacer>
+                </v-card>
+              </v-card>
+            </v-dialog>
+          </v-toolbar>
+        </template>
+        <template v-slot:item.actions="{ item }">
+          <v-icon
+            class="me-2"
+            size="small"
+            @click="editItem(item)"
+            color="green"
+          >
+            mdi-pencil
+          </v-icon>
+          <v-icon
+            size="small"
+            @click="deleteItem(item)"
+            color="red"
+          >
+            mdi-delete
+          </v-icon>
+        </template>
+        <template v-slot:no-data>
+          <v-btn
+            color="primary"
+            @click="index"
+          >
+            Reset
+          </v-btn>
+        </template>
+      </v-data-table>
+    </v-card>
     <v-snackbar
       v-model="snackbar"
       multi-line

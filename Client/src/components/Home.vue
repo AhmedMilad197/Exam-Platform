@@ -162,32 +162,35 @@ onMounted(() => {
       <img :src="imgUrl" alt="Logo" style="width: 1400px; height: 396px;">
     </div>
 
-    <v-data-table
-      :headers="headers"
-      :items="subjects"
-    >
-      <template v-slot:top>
-        <v-toolbar
-          flat
-        >
-          <v-toolbar-title>المواد</v-toolbar-title>
-          <v-divider
-            class="mx-4"
-            inset
-            vertical
-          ></v-divider>
-        </v-toolbar>
-      </template>
-      <template v-slot:item.actions="{ item }">
-        
-        <v-btn 
-          color="primary" 
-          class="my-auto mx-4"
-          @click="navigateTo(item)"
-        >تفاصيل</v-btn>
+    <v-card class="mx-auto" max-width="1000">
 
-      </template>
-    </v-data-table>
+      <v-data-table
+        :headers="headers"
+        :items="subjects"
+      >
+        <template v-slot:top>
+          <v-toolbar
+            flat
+          >
+            <v-toolbar-title>المواد</v-toolbar-title>
+            <v-divider
+              class="mx-4"
+              inset
+              vertical
+            ></v-divider>
+          </v-toolbar>
+        </template>
+        <template v-slot:item.actions="{ item }">
+          
+          <v-btn 
+            color="primary" 
+            class="my-auto mx-4"
+            @click="navigateTo(item)"
+          >تفاصيل</v-btn>
+  
+        </template>
+      </v-data-table>
+    </v-card>
 
     <v-dialog v-model="logoutDialog" max-width="500px">
       <v-card 

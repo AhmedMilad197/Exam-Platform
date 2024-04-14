@@ -159,48 +159,15 @@ onMounted(() => {
     <div class="mx-auto">
       <img :src="imgUrl" alt="Logo" style="width: 1400px; height: 450px;">
     </div>
-    
-    <!-- max-width="800" -->
+
     <v-card
-    class="mx-auto"
+      class="mx-auto"
+      max-width="1000"
     >
     <v-toolbar>
       <v-toolbar-title>اختبارات</v-toolbar-title>
       <v-btn color="white" class="primary" @click="router.go(-1)">العودة</v-btn>
     </v-toolbar>
-      <!-- <div class="d-flex flex-column">
-        <div v-for="(exam, index) in exams" :key="index">
-          
-            <div class="d-flex">
-              <div>
-                <v-list>
-                  <v-list-item
-                    class="mx-4"
-                  >
-                    <v-list-item-title
-                      class="my-2"
-                    >
-                      {{ exam.name }}
-                    </v-list-item-title>
-                    <v-list-item-subtitle>
-                      {{ exam.description }}
-                    </v-list-item-subtitle>
-                  </v-list-item>
-                </v-list>
-              </div>
-              <v-spacer></v-spacer>
-              <div class="d-flex">
-                <v-btn 
-                color="primary" 
-                class="my-auto mx-4"
-                @click="navigateTo({name: 'exam', params: { exam: exam.id }})"
-                :disabled="enableExams[index]"
-                >إبدأ الإختبار</v-btn>
-              </div>
-            </div>
-
-        </div>
-      </div> -->
 
       <v-table
           fixed-header

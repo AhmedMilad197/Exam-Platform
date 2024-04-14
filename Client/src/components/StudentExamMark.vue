@@ -129,41 +129,46 @@ onMounted(() => {
         </v-list>
       </v-navigation-drawer>
     </v-layout>
-    <v-data-table fixed-header height="100%" class="mt-16">
-      <template v-slot:top>
-        <v-toolbar flat>
-          <v-toolbar-title>اختباراتك</v-toolbar-title>
-          <v-btn color="white" class="success-green" @click="storeToExcel()">طباعة إلى excel</v-btn>
-        </v-toolbar>
-      </template>
-
-      <thead>
-        <tr>
-          <th class="text-right">
-            رقم
-          </th>
-          <th class="text-right">
-            إسم الطالب
-          </th>
-          <th class="text-right">
-            الدرجة
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="(studentExam, index) in studentExams" :key="index" style="height: 50px;">
-          <td>
-            {{ index + 1 }}
-          </td>
-          <td>
-            {{ studentExam.student.name }}
-          </td>
-          <td>
-            {{ studentExam.score }}
-          </td>
-        </tr>
-      </tbody>
-    </v-data-table>
+    <v-card class="mx-auto mt-16" max-width="1000">
+      <v-data-table fixed-header height="100%">
+        <template v-slot:top>
+          <v-toolbar flat>
+            <v-toolbar-title>درجات الطلبة</v-toolbar-title>
+            <v-btn color="white" class="success-green" @click="storeToExcel()">طباعة إلى excel</v-btn>
+            <v-btn color="white" class="mx-2 primary" @click="router.go(-1)">
+              العودة
+            </v-btn>
+          </v-toolbar>
+        </template>
+  
+        <thead>
+          <tr>
+            <th class="text-right">
+              رقم
+            </th>
+            <th class="text-right">
+              إسم الطالب
+            </th>
+            <th class="text-right">
+              الدرجة
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(studentExam, index) in studentExams" :key="index" style="height: 50px;">
+            <td>
+              {{ index + 1 }}
+            </td>
+            <td>
+              {{ studentExam.student.name }}
+            </td>
+            <td>
+              {{ studentExam.score }}
+            </td>
+          </tr>
+        </tbody>
+      </v-data-table>
+    </v-card>
     <v-dialog v-model="logoutDialog" max-width="500px">
       <v-card prepend-icon="mdi-alert-circle" text="هل تريد تسجيل الخروج؟" title="تأكيد" color="orange">
         <v-card>
@@ -191,4 +196,9 @@ onMounted(() => {
   cursor: pointer;
   font-size: 40px;
 }
+
+.primary {
+  background-color: rgb(24,103,192);
+}
+
 </style>

@@ -103,7 +103,7 @@ const deleteExam = async (req, res) => {
 const viewExam = async (req, res) => {
     try {
         let id = req.body.data.examId;
-        let exams = await Exam.findOne({where: { id: id }});
+        let exams = await Exam.findOne({where: { id: id }, include: [db.questions]});
         res.status(200).send(exams);
     } catch (error) {
         res.status(500).json({ error: 'Internal server error' });

@@ -36,6 +36,7 @@ import ResetPasswordView from '../views/ResetPasswordView.vue'
 import StudentExamMarkView from '../views/StudentExamMarkView.vue'
 import LandingPageView from '../views/LandingPageView.vue'
 import StudentExamHistoryView from '../views/StudentExamHistoryView.vue'
+import ExamResultView from '../views/ExamResultView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -251,6 +252,12 @@ const router = createRouter({
       path: '/student-exam/:id',
       name: 'student-exam-history',
       component: StudentExamHistoryView,
+      props: true
+    },
+    {
+      path: '/exam-result/:id',
+      name: 'exam-result',
+      component: ExamResultView,
       props: true
     },
   ]

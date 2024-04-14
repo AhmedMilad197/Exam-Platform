@@ -177,6 +177,7 @@ onMounted(() => {
     <div>
         <v-card
         class="mx-auto mt-10"
+        max-width="1000"
         >
         <v-toolbar>
           <v-toolbar-title>الطلبة</v-toolbar-title>

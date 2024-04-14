@@ -214,141 +214,143 @@ function deleteItemConfirm() {
       <img :src="imgUrl" alt="Logo" style="width: 1400px; height: 450px;">
     </div>
 
-    <v-data-table
-      :headers="headers"
-      :items="questions"
-      :sort-by="[{ key: 'Answer1', order: 'asc' }]"
-    >
-      <template v-slot:top>
-        <v-toolbar
-          flat
-        >
-          <v-toolbar-title>كل الأسئلة</v-toolbar-title>
-          <v-divider
-            class="mx-4"
-            inset
-            vertical
-          ></v-divider>
-          <v-spacer></v-spacer>
-          <v-dialog
-            v-model="dialog"
-            max-width="600px"
+    <v-card class="mx-auto" max-width="1000">
+      <v-data-table
+        :headers="headers"
+        :items="questions"
+        :sort-by="[{ key: 'Answer1', order: 'asc' }]"
+      >
+        <template v-slot:top>
+          <v-toolbar
+            flat
           >
-            <v-card>
-              <v-card-title>
-                <span class="text-h5">تفاصيل السؤال</span>
-              </v-card-title>
-    
-              <v-card-text>
-                <v-container>
-                  <v-row>
-                    <v-col
-                      cols="12"
-                      md="12"
-                      sm="12"
-                    >
-                      <v-text-field
-                        v-model="editedItem.content"
-                        label="السؤال"
-                        class="no-select"
-                      ></v-text-field>
-                    </v-col>
-                    <v-col
-                      cols="12"
-                      md="12"
-                      sm="12"
-                    >
-                      <v-text-field
-                        v-model="editedItem.answer1"
-                        label="الإجابة الأولى"
-                        class="no-select"
-                      ></v-text-field>
-                    </v-col>
-                    <v-col
-                      cols="12"
-                      md="12"
-                      sm="12"
-                    >
-                      <v-text-field
-                        v-model="editedItem.answer2"
-                        label="الإجابة الثانية"
-                        class="no-select"
-                      ></v-text-field>
-                    </v-col>
-                    <v-col
-                      cols="12"
-                      md="12"
-                      sm="12"
-                    >
-                      <v-text-field
-                        v-model="editedItem.answer3"
-                        label="الإجابة الثالثة"
-                        class="no-select"
-                      ></v-text-field>
-                    </v-col>
-                    <v-col
-                      cols="12"
-                      md="12"
-                      sm="12"
-                    >
-                      <v-text-field
-                        v-model="editedItem.answer4"
-                        label="الإجابة الرابعة"
-                        class="no-select"
-                      ></v-text-field>
-                    </v-col>
-                  </v-row>
-                </v-container>
-              </v-card-text>
-    
-              <v-card>
-                <div class="d-flex">
-                  <v-btn
-                  color="blue-darken-1"
-                  class="mx-auto mb-10"
-                  @click="close"
-                  >
-                    إغلاق
-                  </v-btn>
-                </div>
-              </v-card>
-            </v-card>
-          </v-dialog>
-          <v-dialog v-model="dialogDelete" max-width="500px">
-            <v-card 
-              prepend-icon="mdi-alert-circle"
-              text="هل تريد حذف هذا سؤال؟"
-              title="تأكيد"
-              color="orange"
+            <v-toolbar-title>كل الأسئلة</v-toolbar-title>
+            <v-divider
+              class="mx-4"
+              inset
+              vertical
+            ></v-divider>
+            <v-spacer></v-spacer>
+            <v-dialog
+              v-model="dialog"
+              max-width="600px"
             >
               <v-card>
-                <v-spacer></v-spacer>
-                <v-btn color="red-darken-1" class="mx-2 my-4" @click="deleteItemConfirm">نعم</v-btn>
-                <v-btn color="blue-darken-1" @click="closeDelete">إلغاء</v-btn>
-                <v-spacer></v-spacer>
+                <v-card-title>
+                  <span class="text-h5">تفاصيل السؤال</span>
+                </v-card-title>
+      
+                <v-card-text>
+                  <v-container>
+                    <v-row>
+                      <v-col
+                        cols="12"
+                        md="12"
+                        sm="12"
+                      >
+                        <v-text-field
+                          v-model="editedItem.content"
+                          label="السؤال"
+                          class="no-select"
+                        ></v-text-field>
+                      </v-col>
+                      <v-col
+                        cols="12"
+                        md="12"
+                        sm="12"
+                      >
+                        <v-text-field
+                          v-model="editedItem.answer1"
+                          label="الإجابة الأولى"
+                          class="no-select"
+                        ></v-text-field>
+                      </v-col>
+                      <v-col
+                        cols="12"
+                        md="12"
+                        sm="12"
+                      >
+                        <v-text-field
+                          v-model="editedItem.answer2"
+                          label="الإجابة الثانية"
+                          class="no-select"
+                        ></v-text-field>
+                      </v-col>
+                      <v-col
+                        cols="12"
+                        md="12"
+                        sm="12"
+                      >
+                        <v-text-field
+                          v-model="editedItem.answer3"
+                          label="الإجابة الثالثة"
+                          class="no-select"
+                        ></v-text-field>
+                      </v-col>
+                      <v-col
+                        cols="12"
+                        md="12"
+                        sm="12"
+                      >
+                        <v-text-field
+                          v-model="editedItem.answer4"
+                          label="الإجابة الرابعة"
+                          class="no-select"
+                        ></v-text-field>
+                      </v-col>
+                    </v-row>
+                  </v-container>
+                </v-card-text>
+      
+                <v-card>
+                  <div class="d-flex">
+                    <v-btn
+                    color="blue-darken-1"
+                    class="mx-auto mb-10"
+                    @click="close"
+                    >
+                      إغلاق
+                    </v-btn>
+                  </div>
+                </v-card>
               </v-card>
-            </v-card>
-          </v-dialog>
-        </v-toolbar>
-      </template>
-      <template v-slot:item.actions="{ item }">
-        <v-icon
-          class="me-2"
-          size="small"
-          @click="editItem(item)"
-          color="blue"
-        >
-          mdi-eye-arrow-right
-        </v-icon>
-        <v-icon
-          size="small"
-          @click="deleteItem(item)"
-          color="red"
-        >
-          mdi-delete
-        </v-icon>
-      </template>
-    </v-data-table>
+            </v-dialog>
+            <v-dialog v-model="dialogDelete" max-width="500px">
+              <v-card 
+                prepend-icon="mdi-alert-circle"
+                text="هل تريد حذف هذا سؤال؟"
+                title="تأكيد"
+                color="orange"
+              >
+                <v-card>
+                  <v-spacer></v-spacer>
+                  <v-btn color="red-darken-1" class="mx-2 my-4" @click="deleteItemConfirm">نعم</v-btn>
+                  <v-btn color="blue-darken-1" @click="closeDelete">إلغاء</v-btn>
+                  <v-spacer></v-spacer>
+                </v-card>
+              </v-card>
+            </v-dialog>
+          </v-toolbar>
+        </template>
+        <template v-slot:item.actions="{ item }">
+          <v-icon
+            class="me-2"
+            size="small"
+            @click="editItem(item)"
+            color="blue"
+          >
+            mdi-eye-arrow-right
+          </v-icon>
+          <v-icon
+            size="small"
+            @click="deleteItem(item)"
+            color="red"
+          >
+            mdi-delete
+          </v-icon>
+        </template>
+      </v-data-table>
+    </v-card>
   </v-locale-provider>
 </template>
 

@@ -193,83 +193,85 @@ onMounted(() => {
     <div class="mx-auto">
       <img :src="imgUrl" alt="Logo" style="width: 1400px; height: 450px;">
     </div>
-    
-    <v-data-table
-      :headers="headers"
-      :items="theExams()"
-    >
-      <template v-slot:top>
-        <v-toolbar
-          flat
-        >
-          <v-toolbar-title>اختباراتك</v-toolbar-title>
-          <v-divider
-            class="mx-4"
-            inset
-            vertical
-          ></v-divider>
-          <v-spacer></v-spacer>
-          <v-dialog
-            v-model="dialog"
-            max-width="600px"
+    <v-card class="mx-auto" max-width="1000">
+
+      <v-data-table
+        :headers="headers"
+        :items="theExams()"
+      >
+        <template v-slot:top>
+          <v-toolbar
+            flat
           >
-            <template v-slot:activator="{ props }">
-              <v-btn
-                class="mb-2 purple mr-2"
-                color  = "white"
-                v-bind="props"
-                @click="navigateTo({ name: 'teacher-questions', params: { subject: route.params.subject }})"
-              >
-                اسئلتي
-              </v-btn>
-              <v-btn
-                class="mb-2 success-green mr-2"
-                color  = "white"
-                v-bind="props"
-                @click="navigateTo({name: 'exam-create', params: { subject: route.params.subject }})"
-              >
-                اضافة اختبار
-              </v-btn>
-
-              <v-btn
-                class="mb-2 light-red mr-2"
-                color  = "white"
-                v-bind="props"
-                @click="navigateTo({ name: 'teacher-student', params: { subject: route.params.subject }})"
-              >
-                طلابي
-              </v-btn>
-
-              <v-btn
-                class="mb-2 primary mr-2"
-                color  = "white"
-                @click="router.go(-1)"
-              >
-                العودة
-              </v-btn>
+            <v-toolbar-title>اختباراتك</v-toolbar-title>
+            <v-divider
+              class="mx-4"
+              inset
+              vertical
+            ></v-divider>
+            <v-spacer></v-spacer>
+            <v-dialog
+              v-model="dialog"
+              max-width="600px"
+            >
+              <template v-slot:activator="{ props }">
+                <v-btn
+                  class="mb-2 purple mr-2"
+                  color  = "white"
+                  v-bind="props"
+                  @click="navigateTo({ name: 'teacher-questions', params: { subject: route.params.subject }})"
+                >
+                  اسئلتي
+                </v-btn>
+                <v-btn
+                  class="mb-2 success-green mr-2"
+                  color  = "white"
+                  v-bind="props"
+                  @click="navigateTo({name: 'exam-create', params: { subject: route.params.subject }})"
+                >
+                  اضافة اختبار
+                </v-btn>
+  
+                <v-btn
+                  class="mb-2 light-red mr-2"
+                  color  = "white"
+                  v-bind="props"
+                  @click="navigateTo({ name: 'teacher-student', params: { subject: route.params.subject }})"
+                >
+                  طلابي
+                </v-btn>
+  
+                <v-btn
+                  class="mb-2 primary mr-2"
+                  color  = "white"
+                  @click="router.go(-1)"
+                >
+                  العودة
+                </v-btn>
+                
+              </template>
               
-            </template>
-            
-          </v-dialog>
-        </v-toolbar>
-      </template>
-      <template v-slot:item.actions="{ item }">
-        <v-icon
-          class="me-2"
-          size="small"
-          @click="goTo(item)"
-        >
-          mdi-eye-arrow-right
-        </v-icon>
-        <v-icon
-          size="small"
-          @click="deleteExam(item)"
-          color="red"
-        >
-          mdi-delete
-        </v-icon>
-      </template>
-    </v-data-table>
+            </v-dialog>
+          </v-toolbar>
+        </template>
+        <template v-slot:item.actions="{ item }">
+          <v-icon
+            class="me-2"
+            size="small"
+            @click="goTo(item)"
+          >
+            mdi-eye-arrow-right
+          </v-icon>
+          <v-icon
+            size="small"
+            @click="deleteExam(item)"
+            color="red"
+          >
+            mdi-delete
+          </v-icon>
+        </template>
+      </v-data-table>
+    </v-card>
 
     <v-dialog v-model="dialog" width="auto">
       <v-card max-width="400" prepend-icon="mdi-alert-circle"

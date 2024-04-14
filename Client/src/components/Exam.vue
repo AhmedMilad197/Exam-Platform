@@ -101,7 +101,6 @@ async function getExam() {
     }
     maxScore.value = temp_mark
     answers.value = temp_array
-    console.log(response.data);
     exam.value.start_time = getDate(exam.value.start_time)[0] + " " + getTime(exam.value.start_time)
     exam.value.end_time = getDate(exam.value.end_time)[0] + " " + getTime(exam.value.end_time)
   } catch (error) {
@@ -156,7 +155,7 @@ async function submit() {
       examId: route.params.exam,
       score: ans
     });
-    router.go(-1);
+    navigateTo({name: 'exam-result', params: {id: exam.value.id}})
   } catch (error) {
     return {
       message: error.message

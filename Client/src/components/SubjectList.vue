@@ -265,7 +265,8 @@ function goToTeachers(item) {
       <img :src="imgUrl" alt="Logo" style="width: 1400px; height: 450px;">
     </div>
 
-    <v-data-table
+    <v-card class="mx-auto" max-width="1000">
+      <v-data-table
       :headers="headers"
       :items="subjects"
     >
@@ -479,6 +480,7 @@ function goToTeachers(item) {
         </v-btn>
       </template>
     </v-data-table>
+    </v-card>
   </v-locale-provider>
 
 </template>

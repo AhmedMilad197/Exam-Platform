@@ -216,68 +216,72 @@ onMounted(() => {
       <img :src="imgUrl" alt="Logo" style="width: 1400px; height: 450px;">
     </div>
 
-    <v-data-table :headers="headers" :items="teachers">
-      <template v-slot:top>
-        <v-toolbar flat>
-          <v-toolbar-title>المدرسين</v-toolbar-title>
-          <v-divider class="mx-4" inset vertical></v-divider>
-          <v-spacer></v-spacer>
-          <v-dialog v-model="dialog" max-width="600px">
-            <v-card>
-              <v-card-title>
-                <span class="text-h5"> بيانات المدرس </span>
-              </v-card-title>
+    <v-card class="mx-auto" max-width="1000">
 
-              <v-card-text>
-                <v-container>
-                  <v-row>
-                    <v-col cols="12" md="12" sm="12">
-                      <v-text-field v-model="editedItem.name" class="no-select" label="إسم المدرس"></v-text-field>
-                    </v-col>
-                    <v-col cols="12" md="12" sm="12">
-                      <v-text-field v-model="editedItem.username" class="no-select" label="username"></v-text-field>
-                    </v-col>
-                    <v-col cols="12" md="12" sm="12">
-                      <v-text-field v-model="editedItem.password" class="no-select" label="الرمز السري"></v-text-field>
-                    </v-col>
-                    <v-col cols="12" md="12" sm="12">
-                      <v-text-field v-model="editedItem.lastlogin" class="no-select" label="اخر ضهور"></v-text-field>
-                    </v-col>
-                  </v-row>
-                </v-container>
-              </v-card-text>
-
+      <v-data-table :headers="headers" :items="teachers">
+        <template v-slot:top>
+          <v-toolbar flat>
+            <v-toolbar-title>المدرسين</v-toolbar-title>
+            <v-divider class="mx-4" inset vertical></v-divider>
+            <v-spacer></v-spacer>
+            <v-dialog v-model="dialog" max-width="600px">
               <v-card>
-                <div class="d-flex">
-                  <v-btn color="primary" @click="close" class="mx-auto my-4">
-                    العودة
-                  </v-btn>
-                </div>
+                <v-card-title>
+                  <span class="text-h5"> بيانات المدرس </span>
+                </v-card-title>
+  
+                <v-card-text>
+                  <v-container>
+                    <v-row>
+                      <v-col cols="12" md="12" sm="12">
+                        <v-text-field v-model="editedItem.name" class="no-select" label="إسم المدرس"></v-text-field>
+                      </v-col>
+                      <v-col cols="12" md="12" sm="12">
+                        <v-text-field v-model="editedItem.username" class="no-select" label="username"></v-text-field>
+                      </v-col>
+                      <v-col cols="12" md="12" sm="12">
+                        <v-text-field v-model="editedItem.password" class="no-select" label="الرمز السري"></v-text-field>
+                      </v-col>
+                      <v-col cols="12" md="12" sm="12">
+                        <v-text-field v-model="editedItem.lastlogin" class="no-select" label="اخر ضهور"></v-text-field>
+                      </v-col>
+                    </v-row>
+                  </v-container>
+                </v-card-text>
+  
+                <v-card>
+                  <div class="d-flex">
+                    <v-btn color="primary" @click="close" class="mx-auto my-4">
+                      العودة
+                    </v-btn>
+                  </div>
+                </v-card>
               </v-card>
+            </v-dialog>
+          </v-toolbar>
+        </template>
+        <template v-slot:item.actions="{ item }">
+          <v-icon class="me-2" size="small" @click="editItem(item)" color="blue">
+            mdi-eye-arrow-right
+          </v-icon>
+          <v-icon size="small" @click="selectTeacherToBlock(item)" color="red">
+            mdi-cancel
+          </v-icon>
+          <v-dialog v-model="blockTeacherConfirmation" width="auto">
+            <v-card max-width="400" prepend-icon="mdi-update"
+              text="هل تريد حظر هذا الاستاذ؟"
+              title="تأكيد">
+              <template v-slot:actions>
+                <v-btn color="red" @click="blockTeacher()">نعم</v-btn>
+                <v-btn color="primary" @click="blockTeacherConfirmation = false">العودة</v-btn>
+              </template>
             </v-card>
           </v-dialog>
-        </v-toolbar>
-      </template>
-      <template v-slot:item.actions="{ item }">
-        <v-icon class="me-2" size="small" @click="editItem(item)" color="blue">
-          mdi-eye-arrow-right
-        </v-icon>
-        <v-icon size="small" @click="selectTeacherToBlock(item)" color="red">
-          mdi-cancel
-        </v-icon>
-        <v-dialog v-model="blockTeacherConfirmation" width="auto">
-          <v-card max-width="400" prepend-icon="mdi-update"
-            text="هل تريد حظر هذا الاستاذ؟"
-            title="تأكيد">
-            <template v-slot:actions>
-              <v-btn color="red" @click="blockTeacher()">نعم</v-btn>
-              <v-btn color="primary" @click="blockTeacherConfirmation = false">العودة</v-btn>
-            </template>
-          </v-card>
-        </v-dialog>
-      </template>
+        </template>
+  
+      </v-data-table>
+    </v-card>
 
-    </v-data-table>
   </v-locale-provider>
 
 </template>
