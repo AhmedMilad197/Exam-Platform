@@ -15,6 +15,8 @@ const user = useUserStore();
 const studentAnswers = ref({});
 const showQuestion = ref([]);
 const isSkipped = ref(false);
+const storeAnswers = ref([]);
+const error = ref();
 const items = ref([
   {
     title: 'المواد الدراسية',
@@ -92,7 +94,8 @@ async function getExam() {
     let temp_mark = 0
     while (length--) {
       temp_mark += response.data.questions[length].mark
-      score.value.push(0);
+      score.value.push(-1);
+      storeAnswers.value.push(0);
       temp_array.push([0, 0, 0, 0]);
       showQuestion.value.push(1);
     }
@@ -122,7 +125,7 @@ function updateScore(index, question_id, answer, right_answer, mark, event) {
     studentAnswers.value[question_id] = answer;
   } else {
     studentAnswers.value[question_id] = -1;
-    score.value[index] = 0;
+    score.value[index] = -1;
   }
 }
 
@@ -130,8 +133,17 @@ async function submit() {
   try {
     let max_score = parseInt(maxScore.value)
     let student_score = 0
+    let skippedQuestionCounter = 0;
     score.value.forEach(element => {
-      student_score += parseInt(element)
+      if (element == -1) {
+        skippedQuestionCounter++;
+        if (!isSkipped.value || skippedQuestionCounter > 1) {
+          error.value = 'يرجى الإجابة على جميع الأسئلة'
+          return;
+        }
+      } else {
+        student_score += parseInt(element)
+      }
     });
     let ans = parseInt(student_score / max_score * 100)
     StudentExamHistoryService.create({
@@ -155,11 +167,14 @@ async function submit() {
 function skipQuestion(index) {
   showQuestion.value[index] = 0;
   isSkipped.value = true;
+  storeAnswers.value[index] = score.value[index];
+  score.value[index] = -1;
 }
 
 function unSkipQuestion(index) {
   showQuestion.value[index] = 1;
   isSkipped.value = false;
+  score.value[index] = storeAnswers.value[index];
 }
 
 function getDate(date) {
@@ -296,6 +311,14 @@ onMounted(() => {
         </div>
       </div>
 
+      <div class="d-flex">
+        <div class="mx-auto">
+          <span class="error">
+            {{ error }}
+          </span>
+        </div>
+      </div>
+
       <div class="d-flex flex-row">
         <v-btn color="primary" class="mx-auto my-4" @click="submit()">إرسال</v-btn>
       </div>
@@ -344,5 +367,9 @@ onMounted(() => {
 
 .skip-question-body {
   background-color: #E0E0E0;
+}
+
+.error {
+  color: red;
 }
 </style>
