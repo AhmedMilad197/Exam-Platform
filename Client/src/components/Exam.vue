@@ -31,11 +31,11 @@ const items = ref([
 const drawer = ref(false);
 const logoutDialog = ref(false);
 
-function navigateTo (path) {
+function navigateTo(path) {
   router.push(path);
 }
 
-function handleRequest (title, value) {
+function handleRequest(title, value) {
   if (title == 'تسجيل الخروج') {
     logoutDialog.value = true;
   } else {
@@ -43,13 +43,13 @@ function handleRequest (title, value) {
   }
 }
 
-function deleteStoredUser () {
+function deleteStoredUser() {
   user.user = null;
   user.token = null;
   user.role = null;
 }
 
-async function logout () {
+async function logout() {
   deleteStoredUser();
   logoutDialog.value = false;
   navigateTo({
@@ -60,7 +60,7 @@ async function logout () {
 const exam = ref([]);
 
 function shuffle(array) {
-  let currentIndex = array.length,  randomIndex;
+  let currentIndex = array.length, randomIndex;
 
   // While there remain elements to shuffle.
   while (currentIndex > 0) {
@@ -83,19 +83,21 @@ async function getExam() {
       examId: route.params.exam,
       studentId: user.user.id
     })
-    response.data.questions = shuffle(response.data.questions) 
+    response.data.questions = shuffle(response.data.questions)
     exam.value = response.data
     let length = response.data.questions.length;
     let temp_array = []
     let temp_mark = 0
-    while(length--) {
+    while (length--) {
       temp_mark += response.data.questions[length].mark
       score.value.push(0);
       temp_array.push([0, 0, 0, 0]);
     }
     maxScore.value = temp_mark
     answers.value = temp_array
-    console.log(response.data.questions);
+    console.log(response.data);
+    exam.value.start_time = getDate(exam.value.start_time)[0] + " " + getTime(exam.value.start_time)
+    exam.value.end_time = getDate(exam.value.end_time)[0] + " " + getTime(exam.value.end_time)
   } catch (error) {
     return {
       message: error.message
@@ -147,6 +149,16 @@ async function submit() {
   }
 }
 
+function getDate (date) {
+  const dateTimeString = date;
+  return dateTimeString.split("T");
+}
+
+function getTime (date) {
+  const dateTimeParts = date.split("T");
+  return dateTimeParts[1].slice(0, -5);
+}
+
 onMounted(() => {
   getExam()
 });
@@ -157,14 +169,8 @@ onMounted(() => {
   <v-locale-provider rtl>
     <v-layout>
       <v-locale-provider rtl>
-        <v-app-bar
-          color="primary"
-          prominent
-          height="100"
-        >
-          <v-app-bar-nav-icon 
-            @click.stop="drawer = !drawer"
-          />
+        <v-app-bar color="primary" prominent height="100">
+          <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
           <v-toolbar-title>
             <span class="title-text" @click="navigateTo({ name: 'LandingPageView' })">
               Exam Platform
@@ -174,22 +180,12 @@ onMounted(() => {
         </v-app-bar>
       </v-locale-provider>
 
-      <v-navigation-drawer
-        v-model="drawer"
-        location="right"
-      >
+      <v-navigation-drawer v-model="drawer" location="right">
         <v-list density="compact">
-          <v-list-item
-            v-for="(item, i) in items"
-            :key="i"
-            :value="item.value"
-            style="text-align: right;"
-            @click="handleRequest(item.title, item.value)"
-          >
+          <v-list-item v-for="(item, i) in items" :key="i" :value="item.value" style="text-align: right;"
+            @click="handleRequest(item.title, item.value)">
             <div v-if="item.title == 'تسجيل الخروج'">
-              <v-list-item-title 
-                style="color: red;"
-                >
+              <v-list-item-title style="color: red;">
                 {{ item.title }}
               </v-list-item-title>
             </div>
@@ -200,106 +196,92 @@ onMounted(() => {
         </v-list>
       </v-navigation-drawer>
     </v-layout>
-    <v-card
-    class="mx-auto mt-10"
-    max-width="800"
-    >
-
+    <v-card style="margin-left: auto; margin-right: auto; margin-top: 10%;" max-width="800">
+      <div width="100%" class="exam-details d-flex flex-column">
+        <span class="mx-auto">
+          بيانات الإمتحان 
+        </span><br>
+        <span style="font-size: 20px;">
+          <div class="d-flex">
+            <div class="mx-4">
+              العنوان : <br>
+              الوصف : <br>
+              موعد البدأ : <br>
+              موعد الإنتهاء : <br> 
+            </div>
+            <div>
+              {{ exam.name }} <br>
+              {{ exam.description }} <br>
+              {{ exam.start_time }} <br>
+              {{ exam.end_time }} <br>
+            </div>
+          </div>
+           
+        </span>
+      </div>
       <v-toolbar rtl>
-            <v-toolbar-title class="mx-5">اسئلة</v-toolbar-title>
+        <v-toolbar-title class="mx-5">اسئلة</v-toolbar-title>
       </v-toolbar>
 
       <div v-for="(question, index) in exam.questions" :key="question.id">
 
         <v-list lines="three" select-strategy="classic">
-          <v-sheet class="text-h5 mx-4 my-4">
+          <v-sheet class="question-content">
             {{ index + 1 }}. {{ question.content }}
-          </v-sheet> <hr>
-          <span class="text-h5 mx-2 mt-2">
-              Choices
+          </v-sheet>
+          <hr>
+          <span style="font-size: 20px; padding: 10px;">
+            الإختيارات
           </span>
           <v-list>
             <div class="d-flex mx-2 my-2">
               <v-responsive :width="`90%`">
-                <v-text-field
-                  label="Choice 1"
-                  v-model="question.answer1"
-                  hint="Insert Choice 1 please."
-                  persistent-hint
-                ></v-text-field>
+                <v-text-field label="الإختيار الأول" v-model="question.answer1"
+                  persistent-hint class="disabled-field" readonly/>
               </v-responsive>
-                <v-checkbox-btn 
-                  class="mx-4" 
-                  color="success" 
-                  @click="updateScore(index, question.id, 1, question.rightanswer, question.mark, $event)"
-                  v-model="answers[index][0]"
-                  />
+              <v-checkbox-btn class="mx-4" color="success"
+                @click="updateScore(index, question.id, 1, question.rightanswer, question.mark, $event)"
+                v-model="answers[index][0]" />
             </div>
             <div class="d-flex mx-2 my-2">
               <v-responsive :width="`90%`">
-                <v-text-field
-                  label="Choice 2"
-                  v-model="question.answer2"
-                  hint="Insert Choice 2 please."
-                  persistent-hint
-                ></v-text-field>
+                <v-text-field label="الإختيار الثاني" v-model="question.answer2"
+                  persistent-hint class="disabled-field" />
               </v-responsive>
-                <v-checkbox-btn 
-                class="mx-4" 
-                color="success" 
+              <v-checkbox-btn class="mx-4" color="success"
                 @click="updateScore(index, question.id, 2, question.rightanswer, question.mark, $event)"
-                v-model="answers[index][1]"
-                />
+                v-model="answers[index][1]" />
             </div>
             <div class="d-flex mx-2 my-2">
               <v-responsive :width="`90%`">
-                <v-text-field
-                  label="Choice 3"
-                  v-model="question.answer3"
-                  hint="Insert Choice 3 please."
-                  persistent-hint
-                ></v-text-field>
+                <v-text-field label="الإختيار الثالث" v-model="question.answer3"
+                  persistent-hint class="disabled-field" />
               </v-responsive>
-                <v-checkbox-btn 
-                class="mx-4" 
-                color="success" 
+              <v-checkbox-btn class="mx-4" color="success"
                 @click="updateScore(index, question.id, 3, question.rightanswer, question.mark, $event)"
-                v-model="answers[index][2]"
-                />
+                v-model="answers[index][2]" />
             </div>
             <div class="d-flex mx-2 my-2">
               <v-responsive :width="`90%`">
-                <v-text-field
-                  label="Choice 4"
-                  v-model="question.answer4"
-                  hint="Insert Choice 4 please."
-                  persistent-hint
-                ></v-text-field>
+                <v-text-field label="الإختيار الرابع" v-model="question.answer4"
+                  persistent-hint class="disabled-field" />
               </v-responsive>
-                <v-checkbox-btn 
-                class="mx-4" 
-                color="success"
+              <v-checkbox-btn class="mx-4" color="success"
                 @click="updateScore(index, question.id, 4, question.rightanswer, question.mark, $event)"
-                v-model="answers[index][3]"
-                />
+                v-model="answers[index][3]" />
             </div>
           </v-list>
         </v-list>
         <v-btn color="primary" class="mx-5">تخطي</v-btn>
       </div>
-    
+
       <div class="d-flex flex-row">
         <v-btn color="primary" class="mx-auto my-4" @click="submit()">إرسال</v-btn>
       </div>
-    
+
     </v-card>
     <v-dialog v-model="logoutDialog" max-width="500px">
-      <v-card 
-        prepend-icon="mdi-alert-circle"
-        text="هل تريد تسجيل الخروج؟"
-        title="تأكيد"
-        color="orange"
-      >
+      <v-card prepend-icon="mdi-alert-circle" text="هل تريد تسجيل الخروج؟" title="تأكيد" color="orange">
         <v-card>
           <v-spacer></v-spacer>
           <v-btn color="red-darken-1" class="mx-2 my-4" @click="logout()">نعم</v-btn>
@@ -316,4 +298,25 @@ onMounted(() => {
   cursor: pointer;
   font-size: 40px;
 }
+
+.disabled-field {
+  pointer-events: none; /* Disable pointer events */
+  background-color: #f0f0f0; /* Set a light background color */
+}
+
+.disabled-field >>> .v-input__details {
+  display: none;
+}
+
+.question-content {
+  font-size: 25px;
+  background-color: #f7f7f7;
+  padding: 20px;
+}
+
+.exam-details {
+  background-color: #F0FFFF;
+  font-size: 25px;
+}
+
 </style>
