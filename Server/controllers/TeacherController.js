@@ -234,6 +234,20 @@ const block = async (req, res) => {
     }
 } 
 
+const unBlock = async (req, res) => {
+    try {
+        const id = req.body.teacherId;
+        const teacher = await Teacher.update({ active : true }, { where: { id: id } });
+        if (teacher[0] === 0) {
+            return res.status(404).json({ error: 'Teacher not found' });
+        }
+        res.status(200).send(teacher);
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+} 
+
 function generateRandomString(length) {
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     let randomString = '';
@@ -363,6 +377,7 @@ module.exports = {
     getQuestions,
     getExams,
     block,
+    unBlock,
     removeStudent,
     getCourseQuestions,
     TeacherCourses

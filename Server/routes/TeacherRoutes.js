@@ -6,6 +6,8 @@ Teacherrouter.post('/login',TeacherController.login)
 
 Teacherrouter.post('/block',TeacherController.block)
 
+Teacherrouter.post('/unblock',TeacherController.unBlock)
+
 Teacherrouter.post('/addTeacher',TeacherController.addTeacher)
 
 Teacherrouter.post('/availableTeachers',TeacherController.availableTeachers)

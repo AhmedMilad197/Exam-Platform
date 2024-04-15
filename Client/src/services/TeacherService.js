@@ -40,6 +40,9 @@ export default {
   block(data) {
     return api().post('api/Teacher/block', data);
   },
+  unBlock(data) {
+    return api().post('api/Teacher/unblock', data);
+  },
   removeStudent(data) {
     return api().post('api/Teacher/students/remove', data);
   },
