@@ -1,4 +1,5 @@
 const db = require('../models');
+const moment = require('moment-timezone');
 
 // Create main Model
 const Exam = db.exams;
@@ -8,9 +9,15 @@ const Exam = db.exams;
 // 1. Create Exam
 const addExam = async (req, res) => {
     try {
+        let startDateTime = moment(req.body.start_time, 'YYYY-MM-DD HH:mm:ss').toDate();
+        let endDateTime = moment(req.body.end_time, 'YYYY-MM-DD HH:mm:ss').toDate();
+
+        startDateTime.setHours(startDateTime.getHours() + 2);
+        endDateTime.setHours(endDateTime.getHours() + 2);
+
         let info = {
-            start_time: req.body.start_time,
-            end_time: req.body.end_time,
+            start_time: startDateTime,
+            end_time: endDateTime,
             name: req.body.title,
             description: req.body.description,
             full_mark: 100,
