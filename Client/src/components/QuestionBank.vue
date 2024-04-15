@@ -4,7 +4,7 @@ import { ref, onMounted } from 'vue'
 import { useUserStore } from "@/stores/user"
 import QuestionService from '@/services/QuestionService'
 
-const router = useRouter()
+const router = useRouter();
 const route = useRoute();
 const user = useUserStore();
 const currentQuestion = ref();
@@ -17,10 +17,12 @@ const answer1 = ref();
 const answer2 = ref();
 const answer3 = ref();
 const answer4 = ref();
-const mark = ref()
+const mark = ref();
 const rightAnswer = ref();
 const questions = ref();
-const error = ref()
+const error = ref();
+const snackbar = ref(false);
+
 const items = ref([
   {
     title: 'موادي',
@@ -138,6 +140,7 @@ async function addQuestion() {
     getTeacherQuestions();
     refreshOptions();
     addQuestionDialog.value = false;
+    snackbar.value = true;
   } catch (error) {
     return error.message;
   }
@@ -455,6 +458,14 @@ function closeEditQuestionDialog() {
         </v-card>
       </v-card>
     </v-dialog>
+    <v-snackbar
+      :timeout="2000"
+      color="green-accent-2"
+      elevation="24"
+      v-model="snackbar"
+    >
+      تم إضافة السؤال بنجاح
+    </v-snackbar>
   </v-locale-provider>
 </template>
 
