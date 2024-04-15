@@ -22,6 +22,8 @@ const rightAnswer = ref();
 const questions = ref();
 const error = ref();
 const snackbar = ref(false);
+const editSnackbar = ref(false);
+const deleteSnackbar = ref(false);
 
 const items = ref([
   {
@@ -106,6 +108,7 @@ async function destroy() {
     const response = await QuestionService.delete(currentQuestion.value.id);
     getTeacherQuestions();
     deleteQuestionDialog.value = false;
+    deleteSnackbar.value = true;
   } catch (error) {
     return {
       message: error.message
@@ -180,6 +183,8 @@ async function update() {
     getTeacherQuestions();
     refreshOptions();
     editQuestionDialog.value = false
+    editSnackbar.value = true;
+
   } catch (error) {
     return {
       message: error.message
@@ -465,6 +470,22 @@ function closeEditQuestionDialog() {
       v-model="snackbar"
     >
       تم إضافة السؤال بنجاح
+    </v-snackbar>
+    <v-snackbar
+      :timeout="2000"
+      color="primary"
+      elevation="24"
+      v-model="editSnackbar"
+    >
+      تم تعديل السؤال بنجاح
+    </v-snackbar>
+    <v-snackbar
+      :timeout="2000"
+      color="red"
+      elevation="24"
+      v-model="deleteSnackbar"
+    >
+      تم حذف السؤال بنجاح
     </v-snackbar>
   </v-locale-provider>
 </template>
