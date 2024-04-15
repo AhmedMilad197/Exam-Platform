@@ -1,14 +1,15 @@
 <script setup>
-import TeacherService from "../services/TeacherService";
 import { useUserStore } from "@/stores/user";
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import AdminService from "../services/AdminService";
 
 const user = useUserStore(); 
 const router = useRouter();
-const newPassword = ref();
-const error = ref(null);
-const code = ref();
+const username = ref();
+const password = ref();
+const error = ref();
+
 const items = ref([
   {
     title: 'إنشاء حساب',
@@ -38,28 +39,21 @@ function handleRequest (title, value) {
   }
 }
 
-function deleteStoredUser () {
-  user.user = null;
-  user.token = null;
-  user.role = null;
-}
-
-async function logout () {
-  deleteStoredUser();
-  logoutDialog.value = false;
-  navigateTo({
-    name: 'LandingPageView'
-  })
-}
-
-async function resetPassword () {
+async function login () {
   try {
-    const response = await TeacherService.resetPassword({
-      new_password: newPassword.value,
+    const response = await AdminService.login({
+      nameadmin: username.value,
+      password: password.value,
     })
-    navigateTo({ name: 'home' });
+    user.user = response.data.admin;
+    user.token = response.data.token;
+    user.role = response.data.role;
+    navigateTo({ name: 'teachers' });
   } catch (err) {
-    console.log(err.message);
+    error.value = 'البيانات الدخلة غير صحيحة'
+    return {
+      message: err.message
+    }
   }
 }
 
@@ -116,25 +110,34 @@ async function resetPassword () {
     <v-sheet width="600px" class="mx-auto mt-16">
       <v-toolbar>
         <v-toolbar-title>
-          رمز التحقق
+          تسجيل الدخول
         </v-toolbar-title>
       </v-toolbar>
       <v-form @submit.prevent class="mt-4">
-        <div class="d-flex">
-          <span class="text-h7 mx-2 mb-4" style="color: gray;">
-            يرجى إدخال الرمز السري الجديد
-          </span>
-        </div>
         <v-text-field
-          label="الرمز السري"
+          label="إسم المستخدم"
           class="ml-2 mr-2"
-          v-model="newPassword"
-          hint="أدخل الرمز السري"
+          v-model="username"
+          hint="أدخل إسم المستخدم"
+          :rules="[v => !!v || 'يجب إدخال إسم المستخدم']"
           persistent-hint
         ></v-text-field>
-        <div class="error ml-2" />
+        <v-text-field
+          type="password"
+          label="الرمز السري"
+          class="ml-2 mr-2"
+          v-model="password"
+          hint="أدخل الرمز السري"
+          :rules="[v => !!v || 'يجب إدخال الرمز السري']"
+          persistent-hint
+        ></v-text-field>
+        <div class="error d-flex">
+          <div class="mx-auto">
+            {{ error }}
+          </div>
+        </div>
         <div class="d-flex">
-          <v-btn type="submit" color="primary" class="mx-auto mt-2 mb-4" @click="resetPassword()">إرسال</v-btn>
+          <v-btn type="submit" color="primary" class="mx-auto my-4" @click="login()">تسجيل الدخول</v-btn>
         </div>
       </v-form>
     </v-sheet>
@@ -168,4 +171,5 @@ async function resetPassword () {
   cursor: pointer;
   font-size: 40px;
 }
+  
 </style>

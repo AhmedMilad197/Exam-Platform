@@ -3,13 +3,76 @@ import { ref, onMounted, nextTick } from 'vue'
 import { useRouter } from 'vue-router'
 import SubjectService from '@/services/SubjectService'
 import imgUrl from '../assets/subjects.jpg'
+import { useUserStore } from "@/stores/user";
 
+const user = useUserStore(); 
 const router = useRouter()
 const subjects = ref();
 const dialog= ref(false);
 const dialogDelete = ref(false);
 const editSubjectDialog = ref(false);
 const addSubjectForm = ref(null)
+
+const items = ref([
+  {
+    title: 'المدرسين',
+    value: {
+      name: 'teachers'
+    }
+  },
+  {
+    title: 'الطلبة',
+    value: {
+      name: 'students'
+    }
+  },
+  {
+    title: 'الأسئلة',
+    value: {
+      name: 'questions',
+      params: {
+        subject: 'all'
+      }
+    }
+  },
+  {
+    title: 'المواد',
+    value: {
+      name: 'subjects'
+    }
+  },
+  {
+    title: 'تسجيل الخروج',
+    color: 'red',
+    value: {
+      name: 'logout'
+    }
+  }
+]);
+const drawer = ref(false);
+const logoutDialog = ref(false);
+
+function handleRequest (title, value) {
+  if (title == 'تسجيل الخروج') {
+    logoutDialog.value = true;
+  } else {
+    navigateTo(value)
+  }
+}
+
+function deleteStoredUser () {
+  user.user = null;
+  user.token = null;
+  user.role = null;
+}
+
+async function logout () {
+  deleteStoredUser();
+  logoutDialog.value = false;
+  navigateTo({
+    name: 'LandingPageView'
+  })
+}
 
 const editedItem = ref({
     id: 0,
@@ -153,11 +216,59 @@ function goToTeachers(item) {
 
 <template>
   <v-locale-provider rtl>
+
+    <v-layout class="mt-16">
+      <v-locale-provider rtl>
+        <v-app-bar
+          color="primary"
+          prominent
+          height="100"
+        >
+          <v-app-bar-nav-icon 
+            @click.stop="drawer = !drawer"
+          />
+          <v-toolbar-title>
+            <span class="title-text" @click="navigateTo({ name: 'LandingPageView' })">
+              Exam Platform
+            </span>
+          </v-toolbar-title>
+          <v-spacer></v-spacer>
+        </v-app-bar>
+      </v-locale-provider>
+
+      <v-navigation-drawer
+        v-model="drawer"
+        location="right"
+      >
+        <v-list density="compact">
+          <v-list-item
+            v-for="(item, i) in items"
+            :key="i"
+            :value="item.value"
+            style="text-align: right;"
+            @click="handleRequest(item.title, item.value)"
+          >
+            <div v-if="item.title == 'تسجيل الخروج'">
+              <v-list-item-title 
+                style="color: red;"
+                >
+                {{ item.title }}
+              </v-list-item-title>
+            </div>
+            <div v-else>
+              <v-list-item-title>{{ item.title }}</v-list-item-title>
+            </div>
+          </v-list-item>
+        </v-list>
+      </v-navigation-drawer>
+    </v-layout>
+
     <div class="mx-auto">
       <img :src="imgUrl" alt="Logo" style="width: 1400px; height: 450px;">
     </div>
 
-    <v-data-table
+    <v-card class="mx-auto" max-width="1000">
+      <v-data-table
       :headers="headers"
       :items="subjects"
     >
@@ -371,6 +482,17 @@ function goToTeachers(item) {
         </v-btn>
       </template>
     </v-data-table>
+    </v-card>
+    <v-dialog v-model="logoutDialog" max-width="500px">
+      <v-card prepend-icon="mdi-alert-circle" text="هل تريد تسجيل الخروج؟" title="تأكيد" color="orange">
+        <v-card>
+          <v-spacer></v-spacer>
+          <v-btn color="red-darken-1" class="mx-2 my-4" @click="logout()">نعم</v-btn>
+          <v-btn color="blue-darken-1" @click="logoutDialog = false">إلغاء</v-btn>
+          <v-spacer></v-spacer>
+        </v-card>
+      </v-card>
+    </v-dialog>
   </v-locale-provider>
 
 </template>
@@ -379,4 +501,10 @@ function goToTeachers(item) {
 .primary {
   background-color: RGB(24,103,192);
 }
+
+.title-text {
+  cursor: pointer;
+  font-size: 40px;
+}
+
 </style>

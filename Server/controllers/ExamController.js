@@ -41,11 +41,28 @@ const getAllExam = async (req, res) => {
 // 3. Get single Exam
 const getOneExam = async (req, res) => {
     try {
-        let id = req.params.id;
-        let exams = await Exam.findOne({ where: { id: id }, include: { model: db.questions, as: 'questions' } });
-        if (!exams) {
-            return res.status(404).json({ error: 'Exam not found' });
-        }
+        let id = req.body.data.examId;
+        let studentId = req.body.data.studentId
+        let exams = await Exam.findOne({
+            where: { id: id },
+            include: [
+              {
+                model: db.questions,
+                as: 'questions',
+                include: [
+                  {
+                    model: db.studentexamhistory,
+                    as: 'studentexamhistory',
+                    where: {
+                      studentid: studentId,
+                      examid: id
+                    },
+                    required: false // This ensures that only questions with matching studentexamhistory records are included
+                  }
+                ]
+              }
+            ]
+          });
         res.status(200).send(exams);
     } catch (error) {
         console.error(error);
@@ -83,10 +100,21 @@ const deleteExam = async (req, res) => {
     }
 };
 
+const viewExam = async (req, res) => {
+    try {
+        let id = req.body.data.examId;
+        let exams = await Exam.findOne({where: { id: id }, include: [db.questions]});
+        res.status(200).send(exams);
+    } catch (error) {
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};
+
 module.exports = {
     addExam,
     getAllExam,
     getOneExam,
     updateExam,
     deleteExam,
+    viewExam
 };

@@ -1,8 +1,10 @@
 <script setup>
-import { useRouter } from 'vue-router'
-import {ref} from 'vue'
+import { useRouter } from 'vue-router';
+import { useUserStore } from "@/stores/user";
+import { ref, onMounted } from 'vue';
 
-const router = useRouter()
+const router = useRouter();
+const user = useUserStore();
 
 function navigateTo (link) {
   router.push({
@@ -50,6 +52,33 @@ const items = ref([
 
 const drawer = ref(false);
 
+const logoutDialog = ref(false);
+function handleRequest (title, value) {
+  if (title == 'تسجيل الخروج') {
+    logoutDialog.value = true;
+  } else {
+    navigateTo(value)
+  }
+}
+
+function deleteStoredUser () {
+  user.user = null;
+  user.token = null;
+  user.role = null;
+}
+
+async function logout () {
+  deleteStoredUser();
+  logoutDialog.value = false;
+  navigateTo({
+    name: 'LandingPageView'
+  })
+}
+
+onMounted(() => {
+  setDrawerItems();
+});
+
 </script>
 
 <template>
@@ -87,10 +116,14 @@ const drawer = ref(false);
             :key="i"
             :value="item.value"
             style="text-align: right;"
-            @click="navigateTo(item.value)"
+            @click="handleRequest(item.title, item.value)"
           >
             <div v-if="item.title == 'تسجيل الخروج'">
-              <v-list-item-title style="color: red;">{{ item.title }}</v-list-item-title>
+              <v-list-item-title 
+                style="color: red;"
+                >
+                {{ item.title }}
+              </v-list-item-title>
             </div>
             <div v-else>
               <v-list-item-title>{{ item.title }}</v-list-item-title>
@@ -99,6 +132,24 @@ const drawer = ref(false);
         </v-list>
       </v-navigation-drawer>
     </v-layout>
+    <v-locale-provider rtl>
+
+      <v-dialog v-model="logoutDialog" max-width="500px">
+        <v-card 
+          prepend-icon="mdi-alert-circle"
+          text="هل تريد تسجيل الخروج؟"
+          title="تأكيد"
+          color="orange"
+        >
+          <v-card>
+            <v-spacer></v-spacer>
+            <v-btn color="red-darken-1" class="mx-2 my-4" @click="logout()">نعم</v-btn>
+            <v-btn color="blue-darken-1" @click="logoutDialog = false">إلغاء</v-btn>
+            <v-spacer></v-spacer>
+          </v-card>
+        </v-card>
+      </v-dialog>
+    </v-locale-provider>
   </v-card>
 
 </template>

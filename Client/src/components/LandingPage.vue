@@ -1,13 +1,104 @@
 <script setup>
-import { ref, onMounted } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
 import imgUrl from '../assets/landing_page_background.jpg'
 import visionImgUrl from '../assets/vision.jpg'
 import goalsImgUrl from '../assets/goals.jpg'
+import { ref } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
+
+const router = useRouter();
+const items = ref([
+  {
+    title: 'إنشاء حساب',
+    value: {
+      name: 'register'
+    }
+  },
+  {
+    title: 'تسجيل الدخول كطالب',
+    value: {
+      name: 'student-login'
+    }
+  }
+]);
+const drawer = ref(false);
+const logoutDialog = ref(true);
+
+function navigateTo (path) {
+  router.push(path);
+}
+
+function handleRequest (title, value) {
+  if (title == 'تسجيل الخروج') {
+    logoutDialog.value = true;
+  } else {
+    navigateTo(value)
+  }
+}
+
+function deleteStoredUser () {
+  user.user = null;
+  user.token = null;
+  user.role = null;
+}
+
+async function logout () {
+  deleteStoredUser();
+  logoutDialog.value = false;
+  navigateTo({
+    name: 'LandingPageView'
+  })
+}
+
 </script>
 
 <template>
   <v-locale-provider rtl>
+
+    <v-layout class="mt-10">
+      <v-locale-provider rtl>
+        <v-app-bar
+          color="primary"
+          prominent
+          height="100"
+        >
+          <v-app-bar-nav-icon 
+            @click.stop="drawer = !drawer"
+          />
+          <v-toolbar-title>
+            <span class="title-text" @click="navigateTo({ name: 'LandingPageView' })">
+              Exam Platform
+            </span>
+          </v-toolbar-title>
+          <v-spacer></v-spacer>
+        </v-app-bar>
+      </v-locale-provider>
+
+      <v-navigation-drawer
+        v-model="drawer"
+        location="right"
+      >
+        <v-list density="compact">
+          <v-list-item
+            v-for="(item, i) in items"
+            :key="i"
+            :value="item.value"
+            style="text-align: right;"
+            @click="handleRequest(item.title, item.value)"
+          >
+            <div v-if="item.title == 'تسجيل الخروج'">
+              <v-list-item-title 
+                style="color: red;"
+                >
+                {{ item.title }}
+              </v-list-item-title>
+            </div>
+            <div v-else>
+              <v-list-item-title>{{ item.title }}</v-list-item-title>
+            </div>
+          </v-list-item>
+        </v-list>
+      </v-navigation-drawer>
+    </v-layout>
 
     <div class="d-flex flex-column" width="1400px">
       <div class="mx-auto mt-10">
@@ -102,6 +193,11 @@ import goalsImgUrl from '../assets/goals.jpg'
 .text-color {
   font-size: 20px;
   color: white;
+}
+
+.title-text {
+  cursor: pointer;
+  font-size: 40px;
 }
 
 </style>

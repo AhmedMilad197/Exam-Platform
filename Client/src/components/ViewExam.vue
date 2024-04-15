@@ -1,8 +1,10 @@
 <script setup>
 import ExamService from '@/services/ExamService';
-import {ref, onMounted} from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
+import { useUserStore } from "@/stores/user";
 
+const user = useUserStore();
 const route = useRoute();
 const router = useRouter();
 const name = ref();
@@ -12,13 +14,74 @@ const end_time = ref();
 const questions = ref();
 const dialog = ref(false);
 
-function navigateTo (path) {
+const items = ref([
+  {
+    title: 'موادي',
+    value: {
+      name: 'home'
+    }
+  },
+  {
+    title: 'أسئلتي',
+    value: {
+      name: 'teacher-questions',
+      params: { subject: route.params.subject }
+    }
+  },
+  {
+    title: 'إختباراتي',
+    value: {
+      name: 'exam-list',
+      params: { subject: route.params.subject }
+    }
+  },
+  {
+    title: 'طلابي',
+    value: {
+      name: 'teacher-student',
+      params: { subject: route.params.subject }
+    }
+  },
+  {
+    title: 'تسجيل الخروج',
+    color: 'red',
+    value: {
+      name: 'student-login'
+    }
+  }
+]);
+const drawer = ref(false);
+const logoutDialog = ref(false);
+
+function handleRequest(title, value) {
+  if (title == 'تسجيل الخروج') {
+    logoutDialog.value = true;
+  } else {
+    navigateTo(value)
+  }
+}
+
+function deleteStoredUser() {
+  user.user = null;
+  user.token = null;
+  user.role = null;
+}
+
+async function logout() {
+  deleteStoredUser();
+  logoutDialog.value = false;
+  navigateTo({
+    name: 'LandingPageView'
+  })
+}
+
+function navigateTo(path) {
   router.push(path);
 }
 
-async function getExam () {
+async function getExam() {
   try {
-    const response = await ExamService.getExam({
+    const response = await ExamService.viewExam({
       examId: route.params.id
     })
     name.value = response.data.name;
@@ -26,7 +89,6 @@ async function getExam () {
     start_time.value = response.data.start_time;
     end_time.value = response.data.end_time;
     questions.value = response.data.questions;
-    console.log(questions.value)
   } catch (error) {
     return {
       message: error.message
@@ -54,24 +116,45 @@ onMounted(() => {
 
 <template>
   <v-locale-provider rtl>
-    <v-card
-      class="mx-auto"
-      max-width="1000"
-      max-height="100vh"
-      >
+
+    <v-layout class="mt-16">
+      <v-locale-provider rtl>
+        <v-app-bar color="primary" prominent height="100">
+          <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
+          <v-toolbar-title>
+            <span class="title-text" @click="navigateTo({ name: 'LandingPageView' })">
+              Exam Platform
+            </span>
+          </v-toolbar-title>
+          <v-spacer></v-spacer>
+        </v-app-bar>
+      </v-locale-provider>
+
+      <v-navigation-drawer v-model="drawer" location="right">
+        <v-list density="compact">
+          <v-list-item v-for="(item, i) in items" :key="i" :value="item.value" style="text-align: right;"
+            @click="handleRequest(item.title, item.value)">
+            <div v-if="item.title == 'تسجيل الخروج'">
+              <v-list-item-title style="color: red;">
+                {{ item.title }}
+              </v-list-item-title>
+            </div>
+            <div v-else>
+              <v-list-item-title>{{ item.title }}</v-list-item-title>
+            </div>
+          </v-list-item>
+        </v-list>
+      </v-navigation-drawer>
+    </v-layout>
+    <v-card class="mx-auto mt-16" max-width="1000" max-height="100vh">
       <v-toolbar>
         <v-toolbar-title>بيانات الإختبار</v-toolbar-title>
-          <v-btn 
-            color="white" 
-            class="blue"
-            @click="navigateTo({ name: 'student-exam-marks' })"
-          >درجات الطلبة</v-btn>
+        <v-btn color="white" class="blue" @click="navigateTo({ name: 'student-exam-marks' })">درجات الطلبة</v-btn>
+        <v-btn color="white" class="mx-2 primary" @click="router.go(-1)">
+              العودة
+            </v-btn>
       </v-toolbar>
-      <v-table
-        fixed-header
-        height="100%"
-        density="comfortable"
-      >
+      <v-table fixed-header height="100%" density="comfortable">
         <thead>
           <tr>
             <th class="text-rigth">
@@ -134,11 +217,7 @@ onMounted(() => {
         </div>
       </div>
       <div>
-        <v-table
-          fixed-header
-          height="100%"
-          density="comfortable"
-        >
+        <v-table fixed-header height="100%" density="comfortable">
           <thead>
             <tr>
               <th class="text-right">
@@ -150,18 +229,15 @@ onMounted(() => {
             </tr>
           </thead>
           <tbody>
-            <tr
-              v-for="question in questions"
-              :key="question.id"
-              style="height: 50px;"
-            >
-            <td>
-              {{ question.content }}
-            </td>
+            <tr v-for="question in questions" :key="question.id" style="height: 50px;">
+              <td>
+                {{ question.content }}
+              </td>
               <td>
                 <div class="d-flex">
                   <div class="mx-auto">
-                    <v-btn color="indigo-darken-3" @click="navigateTo({name: 'view-question', params: {id: question.id}})">عرض</v-btn>
+                    <v-btn color="indigo-darken-3"
+                      @click="navigateTo({ name: 'view-question', params: { id: question.id } })">عرض</v-btn>
                   </div>
                 </div>
               </td>
@@ -177,34 +253,51 @@ onMounted(() => {
       </div>
     </v-card>
     <v-dialog v-model="dialog" width="auto">
-      <v-card max-width="400" prepend-icon="mdi-alert-circle"
-        text="هل تريد حذف هذا الإختبار؟"
-        title="تأكيد">
+      <v-card max-width="400" prepend-icon="mdi-alert-circle" text="هل تريد حذف هذا الإختبار؟" title="تأكيد">
         <template v-slot:actions>
           <v-btn color="red" @click="destroy()">نعم</v-btn>
           <v-btn color="primary" @click="dialog = false">العودة</v-btn>
         </template>
       </v-card>
     </v-dialog>
+    <v-dialog v-model="logoutDialog" max-width="500px">
+      <v-card prepend-icon="mdi-alert-circle" text="هل تريد تسجيل الخروج؟" title="تأكيد" color="orange">
+        <v-card>
+          <v-spacer></v-spacer>
+          <v-btn color="red-darken-1" class="mx-2 my-4" @click="logout()">نعم</v-btn>
+          <v-btn color="blue-darken-1" @click="logoutDialog = false">إلغاء</v-btn>
+          <v-spacer></v-spacer>
+        </v-card>
+      </v-card>
+    </v-dialog>
   </v-locale-provider>
 </template>
 
 <style scoped>
-  .error {
-    color: red;
-  }
+.error {
+  color: red;
+}
 
-  .v-sheet {
-    border: 1px rgb(185, 175, 175) solid;
-    border-radius: 2px;
-  }
+.v-sheet {
+  border: 1px rgb(185, 175, 175) solid;
+  border-radius: 2px;
+}
 
-  .slot-text-center {
-    text-align: center;
-  }
+.slot-text-center {
+  text-align: center;
+}
 
-  .blue {
-    background-color: #0091EA
-  }
+.blue {
+  background-color: #0091EA
+}
+
+.title-text {
+  cursor: pointer;
+  font-size: 40px;
+}
+
+.primary {
+  background-color: rgb(24,103,192);
+}
 
 </style>

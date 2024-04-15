@@ -4,6 +4,7 @@ const fs = require('fs');
 
 const ExamStudent = db.examStudent;
 const Student = db.students
+const Exam = db.exams
 
 const create = async (req, res) => {
     try {
@@ -69,8 +70,25 @@ const storeToExcel = async (req, res) => {
       }
 }
 
+const getScore = async (req, res) => {
+    console.log(req.body);
+    try {
+        const exam_student = await ExamStudent.findOne({
+            where: { 
+                examId: req.body.examId,
+                studentId: req.body.studentId
+            },
+            include: [Student, Exam]
+        });
+        res.status(200).send(exam_student);
+    } catch (error) {
+        res.status(500).json({ error: 'Internal server error' });
+    }
+}
+
 module.exports = {
     create,
     getStudents,
-    storeToExcel
+    storeToExcel,
+    getScore
 };

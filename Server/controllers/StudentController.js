@@ -9,12 +9,18 @@ const Student = db.students;
 
 // 1. Create Student
 const addStudent = async (req, res) => {
+<<<<<<< HEAD
   try {
     const { name, username, password, phone, address } = req.body;
 
     // التحقق من عدم وجود بيانات فارغة
     if (!name || !username || !password || !phone || !address) {
       return res.status(400).json({ error: 'يرجى إدخال جميع البيانات المطلوبة' });
+        const student = await Student.create(info);
+        res.status(200).send(student);
+    } catch (error) {
+        res.status(500).json({ error: 'Internal server error' });
+>>>>>>> 02f1e310aad60ff47c889fda9f415d833e412904
     }
 
 
@@ -100,20 +106,26 @@ const deleteStudent = async (req, res) => {
   
 // 6. Student Login
 const login = async (req, res) => {
-    const username = req.body.username;
-    let student = await Student.findOne({ where: { username: username } });
-    if (student != null) {
-        if (student.password == req.body.password) {
-            jwt.sign({
-                user: req.body,
-                exp: Math.floor(Date.now() / 1000) + (60 * 60) // expires in one hour.
-            }, 'loginkey', (err, token) => {
-                res.send({
-                    student: student,
-                    token: token
-                });
-            });
-        }
+    try {
+      const username = req.body.username;
+      let student = await Student.findOne({ where: { username: username } });
+      if (student != null) {
+          if (student.password == req.body.password) {
+              jwt.sign({
+                  user: student,
+                  role: 'student',
+                  exp: Math.floor(Date.now() / 1000) + (60 * 60) // expires in one hour.
+              }, 'loginkey', (err, token) => {
+                  res.send({
+                      student: student,
+                      token: token,
+                      role: 'student'
+                  });
+              });
+          }
+      }
+    } catch (error) {
+      res.status(500).json({ error: 'Internal server error' });
     }
 }
 
@@ -168,7 +180,14 @@ const exams = async (req, res) => {
           courseid: {
             [Op.eq]: courseId
           }
-        }
+        },
+        include: [{
+          model: db.examStudent,
+          where: {
+            studentId: studentId
+          },
+          required: false
+        }]
       });
   
       res.send(studentExams);

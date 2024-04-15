@@ -9,21 +9,59 @@
   const router = useRouter();
   const email = ref();
   const error = ref(null);
-
-  function navigateTo (path) {
-    router.push(path)
-  }
-
-  async function sendOTP () {
-    try {
-      const response = await TeacherService.sendOTP({
-        email: email.value,
-      })
-      navigateTo({ name: 'otp-verification' });
-    } catch (err) {
-      console.log(err.message);
+  const items = ref([
+  {
+    title: 'إنشاء حساب',
+    value: {
+      name: 'register'
+    }
+  },
+  {
+    title: 'تسجيل الدخول كطالب',
+    value: {
+      name: 'student-login'
     }
   }
+]);
+const drawer = ref(false);
+const logoutDialog = ref(true);
+
+function navigateTo (path) {
+  router.push(path);
+}
+
+function handleRequest (title, value) {
+  if (title == 'تسجيل الخروج') {
+    logoutDialog.value = true;
+  } else {
+    navigateTo(value)
+  }
+}
+
+function deleteStoredUser () {
+  user.user = null;
+  user.token = null;
+  user.role = null;
+}
+
+async function logout () {
+  deleteStoredUser();
+  logoutDialog.value = false;
+  navigateTo({
+    name: 'LandingPageView'
+  })
+}
+
+async function sendOTP () {
+  try {
+    const response = await TeacherService.sendOTP({
+      email: email.value,
+    })
+    navigateTo({ name: 'otp-verification' });
+  } catch (err) {
+    console.log(err.message);
+  }
+}
 
 function emailRule (value) {
   if (/^[a-z.-]+@[a-z.-]+\.[a-z]+$/i.test(value)) return true
@@ -34,7 +72,53 @@ function emailRule (value) {
 <template>
   <v-locale-provider rtl>
 
-    <v-sheet width="600px" class="mx-auto">
+    <v-layout class="mt-16">
+      <v-locale-provider rtl>
+        <v-app-bar
+          color="primary"
+          prominent
+          height="100"
+        >
+          <v-app-bar-nav-icon 
+            @click.stop="drawer = !drawer"
+          />
+          <v-toolbar-title>
+            <span class="title-text" @click="navigateTo({ name: 'LandingPageView' })">
+              Exam Platform
+            </span>
+          </v-toolbar-title>
+          <v-spacer></v-spacer>
+        </v-app-bar>
+      </v-locale-provider>
+
+      <v-navigation-drawer
+        v-model="drawer"
+        location="right"
+      >
+        <v-list density="compact">
+          <v-list-item
+            v-for="(item, i) in items"
+            :key="i"
+            :value="item.value"
+            style="text-align: right;"
+            @click="handleRequest(item.title, item.value)"
+          >
+            <div v-if="item.title == 'تسجيل الخروج'">
+              <v-list-item-title 
+                style="color: red;"
+                >
+                {{ item.title }}
+              </v-list-item-title>
+            </div>
+            <div v-else>
+              <v-list-item-title>{{ item.title }}</v-list-item-title>
+            </div>
+          </v-list-item>
+        </v-list>
+      </v-navigation-drawer>
+    </v-layout>
+
+    <v-sheet width="600px" class="mx-auto mt-16">
       <v-toolbar>
         <v-toolbar-title>
           البريد الإلكتروني
@@ -64,25 +148,32 @@ function emailRule (value) {
 </template>
 
 <style scoped>
-  .error {
-    color: red;
-  }
 
-  .v-sheet {
-    border: 1px rgb(185, 175, 175) solid;
-    border-radius: 2px;
-  }
+.error {
+  color: red;
+}
 
-  .slot-text-center {
-    text-align: center;
-  }
-  .sign-in {
-    cursor: pointer;
-    text-decoration: underline;
-    color: blue;
-  }
-  
-  .info {
-    color: gray;
-  }
+.v-sheet {
+  border: 1px rgb(185, 175, 175) solid;
+  border-radius: 2px;
+}
+
+.slot-text-center {
+  text-align: center;
+}
+.sign-in {
+  cursor: pointer;
+  text-decoration: underline;
+  color: blue;
+}
+
+.info {
+  color: gray;
+}
+
+.title-text {
+  cursor: pointer;
+  font-size: 40px;
+}
+
 </style>

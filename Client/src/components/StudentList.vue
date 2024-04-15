@@ -3,7 +3,9 @@ import { ref, onMounted, nextTick } from 'vue'
 import { useRouter } from 'vue-router'
 import StudentService from '@/services/StudentService'
 import imgUrl from '../assets/students.jpg'
+import { useUserStore } from "@/stores/user";
 
+const user = useUserStore(); 
 const router = useRouter()
 const addStudentForm = ref();
 const students = ref();
@@ -41,12 +43,72 @@ const defaultItem = ref({
 const dialogDelete = ref(false)
 const deleteSuccessfully = ref(false)
 
-const editedIndex = ref(-1)
+const items = ref([
+  {
+    title: 'المدرسين',
+    value: {
+      name: 'teachers'
+    }
+  },
+  {
+    title: 'الطلبة',
+    value: {
+      name: 'students'
+    }
+  },
+  {
+    title: 'الأسئلة',
+    value: {
+      name: 'questions',
+      params: {
+        subject: 'all'
+      }
+    }
+  },
+  {
+    title: 'المواد',
+    value: {
+      name: 'subjects'
+    }
+  },
+  {
+    title: 'تسجيل الخروج',
+    color: 'red',
+    value: {
+      name: 'logout'
+    }
+  }
+]);
+const drawer = ref(false);
+const logoutDialog = ref(false);
 
-function navigateTo (route) {
-  router.push(route);
+function navigateTo (path) {
+  router.push(path);
 }
 
+function handleRequest (title, value) {
+  if (title == 'تسجيل الخروج') {
+    logoutDialog.value = true;
+  } else {
+    navigateTo(value)
+  }
+}
+
+function deleteStoredUser () {
+  user.user = null;
+  user.token = null;
+  user.role = null;
+}
+
+async function logout () {
+  deleteStoredUser();
+  logoutDialog.value = false;
+  navigateTo({
+    name: 'LandingPageView'
+  })
+}
+
+const editedIndex = ref(-1)
 async function index() {
   try {
     const response = await StudentService.index();
@@ -170,80 +232,65 @@ function phoneRule (value) {
 <template>
   <v-locale-provider rtl>
 
-      <!-- <div>
-        <v-card
-          class="mx-auto"
-          max-width="1000"
-          max-height="100vh"
+    <v-layout class="mt-16">
+      <v-locale-provider rtl>
+        <v-app-bar
+          color="primary"
+          prominent
+          height="100"
+        >
+          <v-app-bar-nav-icon 
+            @click.stop="drawer = !drawer"
+          />
+          <v-toolbar-title>
+            <span class="title-text" @click="navigateTo({ name: 'LandingPageView' })">
+              Exam Platform
+            </span>
+          </v-toolbar-title>
+          <v-spacer></v-spacer>
+        </v-app-bar>
+      </v-locale-provider>
+
+      <v-navigation-drawer
+        v-model="drawer"
+        location="right"
+      >
+        <v-list density="compact">
+          <v-list-item
+            v-for="(item, i) in items"
+            :key="i"
+            :value="item.value"
+            style="text-align: right;"
+            @click="handleRequest(item.title, item.value)"
           >
-          <div class="d-flex">
-            <v-spacer/>
-            <v-btn color="primary" class="my-4 mx-4" @click="navigateTo({name: 'add-student'})">ADD STUDENT</v-btn>
-          </div>
-          <v-toolbar color="purple">
-            <v-toolbar-title>Students List</v-toolbar-title>
-          </v-toolbar>
-          <v-table
-            fixed-header
-            height="100%"
-            density="comfortable"
-          >
-            <thead>
-              <tr>
-                <th class="text-left">
-                  Student
-                </th>
-                <th class="text-left">
-                  ID
-                </th>
-                <th class="text-center">
-                  Actions
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr
-                v-for="student in students"
-                :key="student.id"
-                style="height: 50px;"
-              >
-                <td>{{ student.name }}</td>
-                <td>{{ student.id }}</td>
-                <td>
-                  <div class="d-flex">
-                    <div class="mx-auto">
-                      <v-btn color="yellow" class="mr-4" @click="navigateTo({name: 'student', params: {id: student.id}})">VIEW</v-btn>
-                    </div>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </v-table>
-        </v-card>
-      </div> -->
+            <div v-if="item.title == 'تسجيل الخروج'">
+              <v-list-item-title 
+                style="color: red;"
+                >
+                {{ item.title }}
+              </v-list-item-title>
+            </div>
+            <div v-else>
+              <v-list-item-title>{{ item.title }}</v-list-item-title>
+            </div>
+          </v-list-item>
+        </v-list>
+      </v-navigation-drawer>
+    </v-layout>
 
     <div class="mx-auto">
       <img :src="imgUrl" alt="Logo" style="width: 1400px; height: 450px;">
     </div>
-    <v-data-table
-      :headers="headers"
-      :items="students"
-    >
-      <template v-slot:top>
-        <v-toolbar
-          flat
-        >
-          <v-toolbar-title>الطلاب</v-toolbar-title>
-          <v-divider
-            class="mx-4"
-            inset
-            vertical
-          ></v-divider>
-          <v-spacer></v-spacer>
-          <v-dialog
-            v-model="dialog"
-            max-width="600px"
+    <v-card class="mx-auto" max-width="1000">
+      <v-data-table
+        :headers="headers"
+        :items="students"
+      >
+        <template v-slot:top>
+          <v-toolbar
+            flat
           >
+<<<<<<< HEAD
             <template v-slot:activator="{ props }">
               <v-btn
                 class="mb-2 primary"
@@ -347,37 +394,154 @@ function phoneRule (value) {
                 <v-btn color="blue-darken-1" variant="text" @click="closeDelete">الغاء</v-btn>
                 <v-btn color="blue-darken-1" variant="text" @click="deleteItemConfirm">تأكيد</v-btn>
                 <v-spacer></v-spacer>
+=======
+            <v-toolbar-title>الطلاب</v-toolbar-title>
+            <v-divider
+              class="mx-4"
+              inset
+              vertical
+            ></v-divider>
+            <v-spacer></v-spacer>
+            <v-dialog
+              v-model="dialog"
+              max-width="600px"
+            >
+              <template v-slot:activator="{ props }">
+                <v-btn
+                  class="mb-2 primary"
+                  color="white"
+                  v-bind="props"
+                >
+                  إضافة طالب
+                </v-btn>
+              </template>
+              <v-card>
+                <v-card-title>
+                  <span class="text-h5"> إضافة طالب </span>
+                </v-card-title>
+      
+                <v-form ref="addStudentForm">
+                  <v-container>
+                    <v-row>
+                      <v-col
+                        cols="12"
+                        md="12"
+                        sm="12"
+                      >
+                        <v-text-field
+                          v-model="editedItem.name"
+                          label="إسم الطالب"
+                          :rules="[v => !!v || 'يجب إدخال إسم الطالب']"
+                        ></v-text-field>
+                      </v-col>
+                      <v-col
+                        cols="12"
+                        md="12"
+                        sm="12"
+                      >
+                        <v-text-field
+                          v-model="editedItem.username"
+                          label="إسم المستخدم"
+                          :rules="[v => !!v || 'يجب إدخال إسم المستخدم']"
+                        ></v-text-field>
+                      </v-col>
+                      <v-col
+                        cols="12"
+                        md="12"
+                        sm="12"
+                      >
+                        <v-text-field
+                          v-model="editedItem.password"
+                          label="الرمز السري"
+                          :rules="[v => !!v || 'يجب إدخال الرمز السري']"
+                        ></v-text-field>
+                      </v-col>
+                      <v-col
+                        cols="12"
+                        md="12"
+                        sm="12"
+                      >
+                        <v-text-field
+                          v-model="editedItem.phone"
+                          label="رقم الهاتف"
+                          :rules="[v => phoneRule(v)]"
+                        ></v-text-field>
+                      </v-col>
+                      <v-col
+                        cols="12"
+                        md="12"
+                        sm="12"
+                      >
+                        <v-text-field
+                          v-model="editedItem.address"
+                          label="العنوان"
+                          :rules="[v => !!v || 'يجب إدخال العنوان']"
+                        ></v-text-field>
+                      </v-col>
+                    </v-row>
+                  </v-container>
+                </v-form>
+      
+                <div class="d-flex">
+                  <div class="mx-auto mb-4">
+                    <v-btn
+                      color="green-darken-1"
+                      class="mx-2"
+                      @click="save"
+                    >
+                      إضافة
+                    </v-btn>
+                    <v-btn
+                      color="blue-darken-1"
+                      @click="close"
+                    >
+                      إغلاق
+                    </v-btn>
+                  </div>
+                </div>
+>>>>>>> 02f1e310aad60ff47c889fda9f415d833e412904
               </v-card>
-            </v-card>
-          </v-dialog>
-        </v-toolbar>
-      </template>
-      <template v-slot:item.actions="{ item }">
-        <v-icon
-          class="me-2"
-          size="small"
-          @click="editItem(item)"
-          color="green"
-        >
-          mdi-pencil
-        </v-icon>
-        <v-icon
-          size="small"
-          @click="deleteItem(item)"
-          color="red"
-        >
-          mdi-delete
-        </v-icon>
-      </template>
-      <template v-slot:no-data>
-        <v-btn
-          color="primary"
-          @click="index"
-        >
-          Reset
-        </v-btn>
-      </template>
-    </v-data-table>
+            </v-dialog>
+            <v-dialog v-model="dialogDelete" max-width="500px">
+              <v-card>
+                <v-card-title class="text-h5">Are you sure you want to delete this item?</v-card-title>
+                <v-card>
+                  <v-spacer></v-spacer>
+                  <v-btn color="blue-darken-1" variant="text" @click="closeDelete">Cancel</v-btn>
+                  <v-btn color="blue-darken-1" variant="text" @click="deleteItemConfirm">OK</v-btn>
+                  <v-spacer></v-spacer>
+                </v-card>
+              </v-card>
+            </v-dialog>
+          </v-toolbar>
+        </template>
+        <template v-slot:item.actions="{ item }">
+          <v-icon
+            class="me-2"
+            size="small"
+            @click="editItem(item)"
+            color="green"
+          >
+            mdi-pencil
+          </v-icon>
+          <v-icon
+            size="small"
+            @click="deleteItem(item)"
+            color="red"
+          >
+            mdi-delete
+          </v-icon>
+        </template>
+        <template v-slot:no-data>
+          <v-btn
+            color="primary"
+            @click="index"
+          >
+            Reset
+          </v-btn>
+        </template>
+      </v-data-table>
+    </v-card>
     <v-snackbar
       v-model="snackbar"
       multi-line
@@ -403,6 +567,16 @@ function phoneRule (value) {
     <template v-slot:actions />
       تم حذف الطالب بنجاح
     </v-snackbar>
+    <v-dialog v-model="logoutDialog" max-width="500px">
+      <v-card prepend-icon="mdi-alert-circle" text="هل تريد تسجيل الخروج؟" title="تأكيد" color="orange">
+        <v-card>
+          <v-spacer></v-spacer>
+          <v-btn color="red-darken-1" class="mx-2 my-4" @click="logout()">نعم</v-btn>
+          <v-btn color="blue-darken-1" @click="logoutDialog = false">إلغاء</v-btn>
+          <v-spacer></v-spacer>
+        </v-card>
+      </v-card>
+    </v-dialog>
   </v-locale-provider>
 
 </template>
@@ -411,6 +585,11 @@ function phoneRule (value) {
 
 .primary {
   background-color: RGB(24,103,192);
+}
+
+.title-text {
+  cursor: pointer;
+  font-size: 40px;
 }
 
 </style>

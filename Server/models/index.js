@@ -73,6 +73,13 @@ Exam.belongsTo(Teacher, {
 Student.belongsToMany(Exam, { through: ExamStudent });
 Exam.belongsToMany(Student, { through: ExamStudent });
 
+Exam.hasMany(ExamStudent, {
+    foreignKey: 'examId',
+});
+Student.hasMany(ExamStudent, {
+    foreignKey: 'studentId',
+});
+
 ExamStudent.belongsTo(Exam);
 ExamStudent.belongsTo(Student);
 

@@ -28,6 +28,8 @@ Teacherrouter.post('/exams',TeacherController.getExams)
 
 Teacherrouter.get('/allTeacher',TeacherController.getAllTeacher)
 
+Teacherrouter.get('/courses/:id',TeacherController.TeacherCourses)
+
 Teacherrouter.get('/published',TeacherController.getPublishedTeacher)
 
 Teacherrouter.post('/send-password', TeacherController.sendPassword)
