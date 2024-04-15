@@ -12,6 +12,7 @@ const route = useRoute();
 const exams = ref([]);
 const dialog = ref(false);
 const snackbar = ref(false);
+const deleteSnackbar = ref(false);
 const headers = ref([
   {title: 'exam', key: 'name', align: 'start'},
   {title: 'id', key: 'id'},
@@ -123,6 +124,7 @@ async function destroy () {
     exams.value.splice(editedIndex.value, 1)
     dialog.value = false;
     snackbar.value = true;
+    deleteSnackbar.value = true;
   } catch (error) {
     return {
       message: error.message
@@ -309,6 +311,15 @@ onMounted(() => {
         </v-card>
       </v-card>
     </v-dialog>
+
+    <v-snackbar
+      :timeout="2000"
+      color="red"
+      elevation="24"
+      v-model="deleteSnackbar"
+    >
+      تم حذف الإختبار بنجاح
+    </v-snackbar>
     
     </v-locale-provider>
 </template>
