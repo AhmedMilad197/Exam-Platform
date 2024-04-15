@@ -9,19 +9,15 @@ const Student = db.students;
 
 // 1. Create Student
 const addStudent = async (req, res) => {
-<<<<<<< HEAD
+
   try {
     const { name, username, password, phone, address } = req.body;
 
     // التحقق من عدم وجود بيانات فارغة
     if (!name || !username || !password || !phone || !address) {
       return res.status(400).json({ error: 'يرجى إدخال جميع البيانات المطلوبة' });
-        const student = await Student.create(info);
-        res.status(200).send(student);
-    } catch (error) {
-        res.status(500).json({ error: 'Internal server error' });
->>>>>>> 02f1e310aad60ff47c889fda9f415d833e412904
-    }
+      
+    } 
 
 
      // التحقق من عدم تكرار البيانات
