@@ -59,6 +59,10 @@ async function login () {
       username: username.value,
       password: password.value,
     })
+    if (response.data.teacher.active == 0) {
+      error.value = 'لقد تم منعك من الوصول إلى النظام'
+      return;
+    }
     user.user = response.data.teacher;
     user.token = response.data.token;
     user.role = response.data.role;
@@ -142,7 +146,11 @@ async function login () {
           :rules="[v => !!v || 'يجب إدخال الرمز السري']"
           persistent-hint
         ></v-text-field>
-        <div class="error ml-2" />
+        <div class="d-flex">
+          <div class="error mx-auto">
+            {{ error }}
+          </div>
+        </div>
         <div class="d-flex">
           <span class="sign-in mx-2 my-2" @click="navigateTo({ name: 'send-otp' })">
             نسيت الرمز السري

@@ -2,6 +2,7 @@
 import imgUrl from '../assets/landing_page_background.jpg'
 import visionImgUrl from '../assets/vision.jpg'
 import goalsImgUrl from '../assets/goals.jpg'
+import logoImgUrl from '../assets/exam-logo.png'
 import { ref } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 
@@ -63,10 +64,18 @@ async function logout () {
         >
           <v-app-bar-nav-icon 
             @click.stop="drawer = !drawer"
+            class="tab"
           />
           <v-toolbar-title>
             <span class="title-text" @click="navigateTo({ name: 'LandingPageView' })">
-              Exam Platform
+              <div class="d-flex">
+                <!-- <div class="my-auto">
+                  <img :src="logoImgUrl" width="100px" height="100px" alt="Logo">
+                </div> -->
+                <div class="my-auto">
+                Exam Platform
+              </div>
+              </div>
             </span>
           </v-toolbar-title>
           <v-spacer></v-spacer>
@@ -198,6 +207,10 @@ async function logout () {
 .title-text {
   cursor: pointer;
   font-size: 40px;
+}
+
+.tab >>> .mdi-menu {
+  --v-icon-size-multiplier: 1.5;
 }
 
 </style>
