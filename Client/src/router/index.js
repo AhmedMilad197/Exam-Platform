@@ -190,7 +190,7 @@ const router = createRouter({
       props: true
     },
     {
-      path: '/view-question/:id',
+      path: '/view-question/:subject/:id',
       name: 'view-question',
       component: ViewQuestionView,
       props: true
