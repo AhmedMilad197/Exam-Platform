@@ -112,7 +112,7 @@ const getPublishedCourse = async (req, res) => {
 const addTeacher = async (req, res) => {
     try {
         const course = await Course.findOne({where: {id: req.body.courseId},});
-        course.addTeachers(req.body.teachers);
+        await course.addTeachers(req.body.teachers);
         res.status(200).json({ message: 'Teacher added to course successfully.' });
     } catch (error) {
         res.status(500).json({ error: 'Internal server error' });

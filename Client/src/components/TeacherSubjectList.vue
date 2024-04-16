@@ -12,6 +12,68 @@ const teachers = ref();
 const dialog = ref(false);
 const currentTeacher = ref();
 const error = ref(null);
+const deleteSuccessfully = ref(false)
+const drawer = ref(false);
+const logoutDialog = ref(false);
+
+function handleRequest(title, value) {
+  if (title == 'تسجيل الخروج') {
+    logoutDialog.value = true;
+  } else {
+    navigateTo(value)
+  }
+}
+
+function deleteStoredUser() {
+  user.user = null;
+  user.token = null;
+  user.role = null;
+}
+
+async function logout() {
+  deleteStoredUser();
+  logoutDialog.value = false;
+  navigateTo({
+    name: 'LandingPageView'
+  })
+}
+
+const items = ref([
+  {
+    title: 'المدرسين',
+    value: {
+      name: 'teachers'
+    }
+  },
+  {
+    title: 'الطلبة',
+    value: {
+      name: 'students'
+    }
+  },
+  {
+    title: 'الأسئلة',
+    value: {
+      name: 'questions',
+      params: {
+        subject: 'all'
+      }
+    }
+  },
+  {
+    title: 'المواد',
+    value: {
+      name: 'subjects'
+    }
+  },
+  {
+    title: 'تسجيل الخروج',
+    color: 'red',
+    value: {
+      name: 'logout'
+    }
+  }
+]);
 
 function navigateTo (path) {
   router.push(path);
@@ -41,6 +103,7 @@ async function removeTeacher () {
     });
     getTeachers();
     dialog.value = false;
+    deleteSuccessfully.value = true;
   } catch (error) {
     return {
       message: error.message
@@ -62,8 +125,38 @@ onMounted(() => {
 
 <div>
   <v-locale-provider rtl>
+
+    <v-layout class="mt-16">
+      <v-locale-provider rtl>
+        <v-app-bar color="primary" prominent height="100">
+          <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
+          <v-toolbar-title>
+            <span class="title-text" @click="navigateTo({ name: 'LandingPageView' })">
+              Exam Platform
+            </span>
+          </v-toolbar-title>
+          <v-spacer></v-spacer>
+        </v-app-bar>
+      </v-locale-provider>
+
+      <v-navigation-drawer v-model="drawer" location="right">
+        <v-list density="compact">
+          <v-list-item v-for="(item, i) in items" :key="i" :value="item.value" style="text-align: right;"
+            @click="handleRequest(item.title, item.value)">
+            <div v-if="item.title == 'تسجيل الخروج'">
+              <v-list-item-title style="color: red;">
+                {{ item.title }}
+              </v-list-item-title>
+            </div>
+            <div v-else>
+              <v-list-item-title>{{ item.title }}</v-list-item-title>
+            </div>
+          </v-list-item>
+        </v-list>
+      </v-navigation-drawer>
+    </v-layout>
     <v-card
-      class="mx-auto"
+      class="mx-auto mt-16"
       max-width="1000"
       max-height="100vh"
     >
@@ -134,6 +227,20 @@ onMounted(() => {
         </v-card>
       </v-card>
     </v-dialog>
+    <v-dialog v-model="logoutDialog" max-width="500px">
+      <v-card prepend-icon="mdi-alert-circle" text="هل تريد تسجيل الخروج؟" title="تأكيد" color="orange">
+        <v-card>
+          <v-spacer></v-spacer>
+          <v-btn color="red-darken-1" class="mx-2 my-4" @click="logout()">نعم</v-btn>
+          <v-btn color="blue-darken-1" @click="logoutDialog = false">إلغاء</v-btn>
+          <v-spacer></v-spacer>
+        </v-card>
+      </v-card>
+    </v-dialog>
+    <v-snackbar v-model="deleteSuccessfully" :timeout="2000" color="red">
+      <template v-slot:actions />
+      تم حذف الأستاذ من المادة
+    </v-snackbar>
   </v-locale-provider>
 </div>
 </template>
@@ -154,4 +261,10 @@ onMounted(() => {
   .red {
     background-color: #E53935;
   }
+
+.title-text {
+  cursor: pointer;
+  font-size: 40px;
+}
+
 </style>

@@ -143,7 +143,6 @@ const availableTeachers = async (req, res) => {
           type: QueryTypes.SELECT
         }
       );
-    console.log(availableTeachers.map(obj => obj.teacherId));
     const teachersNotInCurrentCourse = await Teacher.findAll({
         where: {
           id: {
