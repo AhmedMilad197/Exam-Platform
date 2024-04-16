@@ -10,6 +10,7 @@ const router = useRouter();
 const route = useRoute();
 const dialog= ref(false);
 const dialogDelete = ref(false);
+const deleteSuccessfully = ref(false);
 const headers = ref([
   { title: 'id', key: 'id', align: 'start' },
   { title: 'السؤال', key: 'content' },
@@ -116,6 +117,7 @@ async function destroy (question_id) {
   try {
     const response = await QuestionService.delete(question_id);
     index();
+    deleteSuccessfully.value = true;
   } catch (error) {
     return {
       message: error.message
@@ -239,7 +241,7 @@ function deleteItemConfirm() {
             >
               <v-card>
                 <v-card-title>
-                  <span class="text-h5">تفاصيل السؤال</span>
+                  <span class="form-title-text">تفاصيل السؤال</span>
                 </v-card-title>
       
                 <v-card-text>
@@ -363,6 +365,10 @@ function deleteItemConfirm() {
         </v-card>
       </v-card>
     </v-dialog>
+    <v-snackbar v-model="deleteSuccessfully" :timeout="2000" color="red">
+      <template v-slot:actions />
+      تم حذف السؤال بنجاح
+    </v-snackbar>
   </v-locale-provider>
 </template>
 
@@ -383,6 +389,10 @@ function deleteItemConfirm() {
 .title-text {
   cursor: pointer;
   font-size: 40px;
+}
+
+.form-title-text {
+  font-size: 20px;
 }
 
 </style>
