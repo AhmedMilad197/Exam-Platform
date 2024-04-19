@@ -111,12 +111,14 @@ async function logout () {
 
     <div class="d-flex flex-column" width="1400px">
       <div class="mx-auto mt-10">
-        <img :src="imgUrl" alt="Logo" style="width: 1400px; height: 400px;">
+        <!-- <img :src="imgUrl" alt="Logo" style="width: 1400px; height: 400px;"> -->
+        <img :src="imgUrl" alt="Logo" style="max-width: 100%; height: auto;">
       </div>
       <div class="d-flex my-15">
         <div class="d-flex mx-auto">
           <div class="image">
-            <img :src="goalsImgUrl" alt="Logo">
+            <!-- <img :src="goalsImgUrl" alt="Logo"> -->
+            <img :src="goalsImgUrl" alt="Logo" style="max-width: 100%; height: auto;">
           </div>
           <div class="content mx-4">
             <h3 style="color: #3366cc; font-size: 25px;">رؤيتنا:</h3>
@@ -145,7 +147,8 @@ async function logout () {
             </ol>
           </div>
           <div class="image">
-            <img :src="visionImgUrl" alt="Logo">
+            <!-- <img :src="visionImgUrl" alt="Logo"> -->
+            <img :src="visionImgUrl" alt="Logo" style="max-width: 100%; height: auto;">
           </div>
         </div>
       </div>
@@ -181,6 +184,32 @@ async function logout () {
 </template>
 
 <style scoped>
+
+.container {
+  max-width: 100%;
+  padding: 0 20px;
+  margin: 0 auto;
+}
+
+/* Add media queries for different screen sizes */
+@media (min-width: 768px) {
+  .container {
+    max-width: 720px;
+  }
+}
+
+@media (min-width: 992px) {
+  .container {
+    max-width: 960px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .container {
+    max-width: 1140px;
+  }
+}
+
 .bisque-background {
   background-color: #f2f2f2;
   padding: 20px;
