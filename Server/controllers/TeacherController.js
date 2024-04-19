@@ -267,13 +267,13 @@ const sendPassword = async (req, res) => {
     const transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-            user: 'nicemido4@gmail.com',
-            pass: 'jmjv vebr qfnv eadw'
+            user: 'examplatform8@gmail.com',
+            pass: 'rwyk rkmg kjqv wwyj'
         }
     });
 
     const mailOptions = {
-        from: 'nicemido4@gmail.com',
+        from: 'examplatform8@gmail.com',
         to: email,
         subject: 'Exam Platform',
         text: `Your Exam Platform verification code is ${verificationCode}`
@@ -316,7 +316,6 @@ const removeStudent = async (req, res) => {
         });
     } catch (error) {
         res.status(500).json({ 
-            // error: 'Internal server error',
             message: error.message
         });
     }
@@ -342,8 +341,16 @@ const resetPassword = async (req, res) => {
     if (teacher) {
         teacher.password = newPassword;
         await teacher.save();
-        res.status(200).send({
-            message: 'Password updated successfully.'
+        jwt.sign({
+            user: teacher,
+            role: 'teacher',
+            exp: Math.floor(Date.now() / 1000) + (60 * 60) // expires in one hour.
+        }, 'loginkey', (err, token) => {
+            res.send({
+                teacher: teacher,
+                token: token,
+                role: 'teacher'
+            });
         });
       } else {
         res.status(500).json({ error: 'Internal server error' });

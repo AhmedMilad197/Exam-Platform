@@ -59,6 +59,8 @@ async function verifyOTP () {
     let cached_code = response.data.cached_code.verification_code;
     if (cached_code == code.value) {
       navigateTo({ name: 'reset-password' });
+    } else {
+      error.value = 'هذا الرمز غير صحيح'
     }
   } catch (err) {
     console.log(err.message);
@@ -134,7 +136,13 @@ async function verifyOTP () {
           hint="أدخل رمز التحقق"
           persistent-hint
         ></v-text-field>
-        <div class="error ml-2" />
+        <div class="d-flex">
+          <div v-if="error != null" class="mx-auto">
+            <span class="error">
+              {{ error }}
+            </span>
+          </div>
+        </div>
         <div class="d-flex">
           <v-btn type="submit" color="primary" class="mx-auto mt-2 mb-4" @click="verifyOTP()">تحقق</v-btn>
         </div>
