@@ -290,7 +290,12 @@ function goToTeachers(item) {
                           :rules="[v => !!v || 'يجب إدخال وصف المادة']"></v-text-field>
                       </v-col>
                       <v-col cols="12" md="12" sm="12">
-                        <v-combobox label="عدد الوحدات" :rules="[v => !!v || 'يجب إدخال عدد الوحدات']"
+                        <v-combobox 
+                          label="عدد الوحدات" 
+                          :rules="[
+                            v => !!v || 'يجب إدخال عدد الوحدات',
+                            v => /^[1-5]$/.test(v) || 'بيانات الإدخال غير صحيحة'
+                          ]"
                           :items="['1', '2', '3', '4', '5']" v-model="editedItem.unit" />
                       </v-col>
                     </v-row>
@@ -313,7 +318,7 @@ function goToTeachers(item) {
 
               <v-card>
                 <v-card-title>
-                  <span class="text-h5">تعديل المادة</span>
+                  <span class="dialog-title-text">تعديل المادة</span>
                 </v-card-title>
 
                 <v-card-text>
@@ -331,7 +336,10 @@ function goToTeachers(item) {
                         </v-col>
                         <v-col cols="12" md="12" sm="12">
                           <v-combobox label="عدد الوحدات" :items="['1', '2', '3', '4', '5']"
-                            :rules="[v => !!v || 'يجب إدخال عدد الوحدات']" v-model="editedItem.unit" />
+                            :rules="[
+                              v => !!v || 'يجب إدخال عدد الوحدات',
+                              v => /^[1-5]$/.test(v) || 'بيانات الإدخال غير صحيحة'
+                            ]" v-model="editedItem.unit" />
                         </v-col>
                       </v-row>
                     </v-form>
@@ -417,4 +425,9 @@ function goToTeachers(item) {
   cursor: pointer;
   font-size: 40px;
 }
+
+.dialog-title-text {
+  font-size: 20px;
+}
+
 </style>

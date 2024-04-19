@@ -254,7 +254,7 @@ onMounted(() => {
             <v-dialog v-model="dialog" max-width="600px">
               <v-card>
                 <v-card-title>
-                  <span class="text-h5"> بيانات المدرس </span>
+                  <span class="dialog-title-text"> بيانات المدرس </span>
                 </v-card-title>
   
                 <v-card-text>
@@ -360,6 +360,10 @@ onMounted(() => {
 .title-text {
   cursor: pointer;
   font-size: 40px;
+}
+
+.dialog-title-text {
+  font-size: 20px;
 }
 
 </style>
