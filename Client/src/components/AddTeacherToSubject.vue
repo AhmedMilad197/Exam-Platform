@@ -3,7 +3,9 @@ import { ref, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import TeacherService from '@/services/TeacherService'
 import SubjectService from '@/services/SubjectService'
+import { useUserStore } from "@/stores/user";
 
+const user = useUserStore();
 const router = useRouter();
 const route = useRoute();
 const teachers = ref();

@@ -125,7 +125,14 @@ const removeTeacher = async (req, res) => {
     Course.findByPk(courseId).then(course => {
         if (course) {
           course.removeTeachers(teacherId).then(() => {
-            res.status(200).json({ error: 'Teacher removed from the course successfully' });
+            // TODO Modify this.
+            const study = db.studies;
+            study.destroy({ where: { 
+                teacherid: teacherId,
+                coursid: courseId,
+            }}).then(() => {
+                res.status(200).json({ error: 'Teacher removed from the course successfully' });
+            });
           }).catch(err => {
             console.error('Error:', err);
           });

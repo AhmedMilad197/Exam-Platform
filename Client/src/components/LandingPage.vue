@@ -9,13 +9,13 @@ import { useRouter, useRoute } from 'vue-router';
 const router = useRouter();
 const items = ref([
   {
-    title: 'إنشاء حساب',
+    title: 'تسجيل الدخول للأستاذ',
     value: {
-      name: 'register'
+      name: 'login'
     }
   },
   {
-    title: 'تسجيل الدخول كطالب',
+    title: 'تسجيل الدخول للطالب',
     value: {
       name: 'student-login'
     }
