@@ -290,7 +290,7 @@ function phoneRule (value) {
           <v-toolbar
             flat
           >
-<<<<<<< HEAD
+          <v-dialog v-model="dialog">
             <template v-slot:activator="{ props }">
               <v-btn
                 class="mb-2 primary"
@@ -394,7 +394,11 @@ function phoneRule (value) {
                 <v-btn color="blue-darken-1" variant="text" @click="closeDelete">الغاء</v-btn>
                 <v-btn color="blue-darken-1" variant="text" @click="deleteItemConfirm">تأكيد</v-btn>
                 <v-spacer></v-spacer>
-=======
+              </v-card>
+            </v-card>
+          </v-dialog>
+
+
             <v-toolbar-title>الطلاب</v-toolbar-title>
             <v-divider
               class="mx-4"
@@ -499,7 +503,6 @@ function phoneRule (value) {
                     </v-btn>
                   </div>
                 </div>
->>>>>>> 02f1e310aad60ff47c889fda9f415d833e412904
               </v-card>
             </v-dialog>
             <v-dialog v-model="dialogDelete" max-width="500px">

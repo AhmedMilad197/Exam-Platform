@@ -23,7 +23,7 @@ module.exports=(sequelize,DataTypes)=>{
                   
         questionid : {
             type:DataTypes.INTEGER,
-            nDelete: 'RESTRICT',
+            onDelete: 'RESTRICT',
             references: {
                 model: 'questions',
                 key: 'id',

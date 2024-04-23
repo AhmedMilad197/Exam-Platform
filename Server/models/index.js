@@ -1,6 +1,6 @@
 const { Sequelize, DataTypes } = require('sequelize');
 const dbConfig =require('../config/dbConfig.js');
-const StudentExamHistoryModel = require('./StudentExamHistoryModel.js');
+
 
 
 const sequelize = new Sequelize(

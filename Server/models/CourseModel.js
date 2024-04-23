@@ -3,7 +3,7 @@ const{DataTypes}=require("sequelize");
 const {sequelize}=require(".");
 
 module.exports=(sequelize,DataTypes)=>{
-    const Course =sequelize.define("Course", {
+    const Course =sequelize.define("Courses", {
         name : {
             type:DataTypes.STRING,
             allowNull:false

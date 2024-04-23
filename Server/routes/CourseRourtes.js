@@ -19,8 +19,6 @@ Courserouter.post('/addTeacher', CourseController.addTeacher)
 
 Courserouter.get('/allCourse', CourseController.getAllCourse)
 
-Courserouter.get('/published', CourseController.getPublishedCourse)
-
 Courserouter.post('/teacher/remove', CourseController.removeTeacher)
 
 Courserouter.get('/:id', CourseController.getOneCourse)

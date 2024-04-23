@@ -36,8 +36,6 @@ Teacherrouter.post('/send-password', TeacherController.sendPassword)
 
 Teacherrouter.get('/:id',TeacherController.getOneTeacher)
 
-Teacherrouter.put('/:id',TeacherController.updateTeacher)
 
-Teacherrouter.delete('/:id',TeacherController.deleteTeacher)
 
 module.exports=Teacherrouter

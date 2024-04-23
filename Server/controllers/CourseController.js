@@ -23,25 +23,7 @@ const addCourse = async (req, res) => {
     }
 };
 
-// 2. Get all Course
-// const getAllCourse = async (req, res) => {
-//     try {
-//         let courses = await Course.findAll({});
-//         jwt.verify(req.token, "loginkey", (err, authData) => {
-//             if (err) {
-//               res.sendStatus(403);
-//             } else {
-//               res.status(200).json({
-//                 courses,
-//                 authData
-//               });
-//             }
-//           });
-//     } catch (error) {
-//         console.error(error);
-//         res.status(500).json({ error: 'Internal server error' });
-//     }
-// };
+
 const getAllCourse = async (req, res) => {
     try {
         let courses = await Course.findAll({});
@@ -98,16 +80,6 @@ const deleteCourse = async (req, res) => {
     }
 };
 
-// 6. Get published Course
-const getPublishedCourse = async (req, res) => {
-    try {
-        const courses = await Course.findAll({ where: { active: true } });
-        res.status(200).send(courses);
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Internal server error' });
-    }
-};
 
 const addTeacher = async (req, res) => {
     try {
@@ -143,7 +115,6 @@ module.exports = {
     getOneCourse,
     updateCourse,
     deleteCourse,
-    getPublishedCourse,
     addTeacher,
     removeTeacher
 };

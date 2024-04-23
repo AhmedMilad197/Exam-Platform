@@ -70,20 +70,6 @@ const getOneExam = async (req, res) => {
     }
 };
 
-// 4. Update Exam
-const updateExam = async (req, res) => {
-    try {
-        let id = req.params.id;
-        const exam = await Exam.update(req.body, { where: { id: id } });
-        if (exam[0] === 0) {
-            return res.status(404).json({ error: 'Exam not found' });
-        }
-        res.status(200).send(exam);
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Internal server error' });
-    }
-};
 
 // 5. Delete Exam by id
 const deleteExam = async (req, res) => {
@@ -114,7 +100,6 @@ module.exports = {
     addExam,
     getAllExam,
     getOneExam,
-    updateExam,
     deleteExam,
     viewExam
 };

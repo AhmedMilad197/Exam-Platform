@@ -69,35 +69,6 @@ const getOneTeacher = async (req, res) => {
     }
 };
 
-// 4. Update Teacher
-const updateTeacher = async (req, res) => {
-    try {
-        let id = req.params.id;
-        const teacher = await Teacher.update(req.body, { where: { id: id } });
-        if (teacher[0] === 0) {
-            return res.status(404).json({ error: 'Teacher not found' });
-        }
-        res.status(200).send(teacher);
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Internal server error' });
-    }
-};
-
-// 5. Delete Teacher by id
-const deleteTeacher = async (req, res) => {
-    try {
-        let id = req.params.id;
-        const deletedTeacherCount = await Teacher.destroy({ where: { id: id } });
-        if (deletedTeacherCount === 0) {
-            return res.status(404).json({ error: 'Teacher not found' });
-        }
-        res.status(200).send('Teacher is deleted');
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Internal server error' });
-    }
-};
 
 // 6. Get published Teacher
 const getPublishedTeacher= async (req, res) => {
@@ -351,8 +322,6 @@ module.exports = {
     addTeacher,
     getAllTeacher,
     getOneTeacher,
-    updateTeacher,
-    deleteTeacher,
     getPublishedTeacher,
     login,
     sendPassword,
