@@ -209,7 +209,7 @@ function refreshOptions() {
   answer3.value = '';
   answer4.value = '';
   mark.value = '';
-  rightAnswer.value = 5;
+  rightAnswer.value = null;
 }
 
 function closeAddQuestionDialog() {

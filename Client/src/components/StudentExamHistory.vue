@@ -196,8 +196,8 @@ onMounted(() => {
             <v-list>
               <div class="d-flex mx-2 my-2">
                 <v-responsive :width="`90%`">
-                  <v-text-field label="Choice 1" v-model="question.answer1" hint="Insert Choice 1 please."
-                    class="no-select" persistent-hint></v-text-field>
+                  <v-text-field label="Choice 1" v-model="question.answer1" hint="بيانات الإختيار 1"
+                    class="no-select" readonly persistent-hint></v-text-field>
                 </v-responsive>
                 <v-checkbox-btn class="mx-4 no-select"
                   :color="(question.rightanswer == 1) ? (question.rightanswer == question.studentexamhistory[0].student_answer) ? 'primary' : 'success' : 'primary'"
@@ -205,7 +205,7 @@ onMounted(() => {
               </div>
               <div class="d-flex mx-2 my-2">
                 <v-responsive :width="`90%`">
-                  <v-text-field label="Choice 2" v-model="question.answer2" hint="Insert Choice 2 please."
+                  <v-text-field label="Choice 2" v-model="question.answer2" hint="بيانات الإختيار 2"
                     class="no-select" persistent-hint></v-text-field>
                 </v-responsive>
                 <v-checkbox-btn class="mx-4 no-select"
@@ -214,7 +214,7 @@ onMounted(() => {
               </div>
               <div class="d-flex mx-2 my-2">
                 <v-responsive :width="`90%`">
-                  <v-text-field label="Choice 3" v-model="question.answer3" hint="Insert Choice 3 please."
+                  <v-text-field label="Choice 3" v-model="question.answer3" hint="بيانات الإختيار 3"
                     class="no-select" persistent-hint></v-text-field>
                 </v-responsive>
                 <v-checkbox-btn class="mx-4 no-select"
@@ -223,7 +223,7 @@ onMounted(() => {
               </div>
               <div class="d-flex mx-2 my-2">
                 <v-responsive :width="`90%`">
-                  <v-text-field label="Choice 4" v-model="question.answer4" hint="Insert Choice 4 please."
+                  <v-text-field label="Choice 4" v-model="question.answer4" hint="بيانات الإختيار 4"
                     class="no-select" persistent-hint></v-text-field>
                 </v-responsive>
                 <v-checkbox-btn class="mx-4 no-select"
