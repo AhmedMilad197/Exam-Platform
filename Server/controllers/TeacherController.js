@@ -264,44 +264,52 @@ function generateRandomString(length) {
 
 const sendPassword = async (req, res) => {
     const verificationCode = generateRandomString(8);
+    console.log(req.body)
     const email = req.body.email;
     let teacher = await Teacher.findOne({ where: { email: email } });
-    const transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-            user: 'examplatform8@gmail.com',
-            pass: 'rwyk rkmg kjqv wwyj'
-        }
-    });
+    if (teacher) {
 
-    const mailOptions = {
-        from: 'examplatform8@gmail.com',
-        to: email,
-        subject: 'Exam Platform',
-        text: `Your Exam Platform verification code is ${verificationCode}`
-    };
-
-    transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-            res.status(500).json({ 
-                error: 'Internal server error',
-                message: error.message
-            });
-        } else {
-            const key = 'OTPCode';
-            const value = {
-                email: email,
-                verification_code: verificationCode
-            };
-            const ttl = 10000;
-            cache.set(key, value, ttl);
-            console.log(cache.get(key));
-            res.status(200).json({
-                message: 'Email Sent',
-                verification_code: verificationCode 
-            })
-        }
-    });
+        const transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: 'examplatform8@gmail.com',
+                pass: 'rwyk rkmg kjqv wwyj'
+            }
+        });
+    
+        const mailOptions = {
+            from: 'examplatform8@gmail.com',
+            to: email,
+            subject: 'Exam Platform',
+            text: `Your Exam Platform verification code is ${verificationCode}`
+        };
+    
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                res.status(500).json({ 
+                    error: 'Internal server error',
+                    message: error.message
+                });
+            } else {
+                const key = 'OTPCode';
+                const value = {
+                    email: email,
+                    verification_code: verificationCode
+                };
+                const ttl = 10000;
+                cache.set(key, value, ttl);
+                console.log(cache.get(key));
+                res.status(200).json({
+                    message: 'Email Sent',
+                    verification_code: verificationCode 
+                })
+            }
+        });
+    } else {
+        return res.status(404).json({
+            message: 'User Not Found'
+        });
+    }
 }
 
 const removeStudent = async (req, res) => {
