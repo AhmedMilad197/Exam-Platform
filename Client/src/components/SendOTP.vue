@@ -59,6 +59,7 @@ async function sendOTP () {
     })
     navigateTo({ name: 'otp-verification' });
   } catch (err) {
+    error.value = 'لا يوجد مستخدم بهذا الحساب'
     console.log(err.message);
   }
 }
@@ -83,7 +84,7 @@ function emailRule (value) {
             @click.stop="drawer = !drawer"
           />
           <v-toolbar-title>
-            <span class="title-text" @click="navigateTo({ name: 'LandingPageView' })">
+            <span class="title-text">
               Exam Platform
             </span>
           </v-toolbar-title>
@@ -138,7 +139,11 @@ function emailRule (value) {
           hint="أدخل البريد الإلكتروني"
           persistent-hint
         ></v-text-field>
-        <div class="error ml-2" />
+        <div class="d-flex">
+          <div class="error mx-auto" >
+            {{ error }}
+          </div>
+        </div>
         <div class="d-flex">
           <v-btn type="submit" color="primary" class="mx-auto mt-2 mb-4" @click="sendOTP()">إرسال</v-btn>
         </div>
@@ -162,7 +167,7 @@ function emailRule (value) {
   text-align: center;
 }
 .sign-in {
-  cursor: pointer;
+    cursor: pointer;
   text-decoration: underline;
   color: blue;
 }
@@ -172,7 +177,7 @@ function emailRule (value) {
 }
 
 .title-text {
-  cursor: pointer;
+  pointer-events: none;
   font-size: 40px;
 }
 

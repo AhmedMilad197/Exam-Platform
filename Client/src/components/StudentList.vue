@@ -264,7 +264,7 @@ function phoneRule(value) {
         <v-app-bar color="primary" prominent height="100">
           <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
           <v-toolbar-title>
-            <span class="title-text" @click="navigateTo({ name: 'LandingPageView' })">
+            <span class="title-text">
               Exam Platform
             </span>
           </v-toolbar-title>
@@ -587,7 +587,7 @@ function phoneRule(value) {
 }
 
 .title-text {
-  cursor: pointer;
+  pointer-events: none;
   font-size: 40px;
 }
 

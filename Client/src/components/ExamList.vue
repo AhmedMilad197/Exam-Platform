@@ -133,7 +133,7 @@ async function destroy () {
 }
 
 function theExams() {
-  if (Object.keys(exams.value).length > 0) {
+  if (exams.value != null) {
     return exams.value;
   }
   return [];
@@ -158,7 +158,7 @@ onMounted(() => {
             @click.stop="drawer = !drawer"
           />
           <v-toolbar-title>
-            <span class="title-text" @click="navigateTo({ name: 'LandingPageView' })">
+            <span class="title-text">
               Exam Platform
             </span>
           </v-toolbar-title>
@@ -351,7 +351,7 @@ onMounted(() => {
 }
 
 .title-text {
-  cursor: pointer;
+  pointer-events: none;
   font-size: 40px;
 }
 

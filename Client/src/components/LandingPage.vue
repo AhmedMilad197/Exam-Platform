@@ -67,7 +67,7 @@ async function logout () {
             class="tab"
           />
           <v-toolbar-title>
-            <span class="title-text" @click="navigateTo({ name: 'LandingPageView' })">
+            <span class="title-text">
               <div class="d-flex">
                 <!-- <div class="my-auto">
                   <img :src="logoImgUrl" width="100px" height="100px" alt="Logo">
@@ -234,7 +234,7 @@ async function logout () {
 }
 
 .title-text {
-  cursor: pointer;
+  pointer-events: none;
   font-size: 40px;
 }
 

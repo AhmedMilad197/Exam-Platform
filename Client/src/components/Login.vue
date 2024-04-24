@@ -68,6 +68,7 @@ async function login () {
     user.role = response.data.role;
     navigateTo({ name: 'home' });
   } catch (err) {
+    error.value = 'البيانات المدخلة غير صحيحة'
     console.log(err.message);
   }
 }
@@ -87,7 +88,7 @@ async function login () {
             @click.stop="drawer = !drawer"
           />
           <v-toolbar-title>
-            <span class="title-text" @click="navigateTo({ name: 'LandingPageView' })">
+            <span class="title-text">
               Exam Platform
             </span>
           </v-toolbar-title>
@@ -191,7 +192,7 @@ async function login () {
   text-align: center;
 }
 .sign-in {
-  cursor: pointer;
+    cursor: pointer;
   text-decoration: underline;
   color: blue;
 }
@@ -201,7 +202,7 @@ async function login () {
 }
 
 .title-text {
-  cursor: pointer;
+  pointer-events: none;
   font-size: 40px;
 }
   

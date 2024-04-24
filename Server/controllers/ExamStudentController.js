@@ -33,7 +33,15 @@ const storeToExcel = async (req, res) => {
           where: { examId: req.params.id },
           include: [Student]
         });
-    
+
+        const Exam = db.exams;
+        const currentExam = await Exam.findOne({
+            where: {
+                id: req.params.id     
+            },
+            include: [db.courses]
+        })
+        console.log(currentExam);
         const workbook = new ExcelJS.Workbook();
         const worksheet = workbook.addWorksheet('Exam Students');
     
@@ -56,12 +64,12 @@ const storeToExcel = async (req, res) => {
         });
     
         // Generate the Excel file
-        const filePath = 'exam_students.xlsx';
+        const filePath = currentExam.Course.name + '.xlsx';
         await workbook.xlsx.writeFile(filePath);
     
         // Send the file as a response
-        res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        res.setHeader('Content-Disposition', 'attachment; filename=' + filePath);
+        // res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        // res.setHeader('Content-Disposition', 'attachment; filename=' + filePath);
         const fileStream = fs.createReadStream(filePath);
         fileStream.pipe(res);
       } catch (error) {

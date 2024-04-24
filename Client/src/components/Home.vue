@@ -207,7 +207,7 @@ onMounted(() => {
 }
 
 .title-text {
-  cursor: pointer;
+  pointer-events: none;
   font-size: 40px;
 }
 

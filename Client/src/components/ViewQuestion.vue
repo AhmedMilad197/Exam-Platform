@@ -131,7 +131,7 @@ async function goBack() {
         <v-app-bar color="primary" prominent height="100">
           <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
           <v-toolbar-title>
-            <span class="title-text" @click="navigateTo({ name: 'LandingPageView' })">
+            <span class="title-text">
               Exam Platform
             </span>
           </v-toolbar-title>
@@ -247,7 +247,7 @@ async function goBack() {
 }
 
 .title-text {
-  cursor: pointer;
+  pointer-events: none;
   font-size: 40px;
 }
 </style>
