@@ -393,6 +393,10 @@ function phoneRule(value) {
               </div>
             </v-card>
           </v-dialog>
+          
+
+
+
           <v-dialog v-model="dialogDelete" max-width="500px">
             <v-card>
               <v-card-title class="text-h5">هل أنت متأكد أنك تريد حذف هذا الطالب ؟ </v-card-title>
