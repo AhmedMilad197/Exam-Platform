@@ -68,6 +68,7 @@ async function login () {
     user.role = response.data.role;
     navigateTo({ name: 'home' });
   } catch (err) {
+    error.value = 'البيانات المدخلة غير صحيحة'
     console.log(err.message);
   }
 }

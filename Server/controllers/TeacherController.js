@@ -127,6 +127,8 @@ const login = async (req, res) => {
                     role: 'teacher'
                 });
             });
+        } else {
+            res.status(413).json({ error: 'Unauthorized' });
         }
     }
 }
