@@ -221,6 +221,12 @@ function goToTeachers(item) {
   navigateTo({ name: 'teacher-subject-list', params: { id: editedItem.value.id } })
 }
 
+function goToExams(item) {
+  editedIndex.value = subjects.value.indexOf(item);
+  editedItem.value = Object.assign({}, item);
+  navigateTo({ name: 'exam-bank', params: { subject: editedItem.value.id } })
+}
+
 </script>
 
 <template>
@@ -379,8 +385,11 @@ function goToTeachers(item) {
           <v-icon size="small" class="ml-2" @click="deleteItem(item)" color="red">
             mdi-delete
           </v-icon>
-          <v-icon size="small" color="blue" @click="goToTeachers(item)">
+          <v-icon size="small" class="ml-2" color="blue" @click="goToTeachers(item)">
             mdi-account-multiple
+          </v-icon>
+          <v-icon size="small" color="purple" @click="goToExams(item)">
+            mdi-book-open
           </v-icon>
         </template>
         <template v-slot:no-data>

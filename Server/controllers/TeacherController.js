@@ -213,7 +213,7 @@ const getExams = async (req, res) => {
             }
         } });
     if (teacher != null) {
-        res.send(teacher.exams)
+        res.send(teacher)
     } else {
         res.send({})
     }
