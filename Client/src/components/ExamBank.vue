@@ -103,9 +103,8 @@ async function getExams() {
 function goTo(item) {
   editedIndex.value = exams.value.indexOf(item)
   currentExam.value = Object.assign({}, item)
-  navigateTo({name: 'view-exam', params: { 
+  navigateTo({name: 'student-exam-marks', params: { 
     id: currentExam.value.id,
-    subject: route.params.subject
   }})
 }
 
