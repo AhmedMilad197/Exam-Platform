@@ -6,6 +6,7 @@ import ExamStudentService from '@/services/ExamStudentService'
 const router = useRouter();
 const route = useRoute();
 const studentExams = ref([]);
+const addSuccessfully = ref(false);
 const items = ref([
   {
     title: 'موادي',
@@ -85,6 +86,7 @@ async function index() {
 async function storeToExcel() {
   try {
     const response = await ExamStudentService.storeToExcel(route.params.id);
+    addSuccessfully.value = true;
   } catch (error) {
     return {
       message: error.message
@@ -140,7 +142,7 @@ onMounted(() => {
             </v-btn>
           </v-toolbar>
         </template>
-  
+
         <thead>
           <tr>
             <th class="text-right">
@@ -179,6 +181,10 @@ onMounted(() => {
         </v-card>
       </v-card>
     </v-dialog>
+    <v-snackbar v-model="addSuccessfully" :timeout="2000" color="green">
+      <template v-slot:actions />
+      تم تحميل درجات الطلبة بنجاح
+    </v-snackbar>
   </v-locale-provider>
 
 </template>
@@ -198,7 +204,6 @@ onMounted(() => {
 }
 
 .primary {
-  background-color: rgb(24,103,192);
+  background-color: rgb(24, 103, 192);
 }
-
 </style>
