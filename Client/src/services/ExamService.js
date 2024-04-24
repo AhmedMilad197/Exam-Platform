@@ -10,8 +10,8 @@ export default {
   getExam(data) {
     return api().post('api/Exam', {data});
   },
-  getAllExams() {
-    return api().get('api/Exam/allExam');
+  getAllExams(data) {
+    return api().post('api/Exam/allExam', data);
   },
   viewExam(data) {
     return api().post('api/Exam/view', {data});
