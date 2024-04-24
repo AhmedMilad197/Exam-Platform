@@ -30,52 +30,56 @@ const getStudents = async (req, res) => {
 const storeToExcel = async (req, res) => {
     try {
         const exam_students = await ExamStudent.findAll({
-          where: { examId: req.params.id },
-          include: [Student]
+            where: { examId: req.params.id },
+            include: [Student]
         });
 
         const Exam = db.exams;
         const currentExam = await Exam.findOne({
-            where: {
-                id: req.params.id     
-            },
+            where: { id: req.params.id },
             include: [db.courses]
-        })
+        });
         console.log(currentExam);
         const workbook = new ExcelJS.Workbook();
         const worksheet = workbook.addWorksheet('Exam Students');
-    
+
         // Define the columns in the Excel file
         worksheet.columns = [
-          { header: 'Student ID', key: 'studentId', width: 10, style: { alignment: { horizontal: 'center' } } },
-          { header: 'Student Name', key: 'studentName', width: 20, style: { alignment: { horizontal: 'center' } } },
-          { header: 'Student Mark', key: 'mark', width: 20, style: { alignment: { horizontal: 'center' } } },
-          // Add more columns as needed
+            { header: 'Student ID', key: 'studentId', width: 10, style: { alignment: { horizontal: 'center' } } },
+            { header: 'Student Name', key: 'studentName', width: 20, style: { alignment: { horizontal: 'center' } } },
+            { header: 'Student Mark', key: 'mark', width: 20, style: { alignment: { horizontal: 'center' } } },
+            // Add more columns as needed
         ];
-    
+
         // Populate the rows with the data
         exam_students.forEach((exam_student) => {
             worksheet.addRow({
-              studentId: exam_student.student.id,
-              studentName: exam_student.student.name,
-              mark: exam_student.score,
-              // Add more data for each column
+                studentId: exam_student.student.id,
+                studentName: exam_student.student.name,
+                mark: exam_student.score,
+                // Add more data for each column
             });
         });
-    
+
+        let counter = 1;
+        let filePath = `${currentExam.Course.name}(${counter}).xlsx`;
+        
+        // Check if the file already exists
+        while (fs.existsSync(filePath)) {
+            counter++;
+            filePath = `${currentExam.Course.name}(${counter}).xlsx`;
+        }
+
         // Generate the Excel file
-        const filePath = currentExam.Course.name + '.xlsx';
         await workbook.xlsx.writeFile(filePath);
-    
+
         // Send the file as a response
-        // res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        // res.setHeader('Content-Disposition', 'attachment; filename=' + filePath);
         const fileStream = fs.createReadStream(filePath);
         fileStream.pipe(res);
-      } catch (error) {
+    } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Internal server error' });
-      }
+    }
 }
 
 const getScore = async (req, res) => {
