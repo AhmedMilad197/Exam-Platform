@@ -133,6 +133,7 @@ async function submit() {
     let max_score = parseInt(maxScore.value)
     let student_score = 0
     let skippedQuestionCounter = 0;
+    error.value = null;
     score.value.forEach(element => {
       if (element == -1) {
         skippedQuestionCounter++;
@@ -144,8 +145,12 @@ async function submit() {
         student_score += parseInt(element)
       }
     });
+    if (error.value) {
+      return;
+    }
+    
     let ans = parseInt(student_score / max_score * 100)
-    StudentExamHistoryService.create({
+    await StudentExamHistoryService.create({
       examId: exam.value.id,
       studentId: user.user.id,
       history: studentAnswers.value
