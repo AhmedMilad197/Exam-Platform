@@ -9,6 +9,8 @@ const user = useUserStore();
 const router = useRouter();
 const teachers = ref();
 const editedIndex = ref(-1)
+const blockTeacherSnackbar = ref(false);
+const unBlockTeacherSnackbar = ref(false);
 const items = ref([
   {
     title: 'المدرسين',
@@ -110,21 +112,44 @@ function selectTeacherToBlock(item) {
   blockTeacherConfirmation.value = true;
 }
 
+async function selectTeacherToUnBlock(item) {
+  editedIndex.value = teachers.value.indexOf(item)
+  editedItem.value = Object.assign({}, item)
+  // blockTeacherConfirmation.value = true;
+  await unBlockTeacher(); //TODO check if this needs a dialog.
+  index();
+}
+
 async function blockTeacher() {
   try {
     const teacher = Object.assign({}, editedItem.value)
-    console.log(teacher);
     const response = await TeacherService.block({
       'teacherId': teacher.id
     });
+    index();
     blockTeacherConfirmation.value = false;
+    blockTeacherSnackbar.value = true;
   } catch (error) {
     return {
       message: error.message
     }
   }
+}
 
-
+async function unBlockTeacher() {
+  try {
+    const teacher = Object.assign({}, editedItem.value)
+    const response = await TeacherService.unBlock({
+      'teacherId': teacher.id
+    });
+    blockTeacherConfirmation.value = false;
+    blockTeacherSnackbar.value = true;
+    unBlockTeacherSnackbar.value = true;
+  } catch (error) {
+    return {
+      message: error.message
+    }
+  }
 }
 
 function close() {
@@ -229,7 +254,7 @@ onMounted(() => {
             <v-dialog v-model="dialog" max-width="600px">
               <v-card>
                 <v-card-title>
-                  <span class="text-h5"> بيانات المدرس </span>
+                  <span class="dialog-title-text"> بيانات المدرس </span>
                 </v-card-title>
   
                 <v-card-text>
@@ -263,12 +288,23 @@ onMounted(() => {
           </v-toolbar>
         </template>
         <template v-slot:item.actions="{ item }">
-          <v-icon class="me-2" size="small" @click="editItem(item)" color="blue">
-            mdi-eye-arrow-right
-          </v-icon>
-          <v-icon size="small" @click="selectTeacherToBlock(item)" color="red">
-            mdi-cancel
-          </v-icon>
+          <div class="d-flex">
+            <div>
+              <v-icon class="me-2" size="small" @click="editItem(item)" color="blue">
+                mdi-eye-arrow-right
+              </v-icon>
+            </div>
+            <div v-if="item.active == true">
+              <v-icon size="small" @click="selectTeacherToBlock(item)" color="red">
+                mdi-cancel
+              </v-icon>
+            </div>
+            <div v-else>
+              <v-icon size="small" @click="selectTeacherToUnBlock(item)" color="green">
+                mdi-lock-open
+              </v-icon>
+            </div>
+          </div>
           <v-dialog v-model="blockTeacherConfirmation" width="auto">
             <v-card max-width="400" prepend-icon="mdi-update"
               text="هل تريد حظر هذا الاستاذ؟"
@@ -293,6 +329,25 @@ onMounted(() => {
         </v-card>
       </v-card>
     </v-dialog>
+
+    <v-snackbar
+      :timeout="2000"
+      color="red"
+      elevation="24"
+      v-model="blockTeacherSnackbar"
+    >
+      لقد قمت بحظر الأستاذ بنجاح
+    </v-snackbar>
+
+    <v-snackbar
+      :timeout="2000"
+      color="green"
+      elevation="24"
+      v-model="unBlockTeacherSnackbar"
+    >
+      لقد قمت بفك الحظر عن الأستاذ بنجاح
+    </v-snackbar>
+    
   </v-locale-provider>
 
 </template>
@@ -305,6 +360,10 @@ onMounted(() => {
 .title-text {
   cursor: pointer;
   font-size: 40px;
+}
+
+.dialog-title-text {
+  font-size: 20px;
 }
 
 </style>

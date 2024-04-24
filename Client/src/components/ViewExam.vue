@@ -237,7 +237,7 @@ onMounted(() => {
                 <div class="d-flex">
                   <div class="mx-auto">
                     <v-btn color="indigo-darken-3"
-                      @click="navigateTo({ name: 'view-question', params: { id: question.id } })">عرض</v-btn>
+                      @click="navigateTo({ name: 'view-question', params: { id: question.id, subject: route.params.subject } })">عرض</v-btn>
                   </div>
                 </div>
               </td>

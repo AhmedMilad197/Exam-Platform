@@ -57,6 +57,13 @@ async function resetPassword () {
     const response = await TeacherService.resetPassword({
       new_password: newPassword.value,
     })
+    if (response.data.teacher.active == 0) {
+      error.value = 'لقد تم منعك من الوصول إلى النظام'
+      return;
+    }
+    user.user = response.data.teacher;
+    user.token = response.data.token;
+    user.role = response.data.role;
     navigateTo({ name: 'home' });
   } catch (err) {
     console.log(err.message);

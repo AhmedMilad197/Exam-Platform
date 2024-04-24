@@ -1,5 +1,5 @@
 const db = require('../models');
-var jwt = require('jsonwebtoken');
+
 
 // Create main Model
 const Course = db.courses;
@@ -11,9 +11,7 @@ const addCourse = async (req, res) => {
     try {
         const info = {
             name: req.body.name,
-            active: req.body.active ? req.body.active : false,
             description: req.body.description,
-            image: req.body.image,
             unit: req.body.unit,
         };
         const course = await Course.create(info);
@@ -84,7 +82,7 @@ const deleteCourse = async (req, res) => {
 const addTeacher = async (req, res) => {
     try {
         const course = await Course.findOne({where: {id: req.body.courseId},});
-        course.addTeachers(req.body.teachers);
+        await course.addTeachers(req.body.teachers);
         res.status(200).json({ message: 'Teacher added to course successfully.' });
     } catch (error) {
         res.status(500).json({ error: 'Internal server error' });
@@ -97,7 +95,14 @@ const removeTeacher = async (req, res) => {
     Course.findByPk(courseId).then(course => {
         if (course) {
           course.removeTeachers(teacherId).then(() => {
-            res.status(200).json({ error: 'Teacher removed from the course successfully' });
+            // TODO Modify this.
+            const study = db.studies;
+            study.destroy({ where: { 
+                teacherid: teacherId,
+                coursid: courseId,
+            }}).then(() => {
+                res.status(200).json({ error: 'Teacher removed from the course successfully' });
+            });
           }).catch(err => {
             console.error('Error:', err);
           });

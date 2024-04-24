@@ -114,7 +114,6 @@ const availableTeachers = async (req, res) => {
           type: QueryTypes.SELECT
         }
       );
-    console.log(availableTeachers.map(obj => obj.teacherId));
     const teachersNotInCurrentCourse = await Teacher.findAll({
         where: {
           id: {
@@ -205,6 +204,20 @@ const block = async (req, res) => {
     }
 } 
 
+const unBlock = async (req, res) => {
+    try {
+        const id = req.body.teacherId;
+        const teacher = await Teacher.update({ active : true }, { where: { id: id } });
+        if (teacher[0] === 0) {
+            return res.status(404).json({ error: 'Teacher not found' });
+        }
+        res.status(200).send(teacher);
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+} 
+
 function generateRandomString(length) {
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     let randomString = '';
@@ -225,13 +238,13 @@ const sendPassword = async (req, res) => {
     const transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-            user: 'nicemido4@gmail.com',
-            pass: 'jmjv vebr qfnv eadw'
+            user: 'examplatform8@gmail.com',
+            pass: 'rwyk rkmg kjqv wwyj'
         }
     });
 
     const mailOptions = {
-        from: 'nicemido4@gmail.com',
+        from: 'examplatform8@gmail.com',
         to: email,
         subject: 'Exam Platform',
         text: `Your Exam Platform verification code is ${verificationCode}`
@@ -274,7 +287,6 @@ const removeStudent = async (req, res) => {
         });
     } catch (error) {
         res.status(500).json({ 
-            // error: 'Internal server error',
             message: error.message
         });
     }
@@ -300,8 +312,16 @@ const resetPassword = async (req, res) => {
     if (teacher) {
         teacher.password = newPassword;
         await teacher.save();
-        res.status(200).send({
-            message: 'Password updated successfully.'
+        jwt.sign({
+            user: teacher,
+            role: 'teacher',
+            exp: Math.floor(Date.now() / 1000) + (60 * 60) // expires in one hour.
+        }, 'loginkey', (err, token) => {
+            res.send({
+                teacher: teacher,
+                token: token,
+                role: 'teacher'
+            });
         });
       } else {
         res.status(500).json({ error: 'Internal server error' });
@@ -332,6 +352,7 @@ module.exports = {
     getQuestions,
     getExams,
     block,
+    unBlock,
     removeStudent,
     getCourseQuestions,
     TeacherCourses

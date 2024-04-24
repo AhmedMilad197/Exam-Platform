@@ -2,19 +2,20 @@
 import imgUrl from '../assets/landing_page_background.jpg'
 import visionImgUrl from '../assets/vision.jpg'
 import goalsImgUrl from '../assets/goals.jpg'
+import logoImgUrl from '../assets/exam-logo.png'
 import { ref } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 
 const router = useRouter();
 const items = ref([
   {
-    title: 'إنشاء حساب',
+    title: 'تسجيل الدخول للأستاذ',
     value: {
-      name: 'register'
+      name: 'login'
     }
   },
   {
-    title: 'تسجيل الدخول كطالب',
+    title: 'تسجيل الدخول للطالب',
     value: {
       name: 'student-login'
     }
@@ -63,10 +64,18 @@ async function logout () {
         >
           <v-app-bar-nav-icon 
             @click.stop="drawer = !drawer"
+            class="tab"
           />
           <v-toolbar-title>
             <span class="title-text" @click="navigateTo({ name: 'LandingPageView' })">
-              Exam Platform
+              <div class="d-flex">
+                <!-- <div class="my-auto">
+                  <img :src="logoImgUrl" width="100px" height="100px" alt="Logo">
+                </div> -->
+                <div class="my-auto">
+                Exam Platform
+              </div>
+              </div>
             </span>
           </v-toolbar-title>
           <v-spacer></v-spacer>
@@ -102,12 +111,14 @@ async function logout () {
 
     <div class="d-flex flex-column" width="1400px">
       <div class="mx-auto mt-10">
-        <img :src="imgUrl" alt="Logo" style="width: 1400px; height: 400px;">
+        <!-- <img :src="imgUrl" alt="Logo" style="width: 1400px; height: 400px;"> -->
+        <img :src="imgUrl" alt="Logo" style="max-width: 100%; height: auto;">
       </div>
       <div class="d-flex my-15">
         <div class="d-flex mx-auto">
           <div class="image">
-            <img :src="goalsImgUrl" alt="Logo">
+            <!-- <img :src="goalsImgUrl" alt="Logo"> -->
+            <img :src="goalsImgUrl" alt="Logo" style="max-width: 100%; height: auto;">
           </div>
           <div class="content mx-4">
             <h3 style="color: #3366cc; font-size: 25px;">رؤيتنا:</h3>
@@ -136,7 +147,8 @@ async function logout () {
             </ol>
           </div>
           <div class="image">
-            <img :src="visionImgUrl" alt="Logo">
+            <!-- <img :src="visionImgUrl" alt="Logo"> -->
+            <img :src="visionImgUrl" alt="Logo" style="max-width: 100%; height: auto;">
           </div>
         </div>
       </div>
@@ -172,6 +184,32 @@ async function logout () {
 </template>
 
 <style scoped>
+
+.container {
+  max-width: 100%;
+  padding: 0 20px;
+  margin: 0 auto;
+}
+
+/* Add media queries for different screen sizes */
+@media (min-width: 768px) {
+  .container {
+    max-width: 720px;
+  }
+}
+
+@media (min-width: 992px) {
+  .container {
+    max-width: 960px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .container {
+    max-width: 1140px;
+  }
+}
+
 .bisque-background {
   background-color: #f2f2f2;
   padding: 20px;
@@ -198,6 +236,10 @@ async function logout () {
 .title-text {
   cursor: pointer;
   font-size: 40px;
+}
+
+.tab >>> .mdi-menu {
+  --v-icon-size-multiplier: 1.5;
 }
 
 </style>
