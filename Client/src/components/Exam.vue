@@ -17,6 +17,7 @@ const showQuestion = ref([]);
 const isSkipped = ref(false);
 const storeAnswers = ref([]);
 const error = ref();
+const timeOutDialog = ref(false);
 const items = ref([
   {
     title: 'المواد الدراسية',
@@ -128,39 +129,50 @@ function updateScore(index, question_id, answer, right_answer, mark, event) {
   }
 }
 
+const checkTime = () => {
+  const currentTime = new Date();
+  const secondTime = new Date(exam.value.end_time);
+
+  return currentTime < secondTime;
+};
+
 async function submit() {
   try {
-    let max_score = parseInt(maxScore.value)
-    let student_score = 0
-    let skippedQuestionCounter = 0;
-    error.value = null;
-    score.value.forEach(element => {
-      if (element == -1) {
-        skippedQuestionCounter++;
-        if (!isSkipped.value || skippedQuestionCounter > 1) {
-          error.value = 'يرجى الإجابة على جميع الأسئلة'
-          return;
+    if (!checkTime()) {
+      timeOutDialog.value = true;
+    } else {
+      let max_score = parseInt(maxScore.value)
+      let student_score = 0
+      let skippedQuestionCounter = 0;
+      error.value = null;
+      score.value.forEach(element => {
+        if (element == -1) {
+          skippedQuestionCounter++;
+          if (!isSkipped.value || skippedQuestionCounter > 1) {
+            error.value = 'يرجى الإجابة على جميع الأسئلة'
+            return;
+          }
+        } else {
+          student_score += parseInt(element)
         }
-      } else {
-        student_score += parseInt(element)
+      });
+      if (error.value) {
+        return;
       }
-    });
-    if (error.value) {
-      return;
+
+      let ans = parseInt(student_score / max_score * 100)
+      await StudentExamHistoryService.create({
+        examId: exam.value.id,
+        studentId: user.user.id,
+        history: studentAnswers.value
+      });
+      const response = ExamStudentService.create({
+        studentId: user.user.id,
+        examId: route.params.exam,
+        score: ans
+      });
+      navigateTo({ name: 'exam-result', params: { id: exam.value.id } })
     }
-    
-    let ans = parseInt(student_score / max_score * 100)
-    await StudentExamHistoryService.create({
-      examId: exam.value.id,
-      studentId: user.user.id,
-      history: studentAnswers.value
-    });
-    const response = ExamStudentService.create({
-      studentId: user.user.id,
-      examId: route.params.exam,
-      score: ans
-    });
-    navigateTo({name: 'exam-result', params: {id: exam.value.id}})
   } catch (error) {
     return {
       message: error.message
@@ -305,7 +317,8 @@ onMounted(() => {
               </div>
             </v-list>
           </v-list>
-          <v-btn color="primary" class="mx-5" :disabled="isSkipped" @click="skipQuestion(index, question.id)">تخطي</v-btn>
+          <v-btn color="primary" class="mx-5" :disabled="isSkipped"
+            @click="skipQuestion(index, question.id)">تخطي</v-btn>
         </div>
         <div v-else class="d-flex py-10 my-4 skip-question-body">
           <div class="mx-auto">
@@ -335,6 +348,16 @@ onMounted(() => {
           <v-spacer></v-spacer>
           <v-btn color="red-darken-1" class="mx-2 my-4" @click="logout()">نعم</v-btn>
           <v-btn color="blue-darken-1" @click="logoutDialog = false">إلغاء</v-btn>
+          <v-spacer></v-spacer>
+        </v-card>
+      </v-card>
+    </v-dialog>
+    <v-dialog v-model="timeOutDialog" max-width="500px" persistent>
+      <v-card prepend-icon="mdi-alert-circle" text="للأسف يبدو ان زمن الإختبار قد إنتهى" title="تنبيه" color="orange">
+        <v-card>
+          <v-spacer></v-spacer>
+          <v-btn color="red-darken-1" class="mx-2 my-4"
+            @click="navigateTo({ name: 'student-subject-list' })">الخروج</v-btn>
           <v-spacer></v-spacer>
         </v-card>
       </v-card>
