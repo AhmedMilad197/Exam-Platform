@@ -168,17 +168,18 @@ async function submit() {
   }
 }
 
-function skipQuestion(index) {
+function skipQuestion(index, questionId) {
   showQuestion.value[index] = 0;
   isSkipped.value = true;
-  storeAnswers.value[index] = score.value[index];
+  // storeAnswers.value[index] = score.value[index];
   score.value[index] = -1;
+  studentAnswers.value[questionId] = -1;
 }
 
-function unSkipQuestion(index) {
+function unSkipQuestion(index, questionId) {
   showQuestion.value[index] = 1;
   isSkipped.value = false;
-  score.value[index] = storeAnswers.value[index];
+  // score.value[index] = storeAnswers.value[index];
 }
 
 function getDate(date) {
@@ -304,11 +305,11 @@ onMounted(() => {
               </div>
             </v-list>
           </v-list>
-          <v-btn color="primary" class="mx-5" :disabled="isSkipped" @click="skipQuestion(index)">تخطي</v-btn>
+          <v-btn color="primary" class="mx-5" :disabled="isSkipped" @click="skipQuestion(index, question.id)">تخطي</v-btn>
         </div>
         <div v-else class="d-flex py-10 my-4 skip-question-body">
           <div class="mx-auto">
-            <v-btn color="orange-darken-2" @click="unSkipQuestion(index)">
+            <v-btn color="orange-darken-2" @click="unSkipQuestion(index, question.id)">
               عدم التخطي
             </v-btn>
           </div>
