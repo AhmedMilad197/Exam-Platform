@@ -119,6 +119,8 @@ async function destroy() {
 function setAnswer(event, id) {
   if (event.target.checked) {
     rightAnswer.value = id;
+  } else {
+    rightAnswer.value = null;
   }
 }
 
