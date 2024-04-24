@@ -180,7 +180,7 @@ async function goBack() {
           <v-list class="mx-4">
             <div class="d-flex mx-2 my-2">
               <v-responsive :width="`500px`">
-                <v-text-field label="الإختيار الأول" hint="نص الإختيار الأول" persistent-hint v-model="answer1"
+                <v-text-field label="الإختيار الأول" hint="نص الإختيار الأول" readonly persistent-hint v-model="answer1"
                   class="no-select"></v-text-field>
               </v-responsive>
               <v-checkbox-btn class="mx-4" color="success" :model-value="(rightAnswer == 1 ? true : false)" disabled />
