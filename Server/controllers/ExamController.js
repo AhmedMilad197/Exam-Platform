@@ -35,10 +35,12 @@ const addExam = async (req, res) => {
 };
 
 // 2. Get all Exam
-const getAllExam = async (req, res) => {
+const getAllExams = async (req, res) => {
+    console.log(req.body)
     const Teachers = db.teachers;
     try {
         let exams = await Exam.findAll({
+            where: {courseid: req.body.courseId},
             include: Teachers
         });
         res.status(200).send(exams);
@@ -108,7 +110,7 @@ const viewExam = async (req, res) => {
 
 module.exports = {
     addExam,
-    getAllExam,
+    getAllExams,
     getOneExam,
     deleteExam,
     viewExam

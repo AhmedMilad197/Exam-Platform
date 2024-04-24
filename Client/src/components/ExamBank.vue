@@ -1,11 +1,11 @@
 <script setup>
 import { useRouter, useRoute } from 'vue-router'
-import {ref, onMounted} from 'vue'
+import { ref, onMounted } from 'vue'
 import { useUserStore } from "@/stores/user";
 import TeacherService from "@/services/TeacherService"
 import ExamService from '@/services/ExamService';
 
-const user = useUserStore(); 
+const user = useUserStore();
 const router = useRouter()
 const route = useRoute();
 const exams = ref([]);
@@ -13,9 +13,9 @@ const dialog = ref(false);
 const snackbar = ref(false);
 const deleteSnackbar = ref(false);
 const headers = ref([
-  {title: 'إسم الإختبار', key: 'name', align: 'start'},
-  {title: 'إسم الاستاذ', key: 'Teacher.name'},
-  {title: 'درجات الطلبة', key: 'actions'}
+  { title: 'إسم الإختبار', key: 'name', align: 'start' },
+  { title: 'إسم الاستاذ', key: 'Teacher.name' },
+  { title: 'درجات الطلبة', key: 'actions' }
 ]);
 const items = ref([
   {
@@ -56,7 +56,7 @@ const items = ref([
 const drawer = ref(false);
 const logoutDialog = ref(false);
 
-function handleRequest (title, value) {
+function handleRequest(title, value) {
   if (title == 'تسجيل الخروج') {
     logoutDialog.value = true;
   } else {
@@ -64,13 +64,13 @@ function handleRequest (title, value) {
   }
 }
 
-function deleteStoredUser () {
+function deleteStoredUser() {
   user.user = null;
   user.token = null;
   user.role = null;
 }
 
-async function logout () {
+async function logout() {
   deleteStoredUser();
   logoutDialog.value = false;
   navigateTo({
@@ -80,17 +80,21 @@ async function logout () {
 
 const editedIndex = ref(-1)
 const currentExam = ref({
-    id : '',
-    name: '',
+  id: '',
+  name: '',
 })
 
-function navigateTo (path) {
+function navigateTo(path) {
   router.push(path);
 }
 
 async function getExams() {
   try {
-    const response = await ExamService.getAllExams();
+    const response = await ExamService.getAllExams(
+      {
+        courseId: route.params.subject
+      }
+    );
     exams.value = response.data;
     console.log(exams.value);
   } catch (error) {
@@ -103,9 +107,11 @@ async function getExams() {
 function goTo(item) {
   editedIndex.value = exams.value.indexOf(item)
   currentExam.value = Object.assign({}, item)
-  navigateTo({name: 'student-exam-marks', params: { 
-    id: currentExam.value.id,
-  }})
+  navigateTo({
+    name: 'student-exam-marks', params: {
+      id: currentExam.value.id,
+    }
+  })
 }
 
 function deleteExam(item) {
@@ -114,7 +120,7 @@ function deleteExam(item) {
   dialog.value = true;
 }
 
-async function destroy () {
+async function destroy() {
   try {
     const response = await ExamService.delete(currentExam.value.id);
     exams.value.splice(editedIndex.value, 1)
@@ -145,14 +151,8 @@ onMounted(() => {
   <v-locale-provider rtl>
     <v-layout class="mt-16">
       <v-locale-provider rtl>
-        <v-app-bar
-          color="primary"
-          prominent
-          height="100"
-        >
-          <v-app-bar-nav-icon 
-            @click.stop="drawer = !drawer"
-          />
+        <v-app-bar color="primary" prominent height="100">
+          <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
           <v-toolbar-title>
             <span class="title-text" @click="navigateTo({ name: 'LandingPageView' })">
               Exam Platform
@@ -162,22 +162,12 @@ onMounted(() => {
         </v-app-bar>
       </v-locale-provider>
 
-      <v-navigation-drawer
-        v-model="drawer"
-        location="right"
-      >
+      <v-navigation-drawer v-model="drawer" location="right">
         <v-list density="compact">
-          <v-list-item
-            v-for="(item, i) in items"
-            :key="i"
-            :value="item.value"
-            style="text-align: right;"
-            @click="handleRequest(item.title, item.value)"
-          >
+          <v-list-item v-for="(item, i) in items" :key="i" :value="item.value" style="text-align: right;"
+            @click="handleRequest(item.title, item.value)">
             <div v-if="item.title == 'تسجيل الخروج'">
-              <v-list-item-title 
-                style="color: red;"
-                >
+              <v-list-item-title style="color: red;">
                 {{ item.title }}
               </v-list-item-title>
             </div>
@@ -193,30 +183,19 @@ onMounted(() => {
     </div> -->
     <v-card class="mx-auto mt-16" max-width="1000">
 
-      <v-data-table
-        :headers="headers"
-        :items="theExams()"
-      >
+      <v-data-table :headers="headers" :items="theExams()">
         <template v-slot:top>
-          <v-toolbar
-            flat
-          >
+          <v-toolbar flat>
             <v-toolbar-title>كل الإختبارات</v-toolbar-title>
-            <v-divider
-              class="mx-4"
-              inset
-              vertical
-            ></v-divider>
+            <v-divider class="mx-4" inset vertical />
             <v-spacer></v-spacer>
+            <v-btn class="mb-2 primary" color="white" @click="router.go(-1)">
+              العودة
+            </v-btn>
           </v-toolbar>
         </template>
         <template v-slot:item.actions="{ item }">
-          <v-icon
-            class="mr-5"
-            color="red"
-            size="small"
-            @click="goTo(item)"
-          >
+          <v-icon class="mr-5" color="red" size="small" @click="goTo(item)">
             mdi-marker
           </v-icon>
         </template>
@@ -224,9 +203,7 @@ onMounted(() => {
     </v-card>
 
     <v-dialog v-model="dialog" width="auto">
-      <v-card max-width="400" prepend-icon="mdi-alert-circle"
-        text="هل تريد حذف هذا الإختبار؟"
-        title="تأكيد">
+      <v-card max-width="400" prepend-icon="mdi-alert-circle" text="هل تريد حذف هذا الإختبار؟" title="تأكيد">
         <template v-slot:actions>
           <v-btn color="red" @click="destroy()">نعم</v-btn>
           <v-btn color="primary" @click="dialog = false">العودة</v-btn>
@@ -234,23 +211,13 @@ onMounted(() => {
       </v-card>
     </v-dialog>
 
-    <v-snackbar
-      v-model="snackbar"
-      :timeout="2000"
-      color="success"
-      variant="outlined"
-    >
-    <template v-slot:actions />
+    <v-snackbar v-model="snackbar" :timeout="2000" color="success" variant="outlined">
+      <template v-slot:actions />
       تم حذف المادة بنجاح
     </v-snackbar>
 
     <v-dialog v-model="logoutDialog" max-width="500px">
-      <v-card 
-        prepend-icon="mdi-alert-circle"
-        text="هل تريد تسجيل الخروج؟"
-        title="تأكيد"
-        color="orange"
-      >
+      <v-card prepend-icon="mdi-alert-circle" text="هل تريد تسجيل الخروج؟" title="تأكيد" color="orange">
         <v-card>
           <v-spacer></v-spacer>
           <v-btn color="red-darken-1" class="mx-2 my-4" @click="logout()">نعم</v-btn>
@@ -260,25 +227,19 @@ onMounted(() => {
       </v-card>
     </v-dialog>
 
-    <v-snackbar
-      :timeout="2000"
-      color="red"
-      elevation="24"
-      v-model="deleteSnackbar"
-    >
+    <v-snackbar :timeout="2000" color="red" elevation="24" v-model="deleteSnackbar">
       تم حذف الإختبار بنجاح
     </v-snackbar>
-    
-    </v-locale-provider>
+
+  </v-locale-provider>
 </template>
 
 <style scoped>
-
 .list-item {
   transition: 0.5s;
 }
 
-.list-item:hover{
+.list-item:hover {
   background-color: bisque;
 }
 
@@ -287,7 +248,7 @@ onMounted(() => {
 }
 
 .primary {
-  background-color: RGB(24,103,192);
+  background-color: RGB(24, 103, 192);
 }
 
 .light-red {
@@ -302,5 +263,4 @@ onMounted(() => {
   cursor: pointer;
   font-size: 40px;
 }
-
 </style>
