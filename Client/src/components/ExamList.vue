@@ -133,7 +133,7 @@ async function destroy () {
 }
 
 function theExams() {
-  if (Object.keys(exams.value).length > 0) {
+  if (exams.value != null) {
     return exams.value;
   }
   return [];
