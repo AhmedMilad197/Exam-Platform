@@ -85,7 +85,7 @@ async function resetPassword () {
             @click.stop="drawer = !drawer"
           />
           <v-toolbar-title>
-            <span class="title-text" @click="navigateTo({ name: 'LandingPageView' })">
+            <span class="title-text">
               Exam Platform
             </span>
           </v-toolbar-title>
@@ -162,7 +162,7 @@ async function resetPassword () {
   text-align: center;
 }
 .sign-in {
-  cursor: pointer;
+    cursor: pointer;
   text-decoration: underline;
   color: blue;
 }
@@ -172,7 +172,7 @@ async function resetPassword () {
 }
 
 .title-text {
-  cursor: pointer;
+  pointer-events: none;
   font-size: 40px;
 }
 </style>

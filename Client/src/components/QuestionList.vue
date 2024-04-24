@@ -179,7 +179,7 @@ function deleteItemConfirm() {
             @click.stop="drawer = !drawer"
           />
           <v-toolbar-title>
-            <span class="title-text" @click="navigateTo({ name: 'LandingPageView' })">
+            <span class="title-text">
               Exam Platform
             </span>
           </v-toolbar-title>
@@ -387,7 +387,7 @@ function deleteItemConfirm() {
 }
 
 .title-text {
-  cursor: pointer;
+  pointer-events: none;
   font-size: 40px;
 }
 
