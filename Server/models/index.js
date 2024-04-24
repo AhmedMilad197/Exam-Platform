@@ -63,7 +63,6 @@ Exam.belongsToMany(Question, {through: 'ExamQuestions'});
 
 Teacher.hasMany(Exam, {
     foreignKey: 'teacherid',
-    as: 'exams'
 });
 
 Exam.belongsTo(Teacher, {

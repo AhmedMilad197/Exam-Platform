@@ -4,7 +4,6 @@ import {ref, onMounted} from 'vue'
 import { useUserStore } from "@/stores/user";
 import TeacherService from "@/services/TeacherService"
 import ExamService from '@/services/ExamService';
-import imgUrl from '../assets/teachersubjects.jpg'
 
 const user = useUserStore(); 
 const router = useRouter()
@@ -14,43 +13,43 @@ const dialog = ref(false);
 const snackbar = ref(false);
 const deleteSnackbar = ref(false);
 const headers = ref([
-  {title: 'exam', key: 'name', align: 'start'},
-  {title: 'id', key: 'id'},
-  {title: 'actions', key: 'actions'}
+  {title: 'إسم الإختبار', key: 'name', align: 'start'},
+  {title: 'إسم الاستاذ', key: 'Teacher.name'},
+  {title: 'درجات الطلبة', key: 'actions'}
 ]);
 const items = ref([
   {
-    title: 'موادي',
+    title: 'المدرسين',
     value: {
-      name: 'home'
+      name: 'teachers'
     }
   },
   {
-    title: 'أسئلتي',
+    title: 'الطلبة',
     value: {
-      name: 'teacher-questions',
-      params: { subject: route.params.subject }
+      name: 'students'
     }
   },
   {
-    title: 'إختباراتي',
+    title: 'الأسئلة',
     value: {
-      name: 'exam-list',
-      params: { subject: route.params.subject }
+      name: 'questions',
+      params: {
+        subject: 'all'
+      }
     }
   },
   {
-    title: 'طلابي',
+    title: 'المواد',
     value: {
-      name: 'teacher-student',
-      params: { subject: route.params.subject }
+      name: 'subjects'
     }
   },
   {
     title: 'تسجيل الخروج',
     color: 'red',
     value: {
-      name: 'student-login'
+      name: 'logout'
     }
   }
 ]);
@@ -91,11 +90,9 @@ function navigateTo (path) {
 
 async function getExams() {
   try {
-    const response = await TeacherService.getExams({
-      teacherId: user.user.id,
-      courseId: route.params.subject
-    });
-    exams.value = response.data.exams;
+    const response = await ExamService.getAllExams();
+    exams.value = response.data;
+    console.log(exams.value);
   } catch (error) {
     return {
       message: error.message
@@ -106,9 +103,8 @@ async function getExams() {
 function goTo(item) {
   editedIndex.value = exams.value.indexOf(item)
   currentExam.value = Object.assign({}, item)
-  navigateTo({name: 'view-exam', params: { 
+  navigateTo({name: 'student-exam-marks', params: { 
     id: currentExam.value.id,
-    subject: route.params.subject
   }})
 }
 
@@ -192,10 +188,10 @@ onMounted(() => {
         </v-list>
       </v-navigation-drawer>
     </v-layout>
-    <div class="mx-auto">
+    <!-- <div class="mx-auto">
       <img :src="imgUrl" alt="Logo" style="width: 1400px; height: 450px;">
-    </div>
-    <v-card class="mx-auto" max-width="1000">
+    </div> -->
+    <v-card class="mx-auto mt-16" max-width="1000">
 
       <v-data-table
         :headers="headers"
@@ -205,71 +201,23 @@ onMounted(() => {
           <v-toolbar
             flat
           >
-            <v-toolbar-title>اختباراتك</v-toolbar-title>
+            <v-toolbar-title>كل الإختبارات</v-toolbar-title>
             <v-divider
               class="mx-4"
               inset
               vertical
             ></v-divider>
             <v-spacer></v-spacer>
-            <v-dialog
-              v-model="dialog"
-              max-width="600px"
-            >
-              <template v-slot:activator="{ props }">
-                <v-btn
-                  class="mb-2 purple mr-2"
-                  color  = "white"
-                  v-bind="props"
-                  @click="navigateTo({ name: 'teacher-questions', params: { subject: route.params.subject }})"
-                >
-                  اسئلتي
-                </v-btn>
-                <v-btn
-                  class="mb-2 success-green mr-2"
-                  color  = "white"
-                  v-bind="props"
-                  @click="navigateTo({name: 'exam-create', params: { subject: route.params.subject }})"
-                >
-                  اضافة اختبار
-                </v-btn>
-  
-                <v-btn
-                  class="mb-2 light-red mr-2"
-                  color  = "white"
-                  v-bind="props"
-                  @click="navigateTo({ name: 'teacher-student', params: { subject: route.params.subject }})"
-                >
-                  طلابي
-                </v-btn>
-  
-                <v-btn
-                  class="mb-2 primary mr-2"
-                  color  = "white"
-                  @click="router.go(-1)"
-                >
-                  العودة
-                </v-btn>
-                
-              </template>
-              
-            </v-dialog>
           </v-toolbar>
         </template>
         <template v-slot:item.actions="{ item }">
           <v-icon
-            class="me-2"
+            class="mr-5"
+            color="red"
             size="small"
             @click="goTo(item)"
           >
-            mdi-eye-arrow-right
-          </v-icon>
-          <v-icon
-            size="small"
-            @click="deleteExam(item)"
-            color="red"
-          >
-            mdi-delete
+            mdi-marker
           </v-icon>
         </template>
       </v-data-table>

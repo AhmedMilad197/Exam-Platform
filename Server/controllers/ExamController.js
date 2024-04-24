@@ -36,8 +36,11 @@ const addExam = async (req, res) => {
 
 // 2. Get all Exam
 const getAllExam = async (req, res) => {
+    const Teachers = db.teachers;
     try {
-        let exams = await Exam.findAll({});
+        let exams = await Exam.findAll({
+            include: Teachers
+        });
         res.status(200).send(exams);
     } catch (error) {
         console.error(error);
