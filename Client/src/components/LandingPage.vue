@@ -238,8 +238,8 @@ async function logout () {
   font-size: 40px;
 }
 
-.tab >>> .mdi-menu {
+/* .tab >>> .mdi-menu {
   --v-icon-size-multiplier: 1.5;
-}
+} */
 
 </style>
