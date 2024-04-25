@@ -64,6 +64,7 @@ async function login () {
     user.role = response.data.role;
     navigateTo({ name: 'student-subject-list' });
   } catch (err) {
+    error.value = 'لا يوجد طالب بهذه البيانات';
     return err.message;
   }
 }
@@ -142,7 +143,11 @@ async function login () {
           class="ml-2 mr-2"
           v-model="password"
         ></v-text-field>
-        <div class="error ml-2" />
+        <div class="d-flex">
+          <div class="error mx-auto">
+            {{ error }}
+          </div>
+        </div>
         <div class="d-flex">
           <v-btn type="submit" class="mx-auto my-2" @click="login()">Login</v-btn>
         </div>

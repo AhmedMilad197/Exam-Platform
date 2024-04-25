@@ -184,6 +184,7 @@ async function destroy(studetnId) {
   try {
     const response = await StudentService.delete(studetnId);
     deleteSuccessfully.value = true;
+    students.value.splice(editedIndex.value, 1)
   } catch (error) {
     snackbar.value = true;
     return {
@@ -224,7 +225,6 @@ function closeDelete() {
 }
 
 function deleteItemConfirm() {
-  students.value.splice(editedIndex.value, 1)
   destroy(editedItem.value.id);
   closeDelete()
 }

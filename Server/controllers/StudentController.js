@@ -100,6 +100,10 @@ const login = async (req, res) => {
                   });
               });
           }
+      } else {
+        res.status(404).json({
+          message: 'The are no students with this credintials'
+        });
       }
     } catch (error) {
       res.status(500).json({ error: 'Internal server error' });
