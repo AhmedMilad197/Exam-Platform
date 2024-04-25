@@ -12,7 +12,9 @@ const route = useRoute();
 const exams = ref([]);
 const dialog = ref(false);
 const snackbar = ref(false);
+const error = ref(null);
 const deleteSnackbar = ref(false);
+const deleteUnSuccessfully = ref(false);
 const headers = ref([
   {title: 'exam', key: 'name', align: 'start'},
   {title: 'id', key: 'id'},
@@ -125,9 +127,11 @@ async function destroy () {
     dialog.value = false;
     snackbar.value = true;
     deleteSnackbar.value = true;
-  } catch (error) {
+  } catch (err) {
+    dialog.value = false;
+    deleteUnSuccessfully.value = true;
     return {
-      message: error.message
+      message: err.message
     }
   }
 }
@@ -320,6 +324,11 @@ onMounted(() => {
     >
       تم حذف الإختبار بنجاح
     </v-snackbar>
+
+    <v-snackbar v-model="deleteUnSuccessfully" :timeout="2000" color="primary">
+      <template v-slot:actions />
+      لا يمكن حذف هذه المادة
+    </v-snackbar>
     
     </v-locale-provider>
 </template>
@@ -353,6 +362,10 @@ onMounted(() => {
 .title-text {
   pointer-events: none;
   font-size: 40px;
+}
+
+.error {
+  color: red;
 }
 
 </style>
