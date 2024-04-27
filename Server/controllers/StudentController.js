@@ -12,6 +12,9 @@ const addStudent = async (req, res) => {
     try {
         let info = {
             name: req.body.name,
+            father_name: req.body.father_name,
+            grandfather_name: req.body.grandfather_name,
+            last_name: req.body.last_name,
             username: req.body.username,
             password: req.body.password,
             phone: req.body.phone,

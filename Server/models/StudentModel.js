@@ -8,6 +8,18 @@ module.exports=(sequelize,DataTypes)=>{
             type:DataTypes.STRING,
             allowNull:false
         },
+        father_name : {
+            type:DataTypes.STRING,
+            allowNull:true
+        },
+        grandfather_name : {
+            type:DataTypes.STRING,
+            allowNull:true
+        },
+        last_name : {
+            type:DataTypes.STRING,
+            allowNull:true
+        },
         username:{
             type:DataTypes.STRING
         },

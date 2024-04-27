@@ -21,7 +21,10 @@ const headers = ref([
     sortable: false,
     key: 'name',
   },
-  { title: 'id', key: 'id' },
+  { title: 'إسم الأب', key: 'father_name' },
+  { title: 'إسم الجد', key: 'grandfather_name' },
+  { title: 'اللقب', key: 'last_name' },
+  { title: 'رقم القيد', key: 'id' },
   { title: 'Actions', key: 'actions', sortable: false },
 ])
 const dialog = ref(false);
@@ -144,6 +147,9 @@ async function addStudent(student) {
     error.value = null;
     const response = await StudentService.create({
       name: student.name,
+      father_name: student.father_name,
+      grandfather_name: student.grandfather_name,
+      last_name: student.last_name,
       username: student.username,
       phone: student.phone,
       password: student.password,
@@ -159,6 +165,7 @@ async function addStudent(student) {
 
 async function update(student) {
   try {
+    console.log(student);
     if (!student.name || !student.username || !student.phone || !student.password || !student.address) {
       error.value = 'يجب تعبئت جميع الحقول'
       return;
@@ -167,6 +174,9 @@ async function update(student) {
     const response = await StudentService.update({
       id: student.id,
       name: student.name,
+      father_name: student.father_name,
+      grandfather_name: student.grandfather_name,
+      last_name: student.last_name,
       username: student.username,
       phone: student.phone,
       password: student.password,
@@ -216,8 +226,8 @@ async function edit() {
   if (valid) {
     update(editedItem.value);
     Object.assign(students.value[editedIndex.value], editedItem.value)
+    close()
   }
-  close()
 }
 
 function closeDelete() {
@@ -252,6 +262,16 @@ function phoneRule(value) {
     if (prefixs.includes(prefix)) return true;
   }
   return 'بيانات رقم الهاتف غير صحيحة';
+}
+
+function nameRule(value) {
+  if (!value) {
+    return 'يجب أدخال بيانات هذا الحقل';
+  }
+  if (!/^[\p{L}\s]*$/u.test(value)) {
+    return 'يجب على هذا الحقل أن لا يحتوي على أرقام';
+  }
+  return true;
 }
 
 </script>
@@ -315,7 +335,19 @@ function phoneRule(value) {
                     <v-row>
                       <v-col cols="12" md="12" sm="12">
                         <v-text-field v-model="currentItem.name" label="إسم الطالب"
-                          :rules="[v => !!v || 'يجب إدخال إسم الطالب']"></v-text-field>
+                          :rules="[v => nameRule(v)]"></v-text-field>
+                      </v-col>
+                      <v-col cols="12" md="12" sm="12">
+                        <v-text-field v-model="currentItem.father_name" label="إسم أب الطالب"
+                          :rules="[v => nameRule(v)]"></v-text-field>
+                      </v-col>
+                      <v-col cols="12" md="12" sm="12">
+                        <v-text-field v-model="currentItem.grandfather_name" label="إسم جد الطالب"
+                          :rules="[v => nameRule(v)]"></v-text-field>
+                      </v-col>
+                      <v-col cols="12" md="12" sm="12">
+                        <v-text-field v-model="currentItem.last_name" label="لقب الطالب"
+                          :rules="[v => nameRule(v)]"></v-text-field>
                       </v-col>
                       <v-col cols="12" md="12" sm="12">
                         <v-text-field v-model="currentItem.username" label="إسم المستخدم"
@@ -365,7 +397,19 @@ function phoneRule(value) {
                     <v-row>
                       <v-col cols="12" md="12" sm="12">
                         <v-text-field v-model="editedItem.name" label="إسم الطالب"
-                          :rules="[v => !!v || 'يجب إدخال إسم الطالب']"></v-text-field>
+                          :rules="[v => nameRule(v)]"></v-text-field>
+                      </v-col>
+                      <v-col cols="12" md="12" sm="12">
+                        <v-text-field v-model="editedItem.father_name" label="إسم أب الطالب"
+                          :rules="[v => nameRule(v)]"></v-text-field>
+                      </v-col>
+                      <v-col cols="12" md="12" sm="12">
+                        <v-text-field v-model="editedItem.grandfather_name" label="إسم جد الطالب"
+                          :rules="[v => nameRule(v)]"></v-text-field>
+                      </v-col>
+                      <v-col cols="12" md="12" sm="12">
+                        <v-text-field v-model="editedItem.last_name" label="لقب الطالب"
+                          :rules="[v => nameRule(v)]"></v-text-field>
                       </v-col>
                       <v-col cols="12" md="12" sm="12">
                         <v-text-field v-model="editedItem.username" label="إسم المستخدم"

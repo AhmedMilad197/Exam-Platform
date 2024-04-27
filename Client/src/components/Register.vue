@@ -12,6 +12,7 @@ const email = ref('');
 const specialist = ref('');
 const password = ref('');
 const error = ref(null);
+const teacherForm = ref();
 const items = ref([
   {
     title: 'إنشاء حساب',
@@ -57,16 +58,19 @@ async function logout () {
 
 async function register () {
   try {
-    const response = await AuthenticationService.register({
-      name: name.value,
-      username: username.value,
-      email: email.value,
-      specialist: specialist.value,
-      password: password.value,
-    })
-    user.user = response.data.teacher;
-    user.token = response.data.token;
-    navigateTo({name: 'home'})
+    const { valid, errors } = await teacherForm.value?.validate();
+    if (valid) {
+      const response = await AuthenticationService.register({
+        name: name.value,
+        username: username.value,
+        email: email.value,
+        specialist: specialist.value,
+        password: password.value,
+      })
+      user.user = response.data.teacher;
+      user.token = response.data.token;
+      navigateTo({name: 'home'})
+    }
   } catch (err) {
     console.log(err.message);
   }
@@ -75,6 +79,16 @@ async function register () {
 function emailRule (value) {
   if (/^[a-z.-]+@[a-z.-]+\.[a-z]+$/i.test(value)) return true
   return 'بيانات البريد الإلكتروني غير صحيحة'
+}
+
+function nameRule(value) {
+  if (!value) {
+    return 'يجب أدخال بيانات هذا الحقل';
+  }
+  if (!/^[\p{L}\s]*$/u.test(value)) {
+    return 'يجب على هذا الحقل أن لا يحتوي على أرقام';
+  }
+  return true;
 }
 
 </script>
@@ -134,13 +148,13 @@ function emailRule (value) {
           إنشاء حساب
         </v-toolbar-title>
       </v-toolbar>
-      <v-form @submit.prevent class="mt-4">
+      <v-form @submit.prevent class="mt-4" ref="teacherForm">
         <v-text-field
           label="الإسم بالكامل"
           class="ml-2 mr-2 mb-2"
           v-model="name"
           hint="أدخل الإسم بالكامل"
-          :rules="[v => !!v || 'يجب إدخال الإسم بالكامل']"
+          :rules="[v => nameRule(v)]"
           persistent-hint
         ></v-text-field>
         <v-text-field
