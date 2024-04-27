@@ -172,6 +172,15 @@ onMounted(() => {
                 إسم الطالب
               </th>
               <th class="text-right">
+                إسم الأب
+              </th>
+              <th class="text-right">
+                إسم الجد
+              </th>
+              <th class="text-right">
+                اللقب
+              </th>
+              <th class="text-right">
                 إسم المستخدم
               </th>
               <th class="text-right">
@@ -185,6 +194,9 @@ onMounted(() => {
           <tbody>
             <tr v-for="student in students" :key="student.id" style="height: 50px;">
               <td>{{ student.name }}</td>
+              <td>{{ student.father_name }}</td>
+              <td>{{ student.grandfather_name }}</td>
+              <td>{{ student.last_name }}</td>
               <td>{{ student.username }}</td>
               <td>{{ student.id }}</td>
               <td>

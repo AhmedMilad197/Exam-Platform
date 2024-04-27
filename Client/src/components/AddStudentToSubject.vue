@@ -198,14 +198,20 @@ onMounted(() => {
                 إسم الطالب
               </th>
               <th class="text-right">
+                إسم الأب
+              </th>
+              <th class="text-right">
+                إسم الجد
+              </th>
+              <th class="text-right">
+                اللقب
+              </th>
+              <th class="text-right">
                 إسم المستخدم
               </th>
               <th class="text-right">
                 id
               </th>
-              <!-- <th class="text-right">
-                Actions
-              </th> -->
             </tr>
           </thead>
           <tbody>
@@ -216,6 +222,15 @@ onMounted(() => {
             >
               <td>
                 <v-checkbox class="custom-checkbox" :label=student.name @click="updateSelectedItems($event, student.id)" />
+              </td>
+              <td>
+                {{ student.father_name }}
+              </td>
+              <td>
+                {{ student.grandfather_name }}
+              </td>
+              <td>
+                {{ student.last_name }}
               </td>
               <td>
                 {{ student.username }}
