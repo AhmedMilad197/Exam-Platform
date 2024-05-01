@@ -10,6 +10,13 @@ const router = useRouter();
 const route = useRoute();
 const teachers = ref();
 const teacherDetailsDialog = ref(false);
+const search = ref();
+const headers = ref([
+  { title: 'إسم الأستاذ', key: 'name' },
+  { title: 'رقم الأستاذ', key: 'id' },
+  { title: 'التخصص', key: 'specialist', align: 'start' },
+  { title: 'تفاصيل', key: 'details' },
+]);
 const currentTeacher = ref({
   id: 0,
   name: '',
@@ -82,11 +89,11 @@ const items = ref([
   }
 ]);
 
-function close () {
+function close() {
   teacherDetailsDialog.value = false;
 }
 
-function navigateTo (route) {
+function navigateTo(route) {
   router.push(route);
 }
 
@@ -178,100 +185,72 @@ onMounted(() => {
     </v-layout>
 
     <div>
-      <v-card
-        class="mx-auto mt-16"
-        max-width="1000"
-        max-height="100vh"
-        >
+      <v-card class="mx-auto mt-16" max-width="1000" max-height="100vh">
         <v-toolbar>
           <v-toolbar-title>قائمة الأساتذة</v-toolbar-title>
           <div class="d-flex">
-            <v-spacer/>
+            <v-spacer />
             <v-btn color="white" class="my-4 success-green" @click="addTeacher()">إضافة أستاذ</v-btn>
             <v-btn color="white" class="my-4 mx-4 primary" @click="router.go(-1)">العودة</v-btn>
           </div>
         </v-toolbar>
-        <v-table
-          fixed-header
-          height="100%"
-          density="comfortable"
-        >
-          <thead>
-            <tr>
-              <th class="text-right">
-                الأستاذ
-              </th>
-              <th class="text-right">
-                ID
-              </th>
-              <th class="text-center">
-                Actions
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              v-for="teacher in teachers"
-              :key="teacher.id"
-            >
-              <td>
-                <v-checkbox class="custom-checkbox custom-height custom-opacity" :label=teacher.name @click="updateSelectedItems($event, teacher.id)" />
-              </td>
-              <td>{{ teacher.id }}</td>
-              <td>
-                <div class="d-flex">
-                  <div class="mx-auto">
-                    <v-icon
-                      class="me-2"
-                      size="small"
-                      color="blue"
-                      @click="teacherDetails(teacher)"
-                    >
-                      mdi-eye
-                    </v-icon>
-                    <!-- <v-btn color="yellow" class="mr-4" @click="navigateTo({name: 'teacher', params: {id: teacher.id}})">VIEW</v-btn> -->
-                  </div>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </v-table>
+
+        <template v-slot:text>
+          <v-text-field v-model="search" label="إبحث عن الاساتذة" prepend-inner-icon="mdi-magnify" variant="outlined" hide-details
+            single-line></v-text-field>
+        </template>
+
+        <v-data-table :headers="headers" :items="teachers" :search="search">
+          <template v-slot:item.name="{ item }">
+            <v-checkbox class="custom-checkbox" :label=item.name @click="updateSelectedItems($event, item.id)" />
+          </template>
+          <template v-slot:item.details="{ item }">
+          <v-icon
+            class="mr-3"
+            size="small"
+            @click="teacherDetails(item)"
+            color="primary"
+          >
+            mdi-eye-arrow-right
+          </v-icon>
+        </template>
+        </v-data-table>
       </v-card>
 
       <v-dialog v-model="teacherDetailsDialog" max-width="600px">
-            <v-card>
-              <v-card-title>
-                <span class="form-title-text"> بيانات الأستاذ </span>
-              </v-card-title>
+        <v-card>
+          <v-card-title>
+            <span class="form-title-text"> بيانات الأستاذ </span>
+          </v-card-title>
 
-              <v-card-text>
-                <v-container>
-                  <v-row>
-                    <v-col cols="12" md="12" sm="12">
-                      <v-text-field v-model="currentTeacher.name" class="no-select" label="إسم المدرس"></v-text-field>
-                    </v-col>
-                    <v-col cols="12" md="12" sm="12">
-                      <v-text-field v-model="currentTeacher.username" class="no-select" label="username"></v-text-field>
-                    </v-col>
-                    <v-col cols="12" md="12" sm="12">
-                      <v-text-field v-model="currentTeacher.password" class="no-select" label="الرمز السري"></v-text-field>
-                    </v-col>
-                    <v-col cols="12" md="12" sm="12">
-                      <v-text-field v-model="currentTeacher.lastlogin" class="no-select" label="اخر ضهور"></v-text-field>
-                    </v-col>
-                  </v-row>
-                </v-container>
-              </v-card-text>
+          <v-card-text>
+            <v-container>
+              <v-row>
+                <v-col cols="12" md="12" sm="12">
+                  <v-text-field v-model="currentTeacher.name" class="no-select" label="إسم المدرس"></v-text-field>
+                </v-col>
+                <v-col cols="12" md="12" sm="12">
+                  <v-text-field v-model="currentTeacher.username" class="no-select" label="username"></v-text-field>
+                </v-col>
+                <v-col cols="12" md="12" sm="12">
+                  <v-text-field v-model="currentTeacher.password" class="no-select" label="الرمز السري"></v-text-field>
+                </v-col>
+                <v-col cols="12" md="12" sm="12">
+                  <v-text-field v-model="currentTeacher.lastlogin" class="no-select" label="اخر ضهور"></v-text-field>
+                </v-col>
+              </v-row>
+            </v-container>
+          </v-card-text>
 
-              <v-card>
-                <div class="d-flex">
-                  <v-btn color="primary" @click="close" class="mx-auto my-4">
-                    العودة
-                  </v-btn>
-                </div>
-              </v-card>
-            </v-card>
-          </v-dialog>
+          <v-card>
+            <div class="d-flex">
+              <v-btn color="primary" @click="close" class="mx-auto my-4">
+                العودة
+              </v-btn>
+            </div>
+          </v-card>
+        </v-card>
+      </v-dialog>
 
     </div>
     <v-dialog v-model="logoutDialog" max-width="500px">
@@ -294,7 +273,7 @@ onMounted(() => {
 
 <style scoped>
 .primary {
-  background-color: RGB(24,103,192);
+  background-color: RGB(24, 103, 192);
 }
 
 .success-green {
@@ -325,5 +304,4 @@ onMounted(() => {
 .form-title-text {
   font-size: 20px;
 }
-
 </style>

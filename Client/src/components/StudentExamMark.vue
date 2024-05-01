@@ -2,11 +2,20 @@
 import { ref, onMounted, nextTick } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import ExamStudentService from '@/services/ExamStudentService'
+import { useUserStore } from "@/stores/user";
 
+const user = useUserStore();
 const router = useRouter();
 const route = useRoute();
 const studentExams = ref([]);
 const addSuccessfully = ref(false);
+const search = ref();
+const headers = ref([
+  { title: 'رقم القيد', key: 'student.id', align: 'start' },
+  { title: 'السم الطالب', key: 'student.name' },
+  { title: 'الدرجة', key: 'score' },
+]);
+
 const items = ref([
   {
     title: 'موادي',
@@ -131,44 +140,22 @@ onMounted(() => {
         </v-list>
       </v-navigation-drawer>
     </v-layout>
-    <v-card class="mx-auto mt-16" max-width="1000">
-      <v-data-table fixed-header height="100%">
+    <v-card class="mx-auto mt-16" max-width="1000" label="البحث">
+      <template v-slot:text>
+        <v-text-field v-model="search" label="إبحث عن درجة الطالب" hide-details />
+      </template>
+      <v-data-table :headers="headers" :items="studentExams" :search="search">
         <template v-slot:top>
           <v-toolbar flat>
             <v-toolbar-title>درجات الطلبة</v-toolbar-title>
+            <v-divider class="mx-4" inset vertical />
+            <v-spacer></v-spacer>
             <v-btn color="white" class="success-green" @click="storeToExcel()">طباعة إلى excel</v-btn>
-            <v-btn color="white" class="mx-2 primary" @click="router.go(-1)">
+            <v-btn class="primary mx-2" color="white" @click="router.go(-1)">
               العودة
             </v-btn>
           </v-toolbar>
         </template>
-
-        <thead>
-          <tr>
-            <th class="text-right">
-              رقم
-            </th>
-            <th class="text-right">
-              إسم الطالب
-            </th>
-            <th class="text-right">
-              الدرجة
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(studentExam, index) in studentExams" :key="index" style="height: 50px;">
-            <td>
-              {{ index + 1 }}
-            </td>
-            <td>
-              {{ studentExam.student.name }}
-            </td>
-            <td>
-              {{ studentExam.score }}
-            </td>
-          </tr>
-        </tbody>
       </v-data-table>
     </v-card>
     <v-dialog v-model="logoutDialog" max-width="500px">

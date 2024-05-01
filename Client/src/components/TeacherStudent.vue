@@ -11,7 +11,16 @@ const route = useRoute();
 const students = ref();
 const dialog = ref(false);
 const currentStudent = ref();
-const error = ref(null);
+const search = ref();
+const headers = ref([
+  { title: 'رقم القيد', key: 'id', align: 'start' },
+  { title: 'إسم الطالب', key: 'name' },
+  { title: 'إسم الأب', key: 'father_name' },
+  { title: 'إسم الجد', key: 'grandfather_name' },
+  { title: 'اللقب', key: 'last_name' },
+  { title: 'إسم المستخدم', key: 'username' },
+  { title: 'Actions', key: 'actions' },
+]);
 
 const items = ref([
   {
@@ -126,7 +135,7 @@ onMounted(() => {
     <v-locale-provider rtl>
       <v-card class="mx-auto mt-10" max-height="100vh" max-width="1000">
 
-        <v-layout class="mt-16">
+        <v-layout>
           <v-locale-provider rtl>
             <v-app-bar color="primary" prominent height="100">
               <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
@@ -155,62 +164,25 @@ onMounted(() => {
             </v-list>
           </v-navigation-drawer>
         </v-layout>
-
+        <template v-slot:text>
+          <v-text-field class="mt-16" v-model="search" label="إبحث عن الطلبة" hide-details />
+        </template>
         <v-toolbar>
           <v-toolbar-title>طلابي</v-toolbar-title>
-          <div class="d-flex mx-4 my-4">
+          <div class="d-flex mx-4 ">
             <v-btn color="white" class="pink-darken"
               @click="navigateTo({ name: 'teacher-add-student', params: { subject: route.params.subject } })">إضافة
               طلبة</v-btn>
             <v-btn color="white" class="mx-4 primary" @click="goBack()">العودة</v-btn>
           </div>
         </v-toolbar>
-        <v-table fixed-header height="100%" density="comfortable">
-          <thead>
-            <tr>
-              <th class="text-right">
-                إسم الطالب
-              </th>
-              <th class="text-right">
-                إسم الأب
-              </th>
-              <th class="text-right">
-                إسم الجد
-              </th>
-              <th class="text-right">
-                اللقب
-              </th>
-              <th class="text-right">
-                إسم المستخدم
-              </th>
-              <th class="text-right">
-                رقم
-              </th>
-              <th class="text-center">
-                Actions
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="student in students" :key="student.id" style="height: 50px;">
-              <td>{{ student.name }}</td>
-              <td>{{ student.father_name }}</td>
-              <td>{{ student.grandfather_name }}</td>
-              <td>{{ student.last_name }}</td>
-              <td>{{ student.username }}</td>
-              <td>{{ student.id }}</td>
-              <td>
-                <div class="d-flex">
-                  <div class="mx-auto">
-                    <v-icon size="small" color="red" @click="removeStudentConfrimation(student)">
-                      mdi-delete
-                    </v-icon>
-                  </div>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </v-table>
+        <v-data-table :headers="headers" :items="students" :search="search">
+          <template v-slot:item.actions="{ item }">
+            <v-icon size="small" color="red" @click="removeStudentConfrimation(item)">
+              mdi-delete
+            </v-icon>
+          </template>
+        </v-data-table>
       </v-card>
       <v-dialog v-model="dialog" width="auto">
         <v-card max-width="400" prepend-icon="mdi-alert-circle" text="هل تريد حذف هذا الطالب من المادة الحالية؟"
@@ -223,21 +195,16 @@ onMounted(() => {
       </v-dialog>
 
       <v-dialog v-model="logoutDialog" max-width="500px">
-      <v-card 
-        prepend-icon="mdi-alert-circle"
-        text="هل تريد تسجيل الخروج؟"
-        title="تأكيد"
-        color="orange"
-      >
-        <v-card>
-          <v-spacer></v-spacer>
-          <v-btn color="red-darken-1" class="mx-2 my-4" @click="logout()">نعم</v-btn>
-          <v-btn color="blue-darken-1" @click="logoutDialog = false">إلغاء</v-btn>
-          <v-spacer></v-spacer>
+        <v-card prepend-icon="mdi-alert-circle" text="هل تريد تسجيل الخروج؟" title="تأكيد" color="orange">
+          <v-card>
+            <v-spacer></v-spacer>
+            <v-btn color="red-darken-1" class="mx-2 my-4" @click="logout()">نعم</v-btn>
+            <v-btn color="blue-darken-1" @click="logoutDialog = false">إلغاء</v-btn>
+            <v-spacer></v-spacer>
+          </v-card>
         </v-card>
-      </v-card>
-    </v-dialog>
-      
+      </v-dialog>
+
     </v-locale-provider>
   </div>
 </template>

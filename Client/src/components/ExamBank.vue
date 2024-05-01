@@ -12,6 +12,7 @@ const exams = ref([]);
 const dialog = ref(false);
 const snackbar = ref(false);
 const deleteSnackbar = ref(false);
+const search = ref();
 const headers = ref([
   { title: 'إسم الإختبار', key: 'name', align: 'start' },
   { title: 'إسم الاستاذ', key: 'Teacher.name' },
@@ -178,12 +179,11 @@ onMounted(() => {
         </v-list>
       </v-navigation-drawer>
     </v-layout>
-    <!-- <div class="mx-auto">
-      <img :src="imgUrl" alt="Logo" style="width: 1400px; height: 450px;">
-    </div> -->
-    <v-card class="mx-auto mt-16" max-width="1000">
-
-      <v-data-table :headers="headers" :items="theExams()">
+    <v-card class="mx-auto mt-16" max-width="1000" title="البحث">
+      <template v-slot:text>
+        <v-text-field v-model="search" label="إبحث عن الإختبارات" hide-details />
+      </template>
+      <v-data-table :headers="headers" :search="search" :items="theExams()">
         <template v-slot:top>
           <v-toolbar flat>
             <v-toolbar-title>كل الإختبارات</v-toolbar-title>

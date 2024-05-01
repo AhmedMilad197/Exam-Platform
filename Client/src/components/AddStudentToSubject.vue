@@ -5,10 +5,19 @@ import StudentService from '@/services/StudentService'
 import StudyService from '@/services/StudyService'
 import { useUserStore } from "@/stores/user";
 
-const user = useUserStore(); 
+const user = useUserStore();
 const router = useRouter()
 const route = useRoute();
 const students = ref();
+const search = ref();
+const headers = ref([
+  { title: 'إسم الطالب', key: 'name' },
+  { title: 'رقم القيد', key: 'id', align: 'start' },
+  { title: 'إسم الأب', key: 'father_name' },
+  { title: 'إسم الجد', key: 'grandfather_name' },
+  { title: 'اللقب', key: 'last_name' },
+  { title: 'إسم المستخدم', key: 'username' },
+]);
 
 /*
  * required APIs:
@@ -16,7 +25,7 @@ const students = ref();
  * api for all the questions nested in the subjects.
  */
 
- const items = ref([
+const items = ref([
   {
     title: 'موادي',
     value: {
@@ -77,11 +86,11 @@ async function logout() {
   })
 }
 
-function navigateTo (path) {
+function navigateTo(path) {
   router.push(path);
 }
 
-async function index () {
+async function index() {
   try {
     const response = await StudentService.availableStudents(route.params.subject);
     students.value = response.data;
@@ -130,14 +139,8 @@ onMounted(() => {
 
     <v-layout class="mt-16">
       <v-locale-provider rtl>
-        <v-app-bar
-          color="primary"
-          prominent
-          height="100"
-        >
-          <v-app-bar-nav-icon 
-            @click.stop="drawer = !drawer"
-          />
+        <v-app-bar color="primary" prominent height="100">
+          <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
           <v-toolbar-title>
             <span class="title-text">
               Exam Platform
@@ -147,22 +150,12 @@ onMounted(() => {
         </v-app-bar>
       </v-locale-provider>
 
-      <v-navigation-drawer
-        v-model="drawer"
-        location="right"
-      >
+      <v-navigation-drawer v-model="drawer" location="right">
         <v-list density="compact">
-          <v-list-item
-            v-for="(item, i) in items"
-            :key="i"
-            :value="item.value"
-            style="text-align: right;"
-            @click="handleRequest(item.title, item.value)"
-          >
+          <v-list-item v-for="(item, i) in items" :key="i" :value="item.value" style="text-align: right;"
+            @click="handleRequest(item.title, item.value)">
             <div v-if="item.title == 'تسجيل الخروج'">
-              <v-list-item-title 
-                style="color: red;"
-                >
+              <v-list-item-title style="color: red;">
                 {{ item.title }}
               </v-list-item-title>
             </div>
@@ -175,10 +168,7 @@ onMounted(() => {
     </v-layout>
 
     <div>
-        <v-card
-        class="mx-auto mt-10"
-        max-width="1000"
-        >
+      <v-card class="mx-auto mt-10" max-width="1000">
         <v-toolbar>
           <v-toolbar-title>الطلبة</v-toolbar-title>
           <div class="d-flex">
@@ -186,77 +176,21 @@ onMounted(() => {
             <v-btn color="white" class="ml-4 my-4 primary" @click="router.go(-1)">العودة</v-btn>
           </div>
         </v-toolbar>
-        
-        <v-table
-          fixed-header
-          height="100%"
-          density="comfortable"
-        >
-          <thead>
-            <tr>
-              <th class="text-right">
-                إسم الطالب
-              </th>
-              <th class="text-right">
-                إسم الأب
-              </th>
-              <th class="text-right">
-                إسم الجد
-              </th>
-              <th class="text-right">
-                اللقب
-              </th>
-              <th class="text-right">
-                إسم المستخدم
-              </th>
-              <th class="text-right">
-                id
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              v-for="student in students"
-              :key="student.id"
-              style="height: 50px;"
-            >
-              <td>
-                <v-checkbox class="custom-checkbox" :label=student.name @click="updateSelectedItems($event, student.id)" />
-              </td>
-              <td>
-                {{ student.father_name }}
-              </td>
-              <td>
-                {{ student.grandfather_name }}
-              </td>
-              <td>
-                {{ student.last_name }}
-              </td>
-              <td>
-                {{ student.username }}
-              </td>
-              <td>
-                {{ student.id }}
-              </td>
-              <!-- <td>
-                <div class="d-flex">
-                  <div>
-                    <v-btn color="indigo-darken-3" @click="navigateTo({name: 'student', params: {id: student.id}})">VIEW</v-btn>
-                  </div>
-                </div>
-              </td> -->
-            </tr>
-          </tbody>
-        </v-table>
+
+        <template v-slot:text>
+          <v-text-field v-model="search" label="إبحث عن الطلبة" prepend-inner-icon="mdi-magnify" variant="outlined" hide-details
+            single-line></v-text-field>
+        </template>
+
+        <v-data-table :headers="headers" :items="students" :search="search">
+          <template v-slot:item.name="{ item }">
+            <v-checkbox class="custom-checkbox" :label=item.name @click="updateSelectedItems($event, item.id)" />
+          </template>
+        </v-data-table>
       </v-card>
     </div>
     <v-dialog v-model="logoutDialog" max-width="500px">
-      <v-card 
-        prepend-icon="mdi-alert-circle"
-        text="هل تريد تسجيل الخروج؟"
-        title="تأكيد"
-        color="orange"
-      >
+      <v-card prepend-icon="mdi-alert-circle" text="هل تريد تسجيل الخروج؟" title="تأكيد" color="orange">
         <v-card>
           <v-spacer></v-spacer>
           <v-btn color="red-darken-1" class="mx-2 my-4" @click="logout()">نعم</v-btn>
@@ -269,18 +203,18 @@ onMounted(() => {
 </template>
 
 <style scoped>
-
 .list-item {
   transition: 0.5s;
 }
 
-.list-item:hover{
+.list-item:hover {
   background-color: bisque;
 }
 
-.custom-checkbox >>> .v-input__details {
+.custom-checkbox>>>.v-input__details {
   display: none;
 }
+
 .firstname-text {
   width: 90;
 }
@@ -290,12 +224,11 @@ onMounted(() => {
 }
 
 .primary {
-  background-color: rgb(24,103,192);
+  background-color: rgb(24, 103, 192);
 }
 
 .title-text {
   pointer-events: none;
   font-size: 40px;
 }
-
 </style>
