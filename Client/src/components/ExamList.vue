@@ -12,7 +12,7 @@ const route = useRoute();
 const exams = ref([]);
 const dialog = ref(false);
 const snackbar = ref(false);
-const error = ref(null);
+const search = ref();
 const deleteSnackbar = ref(false);
 const deleteUnSuccessfully = ref(false);
 const headers = ref([
@@ -199,10 +199,14 @@ onMounted(() => {
     <div class="mx-auto">
       <img :src="imgUrl" alt="Logo" style="width: 1400px; height: 450px;">
     </div>
-    <v-card class="mx-auto" max-width="1000">
-
+    <v-card class="mx-auto" max-width="1000" title="البحث">
+      <template v-slot:text>
+        <v-text-field v-model="search" label="إبحث عن الإختبارات" prepend-inner-icon="mdi-magnify" variant="outlined" hide-details
+          single-line></v-text-field>
+      </template>
       <v-data-table
         :headers="headers"
+        :search="search"
         :items="theExams()"
       >
         <template v-slot:top>

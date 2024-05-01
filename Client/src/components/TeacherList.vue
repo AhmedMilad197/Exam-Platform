@@ -11,6 +11,7 @@ const teachers = ref();
 const editedIndex = ref(-1)
 const blockTeacherSnackbar = ref(false);
 const unBlockTeacherSnackbar = ref(false);
+const search = ref();
 const items = ref([
   {
     title: 'المدرسين',
@@ -243,9 +244,12 @@ onMounted(() => {
       <img :src="imgUrl" alt="Logo" style="width: 1400px; height: 450px;">
     </div>
 
-    <v-card class="mx-auto" max-width="1000">
-
-      <v-data-table :headers="headers" :items="teachers">
+    <v-card class="mx-auto" max-width="1000" title="البحث">
+      <template v-slot:text>
+        <v-text-field v-model="search" label="إبحث عن المدرسين" prepend-inner-icon="mdi-magnify" variant="outlined" hide-details
+          single-line></v-text-field>
+      </template>
+      <v-data-table :headers="headers" :items="teachers" :search="search">
         <template v-slot:top>
           <v-toolbar flat>
             <v-toolbar-title>المدرسين</v-toolbar-title>

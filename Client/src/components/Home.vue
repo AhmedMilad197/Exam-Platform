@@ -5,8 +5,9 @@ import TeacherService from '@/services/TeacherService'
 import { useUserStore } from '@/stores/user';
 import imgUrl from '../assets/subject.png'
 
-const user = useUserStore()
-const router = useRouter()
+const user = useUserStore();
+const router = useRouter();
+const search = ref();
 const items = ref([
   {
     title: 'موادي',
@@ -151,11 +152,15 @@ onMounted(() => {
       <img :src="imgUrl" alt="Logo" style="width: 1400px; height: 396px;">
     </div>
 
-    <v-card class="mx-auto" max-width="1000">
-
+    <v-card class="mx-auto" max-width="1000" title="البحث">
+      <template v-slot:text>
+        <v-text-field v-model="search" label="إبحث عن المواد" prepend-inner-icon="mdi-magnify" variant="outlined" hide-details
+          single-line></v-text-field>
+      </template>
       <v-data-table
         :headers="headers"
         :items="subjects"
+        :search="search"
       >
         <template v-slot:top>
           <v-toolbar

@@ -12,6 +12,7 @@ const editStudentForm = ref();
 const students = ref();
 const snackbar = ref(false);
 const editStudentDialog = ref(false)
+const search = ref();
 const error = ref();
 
 const headers = ref([
@@ -312,8 +313,12 @@ function nameRule(value) {
     <div class="mx-auto">
       <img :src="imgUrl" alt="Logo" style="width: 1400px; height: 450px;">
     </div>
-    <v-card class="mx-auto" max-width="1000">
-      <v-data-table :headers="headers" :items="students">
+    <v-card class="mx-auto" max-width="1000" title="البحث">
+      <template v-slot:text>
+        <v-text-field v-model="search" label="إبحث عن الطلبة" prepend-inner-icon="mdi-magnify" variant="outlined" hide-details
+          single-line></v-text-field>
+      </template>
+      <v-data-table :headers="headers" :items="students" :search="search">
         <template v-slot:top>
           <v-toolbar flat>
             <v-toolbar-title>الطلاب</v-toolbar-title>
@@ -451,9 +456,7 @@ function nameRule(value) {
             </v-dialog>
 
             <v-dialog v-model="dialogDelete" width="auto">
-              <v-card max-width="400" prepend-icon="mdi-alert"
-                text="هل تريد حذف هذا الطالب"
-                title="تأكيد">
+              <v-card max-width="400" prepend-icon="mdi-alert" text="هل تريد حذف هذا الطالب" title="تأكيد">
                 <template v-slot:actions>
                   <v-btn color="red" @click="deleteItemConfirm">نعم</v-btn>
                   <v-btn color="primary" @click="closeDelete">العودة</v-btn>

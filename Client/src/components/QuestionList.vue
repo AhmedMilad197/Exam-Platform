@@ -11,6 +11,7 @@ const route = useRoute();
 const dialog= ref(false);
 const dialogDelete = ref(false);
 const deleteSuccessfully = ref(false);
+const search = ref();
 const headers = ref([
   { title: 'id', key: 'id', align: 'start' },
   { title: 'السؤال', key: 'content' },
@@ -218,10 +219,15 @@ function deleteItemConfirm() {
       <img :src="imgUrl" alt="Logo" style="width: 1400px; height: 450px;">
     </div>
 
-    <v-card class="mx-auto" max-width="1000">
+    <v-card class="mx-auto" max-width="1000" title="البحث">
+      <template v-slot:text>
+        <v-text-field v-model="search" label="إبحث عن الأسئلة" prepend-inner-icon="mdi-magnify" variant="outlined" hide-details
+          single-line></v-text-field>
+      </template>
       <v-data-table
         :headers="headers"
         :items="questions"
+        :search="search"
         :sort-by="[{ key: 'Answer1', order: 'asc' }]"
       >
         <template v-slot:top>

@@ -16,6 +16,7 @@ const editSubjectForm = ref(null);
 const addSuccessfully = ref(false);
 const editSuccessfully = ref(false);
 const deleteSuccessfully = ref(false);
+const search = ref();
 
 const items = ref([
   {
@@ -266,8 +267,12 @@ function goToExams(item) {
       <img :src="imgUrl" alt="Logo" style="width: 1400px; height: 450px;">
     </div>
 
-    <v-card class="mx-auto" max-width="1000">
-      <v-data-table :headers="headers" :items="subjects">
+    <v-card class="mx-auto" max-width="1000" title="البحث">
+      <template v-slot:text>
+        <v-text-field v-model="search" label="إبحث عن المواد" prepend-inner-icon="mdi-magnify" variant="outlined" hide-details
+          single-line></v-text-field>
+      </template>
+      <v-data-table :headers="headers" :items="subjects" :search="search">
         <template v-slot:top>
           <v-toolbar flat>
             <v-toolbar-title>كل المواد</v-toolbar-title>
