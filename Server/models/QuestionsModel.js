@@ -21,19 +21,19 @@ module.exports=(sequelize,DataTypes)=>{
                         }
         },
         content:{
-            type:DataTypes.STRING
+            type:DataTypes.STRING(100)
         },
         answer1:{
-            type:DataTypes.STRING
+            type:DataTypes.STRING(100)
         },
         answer2:{
-            type:DataTypes.STRING
+            type:DataTypes.STRING(100)
         },
         answer3:{
-            type:DataTypes.STRING
+            type:DataTypes.STRING(100)
         },
         answer4:{
-            type:DataTypes.STRING
+            type:DataTypes.STRING(100)
         },
         rightanswer:{
             type:DataTypes.INTEGER

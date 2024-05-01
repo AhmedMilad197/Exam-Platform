@@ -10,10 +10,10 @@ module.exports=(sequelize,DataTypes)=>{
             type:DataTypes.DATE
         },
         name:{
-            type :DataTypes.STRING
+            type :DataTypes.STRING(50)
         },
         description:{
-            type :DataTypes.STRING
+            type :DataTypes.STRING(50)
         },
         teacherid :{
             type:DataTypes.INTEGER,
