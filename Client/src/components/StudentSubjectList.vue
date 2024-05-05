@@ -67,6 +67,9 @@ async function getSubjects() {
 }
 
 onMounted(() => {
+  if (user.role != 'student') {
+    router.go(-1);
+  }
   getSubjects();
 });
 

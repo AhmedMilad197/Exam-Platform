@@ -104,6 +104,9 @@ const checkTime = () => {
 };
 
 onMounted(() => {
+  if (user.role != 'student') {
+    router.go(-1);
+  }
   getExams();
 });
 

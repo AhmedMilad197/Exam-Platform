@@ -82,6 +82,9 @@ function getTime(date) {
 }
 
 onMounted(() => {
+  if (user.role != 'student') {
+    router.go(-1);
+  }
   getExamScore();
 });
 
