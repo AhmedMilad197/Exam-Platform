@@ -72,7 +72,7 @@ async function register () {
       navigateTo({name: 'home'})
     }
   } catch (err) {
-    console.log(err.message);
+    error.value = 'اسم المستخدم او الإيميل موجود مسبقا'
   }
 }
 
@@ -190,8 +190,11 @@ function nameRule(value) {
           hint="أدخل الرمز السري"
           persistent-hint
         ></v-text-field>
-        <div class="error ml-2 mb-2" />
-        
+        <div class="error d-flex">
+          <div class="mx-auto my-4 error-text">
+            {{ error }}
+          </div>
+        </div>
         <div class="d-flex">
           <v-btn type="submit" color="primary" class="mx-auto my-2" @click="register()">تسجيل</v-btn>
         </div>

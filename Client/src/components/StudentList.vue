@@ -140,7 +140,6 @@ async function index() {
 
 async function addStudent(student) {
   try {
-    console.log(student);
     if (!student.name || !student.username || !student.phone || !student.password || !student.address) {
       error.value = 'يجب تعبئت جميع الحقول'
       return;
@@ -156,8 +155,12 @@ async function addStudent(student) {
       password: student.password,
       address: student.address
     });
+    students.value.push(currentItem.value)
     addSuccessfully.value = true;
+    currentItem.value = {};
+    close()
   } catch (err) {
+    error.value = 'اسم المستخدم للطالب موجود مسبقا'
     return {
       message: err.message
     }
@@ -207,6 +210,8 @@ async function destroy(studetnId) {
 function close() {
   dialog.value = false
   editStudentDialog.value = false
+  currentItem.value = {};
+  error.value = null;
   nextTick(() => {
     editedItem.value = Object.assign({}, defaultItem)
     editedIndex.value = -1
@@ -217,8 +222,6 @@ async function save() {
   const { valid, errors } = await addStudentForm.value?.validate()
   if (valid) {
     addStudent(currentItem.value);
-    students.value.push(currentItem.value)
-    close()
   }
 }
 
@@ -324,7 +327,7 @@ function nameRule(value) {
             <v-toolbar-title>الطلاب</v-toolbar-title>
             <v-divider class="mx-4" inset vertical></v-divider>
             <v-spacer></v-spacer>
-            <v-dialog v-model="dialog" max-width="600px">
+            <v-dialog v-model="dialog" max-width="600px" persistent>
               <template v-slot:activator="{ props }">
                 <v-btn class="mb-2 primary" color="white" v-bind="props">
                   إضافة طالب

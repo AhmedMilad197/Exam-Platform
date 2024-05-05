@@ -10,18 +10,23 @@ const Student = db.students;
 // 1. Create Student
 const addStudent = async (req, res) => {
     try {
-        let info = {
-            name: req.body.name,
-            father_name: req.body.father_name,
-            grandfather_name: req.body.grandfather_name,
-            last_name: req.body.last_name,
-            username: req.body.username,
-            password: req.body.password,
-            phone: req.body.phone,
-            address: req.body.address,
-        };
-        const student = await Student.create(info);
-        res.status(200).send(student);
+        if (await Student.findOne({where: {username: req.body.username}})) {
+          res.status(500).json({ error: 'Username already exist' });
+        } else {
+
+          let info = {
+              name: req.body.name,
+              father_name: req.body.father_name,
+              grandfather_name: req.body.grandfather_name,
+              last_name: req.body.last_name,
+              username: req.body.username,
+              password: req.body.password,
+              phone: req.body.phone,
+              address: req.body.address,
+          };
+          const student = await Student.create(info);
+          res.status(200).send(student);
+        }
     } catch (error) {
         res.status(500).json({ error: 'Internal server error' });
     }

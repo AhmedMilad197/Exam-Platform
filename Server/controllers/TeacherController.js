@@ -12,34 +12,40 @@ const Teacher = db.teachers;
 const addTeacher = async (req, res) => {
     const currentDate = new Date();
     currentDate.setHours(currentDate.getHours() + 2);
-    try {
-        let info = {
-            name: req.body.name,
-            username: req.body.username,
-            email: req.body.email,
-            password: req.body.password,
-            image: req.body.image,
-            specialist: req.body.specialist,
-            lastlogin: currentDate,
-            active: req.body.active ? req.body.active : false,
-        };
-        const teacher = await Teacher.create(info);
-        if (teacher != null) {
-            jwt.sign({
-                user: teacher,
-                role: 'teacher',
-                exp: Math.floor(Date.now() / 1000) + (60 * 60) // expires in one hour.
-            }, 'loginkey', (err, token) => {
-                res.send({
-                    teacher: teacher,
-                    token: token,
-                    role: 'teacher'
+    if (await Teacher.findOne({ where: { username: req.body.username } })) {
+        res.status(500).json({ error: 'Username already exists' });
+    } else if (await Teacher.findOne({ where: { email: req.body.email } })) {
+        res.status(500).json({ error: 'Email already exists' });
+    } else {
+        try {
+            let info = {
+                name: req.body.name,
+                username: req.body.username,
+                email: req.body.email,
+                password: req.body.password,
+                image: req.body.image,
+                specialist: req.body.specialist,
+                lastlogin: currentDate,
+                active: req.body.active ? req.body.active : false,
+            };
+            const teacher = await Teacher.create(info);
+            if (teacher != null) {
+                jwt.sign({
+                    user: teacher,
+                    role: 'teacher',
+                    exp: Math.floor(Date.now() / 1000) + (60 * 60) // expires in one hour.
+                }, 'loginkey', (err, token) => {
+                    res.send({
+                        teacher: teacher,
+                        token: token,
+                        role: 'teacher'
+                    });
                 });
-            });
+            }
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Internal server error' });
         }
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Internal server error' });
     }
 };
 
