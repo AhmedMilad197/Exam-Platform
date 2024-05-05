@@ -170,6 +170,9 @@ async function update() {
 }
 
 onMounted(() => {
+  if (user.role != 'teacher') {
+    router.go(-1);
+  }
   getTeacherQuestions();
 });
 

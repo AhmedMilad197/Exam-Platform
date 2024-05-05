@@ -96,6 +96,9 @@ async function getSubjects () {
 }
 
 onMounted(() => {
+  if (user.role != 'teacher') {
+    router.go(-1);
+  }
   getSubjects();
 });
 

@@ -172,6 +172,9 @@ function goBack() {
 }
 
 onMounted(() => {
+  if (user.role != 'teacher') {
+    router.go(-1);
+  }
   getQuestions()
 });
 

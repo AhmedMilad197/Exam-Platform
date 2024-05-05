@@ -129,6 +129,9 @@ async function addStudent() {
 }
 
 onMounted(() => {
+  if (user.role != 'teacher') {
+    router.go(-1);
+  }
   index();
 });
 
