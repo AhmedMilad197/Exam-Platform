@@ -115,6 +115,9 @@ async function getSubjects() {
 }
 
 onMounted(() => {
+  if (user.role != 'admin') {
+    router.go(-1);
+  }
   getSubjects();
 });
 

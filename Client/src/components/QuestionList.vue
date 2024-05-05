@@ -127,6 +127,9 @@ async function destroy (question_id) {
 }
 
 onMounted(() => {
+  if (user.role != 'admin') {
+    router.go(-1);
+  }
   index();
 });
   

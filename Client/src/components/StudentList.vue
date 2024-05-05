@@ -256,6 +256,9 @@ function deleteItem(item) {
 }
 
 onMounted(() => {
+  if (user.role != 'admin') {
+    router.go(-1);
+  }
   index();
 });
 
